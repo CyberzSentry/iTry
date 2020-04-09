@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:itry/route_generator.dart';
+import 'package:itry/routing/routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoute,
+      routes: routes,
     );
   }
 }

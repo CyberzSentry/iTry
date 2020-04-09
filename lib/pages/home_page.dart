@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:itry/wrappers/menu_wrapper.dart';
+import 'package:itry/fragments/drawer_fragment.dart';
+
+class DrawerItem {
+  String title;
+  IconData icon;
+  DrawerItem(this.title, this.icon);
+}
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  static const String routeName = '/';
+  static const String title = "Home";
+  static const IconData icon = Icons.home;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -13,9 +19,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return MenuWrapper(
-      title: 'Home',
-      child: Container(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(HomePage.title),
+      ),
+      drawer: DrawerFragment(),
+      body: Container(
         margin: EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
