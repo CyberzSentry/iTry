@@ -32,6 +32,11 @@ class _FirstTestPageState extends State<FirstTestPage> {
                 decoration: InputDecoration(hintText: 'Score'),
                 onChanged: (val) => setState(() => {_firstTest.score = int.parse(val)}),
               ),
+              TextFormField(
+                keyboardType: TextInputType.datetime,
+                decoration: InputDecoration(hintText: 'Score'),
+                onChanged: (val) => setState(() => {_firstTest.date = DateTime.parse(val)}),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: RaisedButton(
@@ -39,9 +44,12 @@ class _FirstTestPageState extends State<FirstTestPage> {
                     // Validate will return true if the form is valid, or false if
                     // the form is invalid.
                     if (_formKey.currentState.validate()) {
-                      _firstTest.date = DateTime.now();
+                      if(_firstTest.date == null){
+                        _firstTest.date = DateTime.now();
+                      }
                       print(_firstTest.toMap());
                       fta.insert(_firstTest);
+                      Navigator.of(context).pop();
                     }
                   },
                   child: Text('Submit'),

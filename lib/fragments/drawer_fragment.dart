@@ -16,8 +16,7 @@ class DrawerFragment extends StatelessWidget {
     new DrawerItem(HomePage.title, HomePage.icon, HomePage.routeName),
     new DrawerItem(TestsPage.title, TestsPage.icon, TestsPage.routeName),
     new DrawerItem(ResultsPage.title, ResultsPage.icon, ResultsPage.routeName),
-    new DrawerItem(
-        SettingsPage.title, SettingsPage.icon, SettingsPage.routeName)
+    new DrawerItem(SettingsPage.title, SettingsPage.icon, SettingsPage.routeName)
   ];
 
   @override
