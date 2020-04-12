@@ -26,8 +26,9 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     if (_enabledDataTypes[0]) {
       List<GraphDataType> firstTestData = <GraphDataType>[];
       var firstTestList = await _fta.getAll();
-      var firstTestListFiltered = firstTestList
-          .where((x) => x.date.isAfter(_from) & x.date.isBefore(_to));
+      var firstTestListFiltered = firstTestList.where((x) =>
+          x.date.isAfter(_from.add(Duration(days: -1))) &
+          x.date.isBefore(_to.add(Duration(days: 1))));
 
       for (var item in firstTestListFiltered) {
         firstTestData.add(GraphDataType(
@@ -39,8 +40,9 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     if (_enabledDataTypes[1]) {
       List<GraphDataType> fingerTappingData = <GraphDataType>[];
       var fingerTappingTestList = await _ftta.getAll();
-      var fingerTappingTestListFiltered = fingerTappingTestList
-          .where((x) => x.date.isAfter(_from.add(Duration(days: -1))) & x.date.isBefore(_to.add(Duration(days:1))));
+      var fingerTappingTestListFiltered = fingerTappingTestList.where((x) =>
+          x.date.isAfter(_from.add(Duration(days: -1))) &
+          x.date.isBefore(_to.add(Duration(days: 1))));
 
       for (var item in fingerTappingTestListFiltered) {
         fingerTappingData.add(GraphDataType(
@@ -79,13 +81,13 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
 
     return chart.LineChart(
       seriesList,
-      defaultRenderer:
-          chart.LineRendererConfig(includeArea: true, stacked: true),
+      // defaultRenderer:
+      //     chart.LineRendererConfig(includeArea: true, stacked: true),
       animate: true,
-      defaultInteractions: true,
+      //defaultInteractions: true,
       primaryMeasureAxis: chart.NumericAxisSpec(
-        renderSpec: chart.NoneRenderSpec(),
-      ),
+          //renderSpec: chart.NoneRenderSpec(),
+          ),
       domainAxis: chart.NumericAxisSpec(
           renderSpec: chart.NoneRenderSpec(),
           tickProviderSpec: chart.StaticNumericTickProviderSpec(
@@ -93,7 +95,8 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
               chart.TickSpec<num>(0),
               chart.TickSpec<num>(_to.difference(_from).inDays),
             ],
-          )),
+          ),
+          ),
     );
   }
 
@@ -102,19 +105,17 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
         context: context,
         initialDate: _from,
         firstDate: DateTime(2000),
-        lastDate: DateTime.now()
-    );
-    if(picked != null) setState(() => _from = picked);
+        lastDate: _to);
+    if (picked != null) setState(() => _from = picked);
   }
 
   Future _selectToDate() async {
     DateTime picked = await showDatePicker(
         context: context,
         initialDate: _to,
-        firstDate: DateTime(2000),
-        lastDate: DateTime.now()
-    );
-    if(picked != null) setState(() => _to = picked);
+        firstDate: _from,
+        lastDate: DateTime.now());
+    if (picked != null) setState(() => _to = picked);
   }
 
   @override
@@ -181,54 +182,6 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text(BaselineResultsPage.title),
-  //     ),
-  //     body:Container(child: Column(
-  //       children: <Widget>[
-  //         Row(
-  //           children: <Widget>[
-  //             SizedBox(
-  //               child: FutureBuilder<GraphData>(
-  //                 future: _getGraphData(),
-  //                 builder: (BuildContext context,
-  //                     AsyncSnapshot<GraphData> snapshot) {
-  //                   if (snapshot.hasData) {
-  //                     return _generateChart(snapshot.data);
-  //                   } else {
-  //                     return Center(child: CircularProgressIndicator());
-  //                   }
-  //                 },
-  //               ),
-  //             )
-  //           ],
-  //         ),
-  //         ListView(
-  //           children: <Widget>[
-  //             // SwitchListTile(
-  //             //   value: _enabledDataTypes[0],
-  //             //   onChanged: (val) => setState(() {
-  //             //     _enabledDataTypes[0] = val;
-  //             //   }),
-  //             //   title: Text('Test'),
-  //             // ),
-  //             // SwitchListTile(
-  //             //   value: _enabledDataTypes[1],
-  //             //   onChanged: (val) => setState(() {
-  //             //     _enabledDataTypes[1] = val;
-  //             //   }),
-  //             //   title: Text('Dexterity'),
-  //             // )
-  //           ],
-  //         )
-  //       ],
-  //     ),) ,
-  //   );
-  // }
 }
 
 class GraphData {

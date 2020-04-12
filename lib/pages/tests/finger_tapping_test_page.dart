@@ -22,6 +22,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
   bool _started = false;
   bool _side; //false-left;true-right;
   bool _timeOut = false;
+  bool _activeButtons = false;
   FingerTappingTestAccessor accessor = FingerTappingTestAccessor();
 
   void _startTimer() {
@@ -32,8 +33,12 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
         () {
           if (_time < 1) {
             _timeOut = true;
+          }
+          if( _time < 0){
+            _activeButtons = true;
             timer.cancel();
-          } else {
+          } 
+          else {
             _time = _time - 1;
           }
         },
@@ -87,6 +92,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
       _started = false;
       _time = _testTime;
       _timeOut = false;
+      _activeButtons = false;
     });
   }
 
@@ -99,15 +105,13 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            _timeOut
-                ? Row(
+          children: _timeOut
+              ? <Widget>[
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[Text('Score:')],
-                  )
-                : null,
-            _timeOut
-                ? Row(
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
@@ -115,11 +119,23 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
                         style: TextStyle(fontSize: 40),
                       )
                     ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      RaisedButton(
+                        onPressed: _activeButtons ? _acceptResult : null,
+                        child: Text('Accept'),
+                      ),
+                      RaisedButton(
+                        onPressed: _activeButtons ? _retakeTest : null,
+                        child: Text('Retake'),
+                      ),
+                    ],
                   )
-                : null,
-            _timeOut
-                ? null
-                : Row(
+                ]
+              : <Widget>[
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
@@ -128,15 +144,11 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
                       )
                     ],
                   ),
-            _timeOut
-                ? null
-                : Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[Text('Tap to start the test.')],
                   ),
-            _timeOut
-                ? null
-                : Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       RaisedButton(
@@ -153,22 +165,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
                       ),
                     ],
                   ),
-            _timeOut
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      RaisedButton(
-                        onPressed: _acceptResult,
-                        child: Text('Accept'),
-                      ),
-                      RaisedButton(
-                        onPressed: _retakeTest,
-                        child: Text('Retake'),
-                      ),
-                    ],
-                  )
-                : null
-          ].where((child) => child != null).toList(),
+                ],
         ),
       ),
     );

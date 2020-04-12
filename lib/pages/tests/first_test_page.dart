@@ -13,7 +13,8 @@ class FirstTestPage extends StatefulWidget {
 class _FirstTestPageState extends State<FirstTestPage> {
   FirstTestAccessor fta = FirstTestAccessor();
   final _formKey = GlobalKey<FormState>();
-  var _firstTest = FirstTest();
+  String _testDate;
+  String _testScore;
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +31,13 @@ class _FirstTestPageState extends State<FirstTestPage> {
               TextFormField(
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(hintText: 'Score'),
-                onChanged: (val) => setState(() => {_firstTest.score = int.parse(val)}),
+                onChanged: (val) => setState(() => _testScore = val),
               ),
               TextFormField(
                 keyboardType: TextInputType.datetime,
-                decoration: InputDecoration(hintText: 'Score'),
-                onChanged: (val) => setState(() => {_firstTest.date = DateTime.parse(val)}),
+                initialValue: '2020',
+                decoration: InputDecoration(hintText: 'Date'),
+                onChanged: (val) => setState(() =>_testDate = val),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -44,11 +46,14 @@ class _FirstTestPageState extends State<FirstTestPage> {
                     // Validate will return true if the form is valid, or false if
                     // the form is invalid.
                     if (_formKey.currentState.validate()) {
-                      if(_firstTest.date == null){
-                        _firstTest.date = DateTime.now();
+                      var firstTest = FirstTest();
+                      firstTest.score = int.parse(_testScore);
+                      firstTest.date = DateTime.parse(_testDate);
+                      if(firstTest.date == null){
+                        firstTest.date = DateTime.now();
                       }
-                      print(_firstTest.toMap());
-                      fta.insert(_firstTest);
+                      print(firstTest.toMap());
+                      fta.insert(firstTest);
                       Navigator.of(context).pop();
                     }
                   },

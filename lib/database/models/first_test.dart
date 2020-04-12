@@ -13,6 +13,8 @@ final String firstTestCreateString = '''
 
 final int maxScore = 100;
 
+final Duration testInterval = Duration(days: 1);
+
 class FirstTest {
   int id;
   int score;

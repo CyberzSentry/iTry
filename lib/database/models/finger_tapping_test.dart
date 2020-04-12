@@ -13,6 +13,8 @@ final String fingerTappingTestCreateString = '''
 
 final int maxScore = 100;
 
+final Duration testInterval = Duration(days: 1);
+
 class FingerTappingTest{
   int id;
   int score;
