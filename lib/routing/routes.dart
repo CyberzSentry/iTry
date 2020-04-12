@@ -3,6 +3,7 @@ import 'package:itry/pages/home_page.dart';
 import 'package:itry/pages/results/baseline_results_page.dart';
 import 'package:itry/pages/results_page.dart';
 import 'package:itry/pages/settings_page.dart';
+import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/first_test_page.dart';
 import 'package:itry/pages/tests_page.dart';
 
@@ -13,4 +14,5 @@ import 'package:itry/pages/tests_page.dart';
   TestsPage.routeName : (context) => TestsPage(),
   FirstTestPage.routeName : (context) => FirstTestPage(),
   BaselineResultsPage.routeName : (context) => BaselineResultsPage(),
+  FingerTappingTestPage.routeName : (context) => FingerTappingTestPage(),
 };

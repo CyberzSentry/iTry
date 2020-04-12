@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:itry/database/accessors/first_test_accessor.dart';
-import 'package:itry/database/models/first_test.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/pages/results/baseline_results_page.dart';
 

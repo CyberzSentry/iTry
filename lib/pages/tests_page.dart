@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
+import 'package:itry/pages/tests/finger_tapping_test_page.dart';
+import 'package:itry/pages/tests/first_test_page.dart';
 
 class TestsPage extends StatefulWidget {
   static const String routeName = '/tests';
@@ -26,16 +28,29 @@ class _TestsPageState extends State<TestsPage> {
         title: Text(TestsPage.title),
       ),
       drawer: DrawerFragment(),
-      body:  ListView(
+      body: ListView(
         children: <Widget>[
-          ListTile(
-            title: Text("First test"),
-            trailing: null,
-            onTap: () => Navigator.of(context).pushNamed('/firstTest'),
-          ),ListTile(
-            title: Text("depression and anxiety"),
-            trailing: null,
-            onTap: () => Navigator.of(context).pushNamed('/firstTest'),
+          Container(
+            child: ListTile(
+              title: Text(FirstTestPage.title),
+              trailing: null,
+              onTap: () =>
+                  Navigator.of(context).pushNamed(FirstTestPage.routeName),
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 0.5),
+            ),
+          ),
+          Container(
+            child: ListTile(
+              title: Text(FingerTappingTestPage.title),
+              trailing: null,
+              onTap: () =>
+                  Navigator.of(context).pushNamed(FingerTappingTestPage.routeName),
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 0.5),
+            ),
           ),
         ],
       ),
