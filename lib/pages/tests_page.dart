@@ -4,6 +4,7 @@ import 'package:itry/database/accessors/first_test_accessor.dart';
 import 'package:itry/database/models/finger_tapping_test.dart' as fttest;
 import 'package:itry/database/models/first_test.dart' as ftest;
 import 'package:itry/fragments/drawer_fragment.dart';
+import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/first_test_page.dart';
 
@@ -50,7 +51,7 @@ class _TestsPageState extends State<TestsPage> {
                 .pushNamed(FingerTappingTestPage.routeName),
           ),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey, width: 0.5),
+           // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
           ),
         ),
       );
@@ -66,7 +67,7 @@ class _TestsPageState extends State<TestsPage> {
             onTap: null,
           ),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey, width: 0.5),
+           // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
           ),
         ),
       );
@@ -83,7 +84,7 @@ class _TestsPageState extends State<TestsPage> {
                 Navigator.of(context).pushNamed(FirstTestPage.routeName),
           ),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey, width: 0.5),
+           // border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
           ),
         ),
       );
@@ -99,11 +100,23 @@ class _TestsPageState extends State<TestsPage> {
             onTap: null,
           ),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey, width: 0.5),
+            //border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
           ),
         ),
       );
     }
+
+    result.add(Container(
+          child: ListTile(
+            title: Text(CreativityProductivityPage.title),
+            trailing: null,
+            onTap: () =>
+                Navigator.of(context).pushNamed(CreativityProductivityPage.routeName),
+          ),
+          decoration: BoxDecoration(
+            //border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
+          ),
+        ),);
 
     return result;
   }
