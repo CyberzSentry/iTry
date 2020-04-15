@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:itry/database/accessors/creativity_productivity_survey_accesor.dart';
 import 'package:itry/database/accessors/finger_tapping_test_accesor.dart';
 import 'package:itry/database/accessors/first_test_accessor.dart';
+import 'package:itry/database/models/creativity_productivity_survey.dart'
+    as cpsurvey;
 import 'package:itry/database/models/finger_tapping_test.dart' as fttest;
 import 'package:itry/database/models/first_test.dart' as ftest;
 import 'package:itry/fragments/drawer_fragment.dart';
-import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
+import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/first_test_page.dart';
 
@@ -31,18 +34,24 @@ class _TestsPageState extends State<TestsPage> {
 
     var ftta = FingerTappingTestAccessor();
     var fta = FirstTestAccessor();
+    var cpsa = CreativityProductivitySurveyAccesor();
 
     var fingTappTests = await ftta.getAll();
     var firstTests = await fta.getAll();
+    var creativityProductivitySurveys = await cpsa.getAll();
 
     fingTappTests.sort((a, b) => a.date.compareTo(b.date));
     firstTests.sort((a, b) => a.date.compareTo(b.date));
+    creativityProductivitySurveys.sort((a, b) => a.date.compareTo(b.date));
 
     var currDate = DateTime.now();
 
     if (fingTappTests.length == 0 ||
-        currDate.subtract(fttest.testInterval).compareTo(fingTappTests.last.date) > 0) {
-      result.add(
+        currDate
+                .subtract(fttest.testInterval)
+                .compareTo(fingTappTests.last.date) >
+            0) {
+      result.insert(0,
         Container(
           child: ListTile(
             title: Text(FingerTappingTestPage.title),
@@ -51,8 +60,8 @@ class _TestsPageState extends State<TestsPage> {
                 .pushNamed(FingerTappingTestPage.routeName),
           ),
           decoration: BoxDecoration(
-           // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
-          ),
+              // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
+              ),
         ),
       );
     } else {
@@ -67,15 +76,16 @@ class _TestsPageState extends State<TestsPage> {
             onTap: null,
           ),
           decoration: BoxDecoration(
-           // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
-          ),
+              // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
+              ),
         ),
       );
     }
 
     if (firstTests.length == 0 ||
-        currDate.subtract(ftest.testInterval).compareTo(firstTests.last.date) > 0) {
-      result.add(
+        currDate.subtract(ftest.testInterval).compareTo(firstTests.last.date) >
+            0) {
+      result.insert(0,
         Container(
           child: ListTile(
             title: Text(FirstTestPage.title),
@@ -84,8 +94,8 @@ class _TestsPageState extends State<TestsPage> {
                 Navigator.of(context).pushNamed(FirstTestPage.routeName),
           ),
           decoration: BoxDecoration(
-           // border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
-          ),
+              // border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
+              ),
         ),
       );
     } else {
@@ -100,23 +110,47 @@ class _TestsPageState extends State<TestsPage> {
             onTap: null,
           ),
           decoration: BoxDecoration(
-            //border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
-          ),
+              //border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
+              ),
         ),
       );
     }
 
-    result.add(Container(
+    if (creativityProductivitySurveys.length == 0 ||
+        currDate
+                .subtract(cpsurvey.testInterval)
+                .compareTo(creativityProductivitySurveys.last.date) >
+            0) {
+      result.insert(0,
+        Container(
           child: ListTile(
-            title: Text(CreativityProductivityPage.title),
+            title: Text(CreativityProductivitySurveyPage.title),
             trailing: null,
-            onTap: () =>
-                Navigator.of(context).pushNamed(CreativityProductivityPage.routeName),
+            onTap: () => Navigator.of(context)
+                .pushNamed(CreativityProductivitySurveyPage.routeName),
           ),
           decoration: BoxDecoration(
-            //border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
+              //border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
+              ),
+        ),
+      );
+    } else {
+      result.add(
+        Container(
+          child: ListTile(
+            title: Text(CreativityProductivitySurveyPage.title),
+            trailing: Icon(
+              Icons.check,
+              color: Colors.blue,
+            ),
+            onTap: null,
           ),
-        ),);
+          decoration: BoxDecoration(
+              //border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
+              ),
+        ),
+      );
+    }
 
     return result;
   }

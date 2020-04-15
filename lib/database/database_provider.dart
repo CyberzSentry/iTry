@@ -1,5 +1,6 @@
 import 'package:itry/database/models/first_test.dart';
 import 'package:itry/database/models/finger_tapping_test.dart';
+import 'package:itry/database/models/creativity_productivity_survey.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -22,7 +23,7 @@ class DatabaseProvider {
   Future<Database> getDatabaseInstance() async {
     var directoryPath = await getDatabasesPath();
     String fullPath = join(directoryPath, _databaseName);
-    return await openDatabase(fullPath, version: 2,
+    return await openDatabase(fullPath, version: 3,
         onCreate: _onCreate
     );
   }
@@ -30,5 +31,7 @@ class DatabaseProvider {
   Future _onCreate(Database db, int version) async {
         await db.execute(firstTestCreateString); 
         await db.execute(fingerTappingTestCreateString);
+        await db.execute(creativityProductivitySurveyCreateString);
   }
+
 }

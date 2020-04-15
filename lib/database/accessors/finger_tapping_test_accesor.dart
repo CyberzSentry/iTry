@@ -39,7 +39,4 @@ import 'package:itry/database/models/finger_tapping_test.dart';
     return await db.update(tableFingerTappingTests, test.toMap(),
         where: '$columnId = ?', whereArgs: [test.id]);
   }
-
-
-
 }

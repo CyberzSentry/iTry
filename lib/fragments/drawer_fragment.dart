@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itry/pages/home_page.dart';
+import 'package:itry/pages/results/baseline_results_page.dart';
 import 'package:itry/pages/results_page.dart';
 import 'package:itry/pages/settings_page.dart';
 import 'package:itry/pages/tests_page.dart';
@@ -15,7 +16,7 @@ class DrawerFragment extends StatelessWidget {
   final drawerItems = [
     new DrawerItem(HomePage.title, HomePage.icon, HomePage.routeName),
     new DrawerItem(TestsPage.title, TestsPage.icon, TestsPage.routeName),
-    new DrawerItem(ResultsPage.title, ResultsPage.icon, ResultsPage.routeName),
+    new DrawerItem(ResultsPage.title, ResultsPage.icon, BaselineResultsPage.routeName),
     new DrawerItem(SettingsPage.title, SettingsPage.icon, SettingsPage.routeName)
   ];
 

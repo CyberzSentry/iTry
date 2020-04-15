@@ -41,14 +41,18 @@ class _FirstTestPageState extends State<FirstTestPage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: RaisedButton(
+                child: MaterialButton(
                   onPressed: () {
                     // Validate will return true if the form is valid, or false if
                     // the form is invalid.
                     if (_formKey.currentState.validate()) {
                       var firstTest = FirstTest();
                       firstTest.score = int.parse(_testScore);
-                      firstTest.date = DateTime.parse(_testDate);
+                      try{
+                        firstTest.date = DateTime.parse(_testDate);
+                      }on ArgumentError{
+
+                      }     
                       if(firstTest.date == null){
                         firstTest.date = DateTime.now();
                       }

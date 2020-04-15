@@ -1,7 +1,9 @@
 import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:flutter/material.dart';
+import 'package:itry/database/accessors/creativity_productivity_survey_accesor.dart';
 import 'package:itry/database/accessors/finger_tapping_test_accesor.dart';
 import 'package:itry/database/accessors/first_test_accessor.dart';
+import 'package:itry/fragments/drawer_fragment.dart';
 
 class BaselineResultsPage extends StatefulWidget {
   static const String routeName = '/baselineResults';
@@ -14,8 +16,9 @@ class BaselineResultsPage extends StatefulWidget {
 class _BaselineResultsPageState extends State<BaselineResultsPage> {
   FirstTestAccessor _fta = FirstTestAccessor();
   FingerTappingTestAccessor _ftta = FingerTappingTestAccessor();
+  CreativityProductivitySurveyAccesor _cpsa = CreativityProductivitySurveyAccesor();
 
-  var _enabledDataTypes = [true, true]; //first_test, finger_tapping,
+  var _enabledDataTypes = [true, true, true]; //first_test, finger_tapping,
 
   DateTime _from = DateTime.now().subtract(Duration(days: 30));
   DateTime _to = DateTime.now();
@@ -51,6 +54,20 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       fingerTappingData.sort((a, b) => a.day.compareTo(b.day));
       data.fingerTappingTestData = fingerTappingData;
     }
+    if (_enabledDataTypes[2]) {
+      List<GraphDataType> creativityProductivityData = <GraphDataType>[];
+      var creativityProductivityList = await _cpsa.getAll();
+      var creativityProductivityListFiltered = creativityProductivityList.where((x) =>
+          x.date.isAfter(_from.add(Duration(days: -1))) &
+          x.date.isBefore(_to.add(Duration(days: 1))));
+
+      for (var item in creativityProductivityListFiltered) {
+        creativityProductivityData.add(GraphDataType(
+            item.date.difference(_from).inDays, item.percentageScore));
+      }
+      creativityProductivityData.sort((a, b) => a.day.compareTo(b.day));
+      data.creativityProductivitySurveyData = creativityProductivityData;
+    }
     return data;
   }
 
@@ -74,6 +91,17 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
             id: 'FingerTappingTest',
             data: data.fingerTappingTestData,
             colorFn: (_, __) => chart.MaterialPalette.blue.shadeDefault,
+            domainFn: (GraphDataType point, _) => point.day,
+            measureFn: (GraphDataType point, _) => point.result),
+      );
+    }
+
+    if (data.creativityProductivitySurveyData != null) {
+      seriesList.add(
+        chart.Series(
+            id: 'CreativityProductivitySurvey',
+            data: data.creativityProductivitySurveyData,
+            colorFn: (_, __) => chart.MaterialPalette.purple.shadeDefault,
             domainFn: (GraphDataType point, _) => point.day,
             measureFn: (GraphDataType point, _) => point.result),
       );
@@ -121,6 +149,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerFragment(),
       appBar: AppBar(
         title: Text(BaselineResultsPage.title),
       ),
@@ -172,6 +201,14 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       }),
                       title: Text('Dexterity'),
                       activeColor: Colors.blue,
+                    ),
+                    SwitchListTile(
+                      value: _enabledDataTypes[2],
+                      onChanged: (val) => setState(() {
+                        _enabledDataTypes[2] = val;
+                      }),
+                      title: Text('Creativity productivity survey'),
+                      activeColor: Colors.purple,
                     )
                   ],
                 ),
@@ -187,6 +224,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
 class GraphData {
   List<GraphDataType> firstTestData;
   List<GraphDataType> fingerTappingTestData;
+  List<GraphDataType> creativityProductivitySurveyData;
 }
 
 class GraphDataType {

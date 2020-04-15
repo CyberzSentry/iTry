@@ -8,7 +8,7 @@ class MultipleChoiceQuestion extends StatefulWidget {
   Function(int selected) onPrev;
 
   MultipleChoiceQuestion(this.question, this.possibleAnswers,
-      {this.onNext = null, this.onPrev = null, this.selected = -1});
+      {this.onNext, this.onPrev, this.selected = -1});
 
   @override
   _MultipleChoiceQuestionState createState() => _MultipleChoiceQuestionState();

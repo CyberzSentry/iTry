@@ -11,6 +11,31 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  void _resetApplicaton() {
+    print('Reset application');
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Reset'),
+            content: Text(
+                'Are you sure you want to reset the app? This will result in losing all information you gathered through tests.'),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.red,
+                onPressed: () {},
+                child: Text('Continue'),
+              ),
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Abort'),
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,8 +43,16 @@ class _SettingsPageState extends State<SettingsPage> {
         title: Text(SettingsPage.title),
       ),
       drawer: DrawerFragment(),
-      body: Center(
-        child: Text("settings"),
+      body: ListView(
+        children: <Widget>[
+          SwitchListTile(
+              title: Text('Notifications'), value: true, onChanged: null),
+          ListTile(
+            title: Text('Reset application'),
+            onTap: _resetApplicaton,
+            trailing: Icon(Icons.delete_outline),
+          )
+        ],
       ),
     );
   }

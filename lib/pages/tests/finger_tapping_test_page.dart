@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:itry/database/accessors/finger_tapping_test_accesor.dart';
 import 'package:itry/database/models/finger_tapping_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FingerTappingTestPage extends StatefulWidget {
   static final String routeName = '/fingerTappingTest';
@@ -34,11 +35,10 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
           if (_time < 1) {
             _timeOut = true;
           }
-          if( _time < 0){
+          if (_time < 0) {
             _activeButtons = true;
             timer.cancel();
-          } 
-          else {
+          } else {
             _time = _time - 1;
           }
         },
@@ -96,6 +96,154 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
     });
   }
 
+  Future _checkFirstSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seenFingerTappingPage') ?? false);
+
+    if (_seen == false) {
+      await prefs.setBool('seenFingerTappingPage', true);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+              FingerTappingTestDescriptionPage(),
+        ),
+      );
+    }
+  }
+
+  List<Widget> _testColumn() {
+    return <Widget>[
+      Container(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            GestureDetector(
+              child: Icon(
+                Icons.info_outline,
+                color: Colors.grey,
+              ),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        FingerTappingTestDescriptionPage()),
+              ),
+            ),
+          ],
+        ),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[Text('Score:')],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            '$_score',
+            style: TextStyle(fontSize: 40),
+          )
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          MaterialButton(
+            onPressed: _activeButtons ? _acceptResult : null,
+            child: Text('Accept'),
+          ),
+          MaterialButton(
+            onPressed: _activeButtons ? _retakeTest : null,
+            child: Text('Retake'),
+          ),
+        ],
+      )
+    ];
+  }
+
+  List<Widget> _confirmColumn() {
+    return <Widget>[
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          GestureDetector(
+            child: Icon(
+              Icons.info_outline,
+              color: Colors.grey,
+            ),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      FingerTappingTestDescriptionPage()),
+            ),
+          ),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            _time.toString(),
+            style: TextStyle(fontSize: 40),
+          )
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[Text('Tap to start the test.')],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          RaisedButton(
+            onPressed: _tapLeft,
+            child: Text('left'),
+            shape: CircleBorder(),
+            padding: EdgeInsets.all(_buttonRadius),
+          ),
+          RaisedButton(
+            onPressed: _tapRight,
+            child: Text('right'),
+            shape: CircleBorder(),
+            padding: EdgeInsets.all(_buttonRadius),
+          ),
+        ],
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(FingerTappingTestPage.title),
+      ),
+      body: Container(
+        padding: EdgeInsets.fromLTRB(20, 40, 20, 40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: _timeOut ? _testColumn() : _confirmColumn(),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    new Timer(new Duration(milliseconds: 200), () {
+        _checkFirstSeen();
+        });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel() ;
+    super.dispose();
+  }
+}
+
+class FingerTappingTestDescriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,77 +251,8 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
         title: Text(FingerTappingTestPage.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: _timeOut
-              ? <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[Text('Score:')],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        '$_score',
-                        style: TextStyle(fontSize: 40),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      RaisedButton(
-                        onPressed: _activeButtons ? _acceptResult : null,
-                        child: Text('Accept'),
-                      ),
-                      RaisedButton(
-                        onPressed: _activeButtons ? _retakeTest : null,
-                        child: Text('Retake'),
-                      ),
-                    ],
-                  )
-                ]
-              : <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        _time.toString(),
-                        style: TextStyle(fontSize: 40),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[Text('Tap to start the test.')],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      RaisedButton(
-                        onPressed: _tapLeft,
-                        child: Text('left'),
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(_buttonRadius),
-                      ),
-                      RaisedButton(
-                        onPressed: _tapRight,
-                        child: Text('right'),
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(_buttonRadius),
-                      ),
-                    ],
-                  ),
-                ],
-        ),
+        child: Text('description'),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
   }
 }

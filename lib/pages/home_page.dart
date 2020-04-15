@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: DrawerFragment(),
       body: Container(
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -49,7 +49,8 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 Flexible(
                   child: const Text(
-                    'This application is created for people who aim to better them selves. It gives you the posibility to check how your new workout rutine or diferent suplements realy impact your performance.',
+                    'This application is created for people who aim to improve themselves. It gives you the posibility to check how your new workout routine or different supplements impact your everyday performance.',
+                    textAlign: TextAlign.justify,
                   ),
                 ),
               ],
@@ -69,6 +70,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+            ),
+            Row(
+              children: <Widget>[
+                Flexible(
+                  child: const Text(
+                    'Through regular participation in series of questionnaires and cognitive tests you will be able to monitor your results in the fields of cognitive functions such as; visual and hearing abilities, hand coordination, working of short memory, information processing, as well as in the psychological areas of overall well being, creativity and productivity.',
+                    textAlign: TextAlign.justify,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
