@@ -27,7 +27,7 @@ class DrawerFragment extends StatelessWidget {
     drawerOptions.add(
       DrawerHeader(
         decoration: BoxDecoration(
-          color: Colors.blue,
+          color: Colors.green
         ),
         child: Text(
           "iTry",
