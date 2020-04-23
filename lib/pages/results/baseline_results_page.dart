@@ -2,7 +2,6 @@ import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:flutter/material.dart';
 import 'package:itry/database/accessors/creativity_productivity_survey_accesor.dart';
 import 'package:itry/database/accessors/finger_tapping_test_accesor.dart';
-import 'package:itry/database/accessors/first_test_accessor.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
 
 class BaselineResultsPage extends StatefulWidget {
@@ -14,11 +13,10 @@ class BaselineResultsPage extends StatefulWidget {
 }
 
 class _BaselineResultsPageState extends State<BaselineResultsPage> {
-  FirstTestAccessor _fta = FirstTestAccessor();
   FingerTappingTestAccessor _ftta = FingerTappingTestAccessor();
   CreativityProductivitySurveyAccesor _cpsa = CreativityProductivitySurveyAccesor();
 
-  var _enabledDataTypes = [true, true, true]; //first_test, finger_tapping,
+  var _enabledDataTypes = [true, true]; //first_test, finger_tapping,
 
   DateTime _from = DateTime.now().subtract(Duration(days: 30));
   DateTime _to = DateTime.now();
@@ -27,20 +25,6 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     GraphData data = GraphData();
 
     if (_enabledDataTypes[0]) {
-      List<GraphDataType> firstTestData = <GraphDataType>[];
-      var firstTestList = await _fta.getAll();
-      var firstTestListFiltered = firstTestList.where((x) =>
-          x.date.isAfter(_from.add(Duration(days: -1))) &
-          x.date.isBefore(_to.add(Duration(days: 1))));
-
-      for (var item in firstTestListFiltered) {
-        firstTestData.add(GraphDataType(
-            item.date.difference(_from).inDays, item.score / 100));
-      }
-      firstTestData.sort((a, b) => a.day.compareTo(b.day));
-      data.firstTestData = firstTestData;
-    }
-    if (_enabledDataTypes[1]) {
       List<GraphDataType> fingerTappingData = <GraphDataType>[];
       var fingerTappingTestList = await _ftta.getAll();
       var fingerTappingTestListFiltered = fingerTappingTestList.where((x) =>
@@ -54,7 +38,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       fingerTappingData.sort((a, b) => a.day.compareTo(b.day));
       data.fingerTappingTestData = fingerTappingData;
     }
-    if (_enabledDataTypes[2]) {
+    if (_enabledDataTypes[1]) {
       List<GraphDataType> creativityProductivityData = <GraphDataType>[];
       var creativityProductivityList = await _cpsa.getAll();
       var creativityProductivityListFiltered = creativityProductivityList.where((x) =>
@@ -73,17 +57,6 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
 
   chart.LineChart _generateChart(GraphData data) {
     var seriesList = <chart.Series<GraphDataType, int>>[];
-
-    if (data.firstTestData != null) {
-      seriesList.add(
-        chart.Series(
-            id: 'FirstTest',
-            data: data.firstTestData,
-            colorFn: (_, __) => chart.MaterialPalette.red.shadeDefault,
-            domainFn: (GraphDataType point, _) => point.day,
-            measureFn: (GraphDataType point, _) => point.result),
-      );
-    }
 
     if (data.fingerTappingTestData != null) {
       seriesList.add(
@@ -191,21 +164,13 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       onChanged: (val) => setState(() {
                         _enabledDataTypes[0] = val;
                       }),
-                      title: Text('Test'),
-                      activeColor: Colors.red,
+                      title: Text('Dexterity'),
+                      activeColor: Colors.blue,
                     ),
                     SwitchListTile(
                       value: _enabledDataTypes[1],
                       onChanged: (val) => setState(() {
                         _enabledDataTypes[1] = val;
-                      }),
-                      title: Text('Dexterity'),
-                      activeColor: Colors.blue,
-                    ),
-                    SwitchListTile(
-                      value: _enabledDataTypes[2],
-                      onChanged: (val) => setState(() {
-                        _enabledDataTypes[2] = val;
                       }),
                       title: Text('Creativity productivity survey'),
                       activeColor: Colors.purple,
@@ -222,7 +187,6 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
 }
 
 class GraphData {
-  List<GraphDataType> firstTestData;
   List<GraphDataType> fingerTappingTestData;
   List<GraphDataType> creativityProductivitySurveyData;
 }

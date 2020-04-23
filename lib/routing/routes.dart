@@ -5,7 +5,6 @@ import 'package:itry/pages/results_page.dart';
 import 'package:itry/pages/settings_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
-import 'package:itry/pages/tests/first_test_page.dart';
 import 'package:itry/pages/tests_page.dart';
 
  var routes = <String, WidgetBuilder>{
@@ -13,7 +12,6 @@ import 'package:itry/pages/tests_page.dart';
   ResultsPage.routeName : (context) => ResultsPage(),
   SettingsPage.routeName : (context) => SettingsPage(),
   TestsPage.routeName : (context) => TestsPage(),
-  FirstTestPage.routeName : (context) => FirstTestPage(),
   BaselineResultsPage.routeName : (context) => BaselineResultsPage(),
   FingerTappingTestPage.routeName : (context) => FingerTappingTestPage(),
   CreativityProductivitySurveyPage.routeName : (context) => CreativityProductivitySurveyPage(),

@@ -27,6 +27,7 @@ dependencies:
   charts_flutter: any
   shared_preferences: 0.5.6+3
   flutter_launcher_icons: "^0.7.3"
+  firebase_admob: ^0.9.1+3
 
 dev_dependencies:
   flutter_test:

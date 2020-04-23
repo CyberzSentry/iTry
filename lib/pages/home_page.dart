@@ -1,4 +1,6 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
+import 'package:itry/ads/ads.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
 
 class DrawerItem {
@@ -17,6 +19,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  BannerAd _bannerAd;
+  BannerAd createBannerAd() {
+    return BannerAd(
+        adUnitId: Ads.getBannerAdUnitId(),
+        size: AdSize.banner,
+        listener: (MobileAdEvent event) {
+          print("BannerAd $event");
+        });
+  }
+
+  @override
+  void initState() {
+    FirebaseAdMob.instance.initialize(appId: Ads.getAppId());
+    _bannerAd = createBannerAd()
+      ..load()
+      ..show();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
