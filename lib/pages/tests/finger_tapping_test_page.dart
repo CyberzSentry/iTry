@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:itry/database/models/finger_tapping_test.dart';
+import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -313,35 +314,22 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
 class FingerTappingTestDescriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(FingerTappingTestPage.title),
-      ),
-      body: Container(
-        margin: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Text(
-              "Finger tapping performance test is a quantitative assessment tool used to evaluate hand skill and coordination. Hand performance can depend on many variables including our emotional and physical health and any factors that impact our nervous system.",
-              textAlign: TextAlign.justify,
-            ),
-            Text(
-              "In this test you are asked to determine your dominant hand and use your index and middle finger to tap alternately two buttons in the period of 15 seconds. For both hands you will receive results in average intertap - interval, tapping speed and overall number of taps.",
-              textAlign: TextAlign.justify,
-            ),
-            Text(
-              "By completing this test regularly you can measure and evaluate changes in your motor system. ",
-              textAlign: TextAlign.justify,
-            ),
-            MaterialButton(
-              color: Colors.green,
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Continue'),
-            )
-          ],
+    return TestDescriptionFragment(
+      children: <Widget>[
+        Text(
+          "Finger tapping performance test is a quantitative assessment tool used to evaluate hand skill and coordination. Hand performance can depend on many variables including our emotional and physical health and any factors that impact our nervous system.",
+          textAlign: TextAlign.justify,
         ),
-      ),
+        Text(
+          "In this test you are asked to determine your dominant hand and use your index and middle finger to tap alternately two buttons in the period of 15 seconds. For both hands you will receive results in average intertap - interval, tapping speed and overall number of taps.",
+          textAlign: TextAlign.justify,
+        ),
+        Text(
+          "By completing this test regularly you can measure and evaluate changes in your motor system. ",
+          textAlign: TextAlign.justify,
+        ),
+      ],
+      title: FingerTappingTestPage.title,
     );
   }
 }

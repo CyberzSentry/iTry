@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:itry/database/models/creativity_productivity_survey.dart' as cpsurvey;
-import 'package:itry/database/models/finger_tapping_test.dart' as fttest;
 import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
+import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
@@ -28,11 +27,11 @@ class _TestsPageState extends State<TestsPage> {
   Future<List<Widget>> _buildTestsList() async {
     var result = <Widget>[];
 
-
     var currDate = DateTime.now();
 
     if (await FingerTappingTestService().isActive(currDate)) {
-      result.insert(0,
+      result.insert(
+        0,
         Container(
           child: ListTile(
             title: Text(FingerTappingTestPage.title),
@@ -64,7 +63,8 @@ class _TestsPageState extends State<TestsPage> {
     }
 
     if (await CreativityProductivitySurveyService().isActive(currDate)) {
-      result.insert(0,
+      result.insert(
+        0,
         Container(
           child: ListTile(
             title: Text(CreativityProductivitySurveyPage.title),
@@ -94,6 +94,15 @@ class _TestsPageState extends State<TestsPage> {
         ),
       );
     }
+
+    result.add(
+      ListTile(
+        title: Text(CreativityProductivityTestPage.title),
+        trailing: null,
+        onTap: () => Navigator.of(context)
+            .pushNamed(CreativityProductivityTestPage.routeName),
+      ),
+    );
 
     return result;
   }

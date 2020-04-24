@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:itry/database/models/creativity_productivity_survey.dart';
+import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
@@ -100,7 +101,7 @@ class _CreativityProductivitySurveyPageState
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Container(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+            padding: EdgeInsets.fromLTRB(20, 40, 20, 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -192,7 +193,7 @@ class _CreativityProductivitySurveyPageState
 
   Widget _confirmScreen() {
     return Container(
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.fromLTRB(20, 40, 20, 40),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
@@ -244,28 +245,16 @@ class _CreativityProductivitySurveyPageState
 class CreativityProductivitySurveyDescriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(CreativityProductivitySurveyPage.title),
-        ),
-        body: Container(
-          margin: EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text(
-                  "In creative and productivity test you can determine changes in your ability to produce new ideas and challenge tasks.",
-                  textAlign: TextAlign.justify),
-              Text(
-                  "Using 4-point scale;\n0 - Not at all\n1 - From time to time\n2 - Most of the time\n3 - Nearly all the time",
-                  textAlign: TextAlign.justify),
-              MaterialButton(
-                color: Colors.green,
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Continue'),
-              )
-            ],
-          ),
-        ));
+    return TestDescriptionFragment(
+      children: <Widget>[
+        Text(
+            "In creative and productivity test you can determine changes in your ability to produce new ideas and challenge tasks.",
+            textAlign: TextAlign.justify),
+        Text(
+            "Using 4-point scale;\n0 - Not at all\n1 - From time to time\n2 - Most of the time\n3 - Nearly all the time",
+            textAlign: TextAlign.justify),
+      ],
+      title: CreativityProductivitySurveyPage.title,
+    );
   }
 }
