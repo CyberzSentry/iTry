@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:itry/database/accessors/creativity_productivity_survey_accesor.dart';
-import 'package:itry/database/accessors/finger_tapping_test_accesor.dart';
 import 'package:itry/database/models/creativity_productivity_survey.dart' as cpsurvey;
 import 'package:itry/database/models/finger_tapping_test.dart' as fttest;
 import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
+import 'package:itry/services/creativity_productivity_survey_service.dart';
+import 'package:itry/services/finger_tapping_test_service.dart';
 
 class TestsPage extends StatefulWidget {
   static const String routeName = '/tests';
@@ -28,22 +28,10 @@ class _TestsPageState extends State<TestsPage> {
   Future<List<Widget>> _buildTestsList() async {
     var result = <Widget>[];
 
-    var ftta = FingerTappingTestAccessor();
-    var cpsa = CreativityProductivitySurveyAccesor();
-
-    var fingTappTests = await ftta.getAll();
-    var creativityProductivitySurveys = await cpsa.getAll();
-
-    fingTappTests.sort((a, b) => a.date.compareTo(b.date));
-    creativityProductivitySurveys.sort((a, b) => a.date.compareTo(b.date));
 
     var currDate = DateTime.now();
 
-    if (fingTappTests.length == 0 ||
-        currDate
-                .subtract(fttest.testInterval)
-                .compareTo(fingTappTests.last.date) >
-            0) {
+    if (await FingerTappingTestService().isActive(currDate)) {
       result.insert(0,
         Container(
           child: ListTile(
@@ -75,11 +63,7 @@ class _TestsPageState extends State<TestsPage> {
       );
     }
 
-    if (creativityProductivitySurveys.length == 0 ||
-        currDate
-                .subtract(cpsurvey.testInterval)
-                .compareTo(creativityProductivitySurveys.last.date) >
-            0) {
+    if (await CreativityProductivitySurveyService().isActive(currDate)) {
       result.insert(0,
         Container(
           child: ListTile(

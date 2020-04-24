@@ -1,8 +1,8 @@
 import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:flutter/material.dart';
-import 'package:itry/database/accessors/creativity_productivity_survey_accesor.dart';
-import 'package:itry/database/accessors/finger_tapping_test_accesor.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
+import 'package:itry/services/creativity_productivity_survey_service.dart';
+import 'package:itry/services/finger_tapping_test_service.dart';
 
 class BaselineResultsPage extends StatefulWidget {
   static const String routeName = '/baselineResults';
@@ -13,10 +13,10 @@ class BaselineResultsPage extends StatefulWidget {
 }
 
 class _BaselineResultsPageState extends State<BaselineResultsPage> {
-  FingerTappingTestAccessor _ftta = FingerTappingTestAccessor();
-  CreativityProductivitySurveyAccesor _cpsa = CreativityProductivitySurveyAccesor();
+  FingerTappingTestService _fttService = FingerTappingTestService();
+  CreativityProductivitySurveyService _cpsService = CreativityProductivitySurveyService();
 
-  var _enabledDataTypes = [true, true]; //first_test, finger_tapping,
+  var _enabledDataTypes = [true, true]; // finger_tapping, cp_service
 
   DateTime _from = DateTime.now().subtract(Duration(days: 30));
   DateTime _to = DateTime.now();
@@ -26,12 +26,8 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
 
     if (_enabledDataTypes[0]) {
       List<GraphDataType> fingerTappingData = <GraphDataType>[];
-      var fingerTappingTestList = await _ftta.getAll();
-      var fingerTappingTestListFiltered = fingerTappingTestList.where((x) =>
-          x.date.isAfter(_from.add(Duration(days: -1))) &
-          x.date.isBefore(_to.add(Duration(days: 1))));
-
-      for (var item in fingerTappingTestListFiltered) {
+      var creativityProductivityListFiltered = await _fttService.getBetweenDates(_from, _to);
+      for (var item in creativityProductivityListFiltered) {
         fingerTappingData.add(GraphDataType(
             item.date.difference(_from).inDays, item.percentageScore));
       }
@@ -40,11 +36,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     }
     if (_enabledDataTypes[1]) {
       List<GraphDataType> creativityProductivityData = <GraphDataType>[];
-      var creativityProductivityList = await _cpsa.getAll();
-      var creativityProductivityListFiltered = creativityProductivityList.where((x) =>
-          x.date.isAfter(_from.add(Duration(days: -1))) &
-          x.date.isBefore(_to.add(Duration(days: 1))));
-
+      var creativityProductivityListFiltered = await _cpsService.getBetweenDates(_from, _to);
       for (var item in creativityProductivityListFiltered) {
         creativityProductivityData.add(GraphDataType(
             item.date.difference(_from).inDays, item.percentageScore));

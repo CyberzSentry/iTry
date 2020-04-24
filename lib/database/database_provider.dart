@@ -6,12 +6,18 @@ import 'package:path/path.dart';
 
 
 class DatabaseProvider {
+
   DatabaseProvider._();
 
-  static final DatabaseProvider db = DatabaseProvider._();
+  static final DatabaseProvider _instance = DatabaseProvider._();
+
+  factory DatabaseProvider() {
+    return _instance;
+  }
+
+  final String _databaseName = "iTry.db";
 
   Database _database;
-  final String _databaseName = "iTry.db";
 
   Future<Database> get database async {
     if (_database != null) return _database;
@@ -31,5 +37,4 @@ class DatabaseProvider {
         await db.execute(fingerTappingTestCreateString);
         await db.execute(creativityProductivitySurveyCreateString);
   }
-
 }

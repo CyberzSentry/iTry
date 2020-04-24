@@ -21,19 +21,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   BannerAd _bannerAd;
-  BannerAd createBannerAd() {
-    return BannerAd(
-        adUnitId: Ads.getBannerAdUnitId(),
-        size: AdSize.banner,
-        listener: (MobileAdEvent event) {
-          print("BannerAd $event");
-        });
-  }
 
   @override
   void initState() {
-    FirebaseAdMob.instance.initialize(appId: Ads.getAppId());
-    _bannerAd = createBannerAd()
+    _bannerAd = Ads.createBannerAd()
       ..load()
       ..show();
     super.initState();

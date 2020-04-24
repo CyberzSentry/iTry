@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:itry/database/accessors/creativity_productivity_survey_accesor.dart';
 import 'package:itry/database/models/creativity_productivity_survey.dart';
+import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
 class CreativityProductivitySurveyPage extends StatefulWidget {
-  static final String routeName = '/creativityProductivityTest';
+  static final String routeName = '/creativityProductivitySurvey';
   static final String title = "Creativity and productivity survey";
 
   @override
@@ -32,14 +32,16 @@ class _CreativityProductivitySurveyPageState
     'Nearly all the time'
   ];
 
-  CreativityProductivitySurveyAccesor cpsa = CreativityProductivitySurveyAccesor();
+  CreativityProductivitySurveyService service =
+      CreativityProductivitySurveyService();
   var _answers = List<int>.filled(_questionsMultiAns.length, -1);
   int _questionIndex = 0;
   int _currAnsw = -1;
 
   Future _checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool('seenCreativityProductivitySurveyPage') ?? false);
+    bool _seen =
+        (prefs.getBool('seenCreativityProductivitySurveyPage') ?? false);
 
     if (_seen == false) {
       await prefs.setBool('seenCreativityProductivitySurveyPage', true);
@@ -75,19 +77,19 @@ class _CreativityProductivitySurveyPageState
   }
 
   void _confirm() {
-    _answers[4] = _answers[4] *-1;
-    _answers[5] = _answers[5] *-1; 
+    _answers[4] = _answers[4] * -1;
+    _answers[5] = _answers[5] * -1;
     var sum = 0;
-    for(var val in _answers){
+    for (var val in _answers) {
       sum = sum + val;
     }
 
-    var  result = CreativityProductivitySurvey();
+    var result = CreativityProductivitySurvey();
     result.date = DateTime.now();
     result.score = sum;
 
     print(result.toMap());
-    cpsa.insert(result);
+    service.insert(result);
     Navigator.of(context).pop();
   }
 
@@ -172,10 +174,12 @@ class _CreativityProductivitySurveyPageState
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               MaterialButton(
+                color: Colors.green,
                 onPressed: _questionIndex > 0 ? _previous : null,
                 child: Text('Previous'),
               ),
               MaterialButton(
+                color: Colors.green,
                 onPressed: _currAnsw != -1 ? _next : null,
                 child: Text('Next'),
               )
@@ -200,10 +204,12 @@ class _CreativityProductivitySurveyPageState
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               MaterialButton(
+                color: Colors.green,
                 onPressed: _questionIndex > 0 ? _previous : null,
                 child: Text('Go back'),
               ),
               MaterialButton(
+                color: Colors.green,
                 onPressed: _confirm,
                 child: Text('Confirm'),
               )
@@ -230,8 +236,8 @@ class _CreativityProductivitySurveyPageState
   void initState() {
     super.initState();
     new Timer(new Duration(milliseconds: 200), () {
-        _checkFirstSeen();
-        });
+      _checkFirstSeen();
+    });
   }
 }
 
@@ -239,12 +245,27 @@ class CreativityProductivitySurveyDescriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(CreativityProductivitySurveyPage.title),
-      ),
-      body: Center(
-        child: Text('description'),
-      ),
-    );
+        appBar: AppBar(
+          title: Text(CreativityProductivitySurveyPage.title),
+        ),
+        body: Container(
+          margin: EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text(
+                  "In creative and productivity test you can determine changes in your ability to produce new ideas and challenge tasks.",
+                  textAlign: TextAlign.justify),
+              Text(
+                  "Using 4-point scale;\n0 - Not at all\n1 - From time to time\n2 - Most of the time\n3 - Nearly all the time",
+                  textAlign: TextAlign.justify),
+              MaterialButton(
+                color: Colors.green,
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Continue'),
+              )
+            ],
+          ),
+        ));
   }
 }
