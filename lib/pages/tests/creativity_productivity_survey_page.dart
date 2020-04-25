@@ -98,7 +98,7 @@ class _CreativityProductivitySurveyPageState
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
             padding: EdgeInsets.fromLTRB(20, 40, 20, 40),

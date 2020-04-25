@@ -2,6 +2,7 @@ import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:flutter/material.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
+import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
 
 class BaselineResultsPage extends StatefulWidget {
@@ -15,8 +16,9 @@ class BaselineResultsPage extends StatefulWidget {
 class _BaselineResultsPageState extends State<BaselineResultsPage> {
   FingerTappingTestService _fttService = FingerTappingTestService();
   CreativityProductivitySurveyService _cpsService = CreativityProductivitySurveyService();
+  CreativityProductivityTestService _cptService = CreativityProductivityTestService();
 
-  var _enabledDataTypes = [true, true]; // finger_tapping, cp_service
+  var _enabledDataTypes = [true, true, true]; // finger_tapping, cp_survey, cp_test
 
   DateTime _from = DateTime.now().subtract(Duration(days: 30));
   DateTime _to = DateTime.now();
@@ -44,6 +46,17 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       creativityProductivityData.sort((a, b) => a.day.compareTo(b.day));
       data.creativityProductivitySurveyData = creativityProductivityData;
     }
+    if (_enabledDataTypes[2]) {
+      List<GraphDataType> creativityProductivityData = <GraphDataType>[];
+      var creativityProductivityListFiltered = await _cptService.getBetweenDates(_from, _to);
+      for (var item in creativityProductivityListFiltered) {
+        creativityProductivityData.add(GraphDataType(
+            item.date.difference(_from).inDays, item.percentageScore));
+      }
+      creativityProductivityData.sort((a, b) => a.day.compareTo(b.day));
+      data.creativityProductivityTestData = creativityProductivityData;
+    }
+
     return data;
   }
 
@@ -67,6 +80,17 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
             id: 'CreativityProductivitySurvey',
             data: data.creativityProductivitySurveyData,
             colorFn: (_, __) => chart.MaterialPalette.purple.shadeDefault,
+            domainFn: (GraphDataType point, _) => point.day,
+            measureFn: (GraphDataType point, _) => point.result),
+      );
+    }
+
+    if (data.creativityProductivityTestData != null) {
+      seriesList.add(
+        chart.Series(
+            id: 'CreativityProductivityTest',
+            data: data.creativityProductivityTestData,
+            colorFn: (_, __) => chart.MaterialPalette.red.shadeDefault,
             domainFn: (GraphDataType point, _) => point.day,
             measureFn: (GraphDataType point, _) => point.result),
       );
@@ -166,6 +190,14 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       }),
                       title: Text('Creativity productivity survey'),
                       activeColor: Colors.purple,
+                    ),
+                    SwitchListTile(
+                      value: _enabledDataTypes[2],
+                      onChanged: (val) => setState(() {
+                        _enabledDataTypes[2] = val;
+                      }),
+                      title: Text('Creativity productivity test'),
+                      activeColor: Colors.red,
                     )
                   ],
                 ),
@@ -181,6 +213,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
 class GraphData {
   List<GraphDataType> fingerTappingTestData;
   List<GraphDataType> creativityProductivitySurveyData;
+  List<GraphDataType> creativityProductivityTestData;
 }
 
 class GraphDataType {

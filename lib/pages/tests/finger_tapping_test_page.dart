@@ -41,7 +41,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
             _activeButtons = true;
             timer.cancel();
           } else {
-            _time = _time - 1;
+            _time -= 1;
           }
         },
       ),
@@ -162,7 +162,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
     }
   }
 
-  List<Widget> _testColumn() {
+  List<Widget> _confirmColumn() {
     return <Widget>[
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -220,7 +220,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
     ];
   }
 
-  List<Widget> _confirmColumn() {
+  List<Widget> _testColumn() {
     return <Widget>[
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -290,7 +290,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
         padding: EdgeInsets.fromLTRB(20, 40, 20, 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: _timeOut ? _testColumn() : _confirmColumn(),
+          children: _timeOut ? _confirmColumn() : _testColumn(),
         ),
       ),
     );

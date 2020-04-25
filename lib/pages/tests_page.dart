@@ -4,6 +4,7 @@ import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
+import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
 
 class TestsPage extends StatefulWidget {
@@ -95,14 +96,27 @@ class _TestsPageState extends State<TestsPage> {
       );
     }
 
-    result.add(
-      ListTile(
-        title: Text(CreativityProductivityTestPage.title),
-        trailing: null,
-        onTap: () => Navigator.of(context)
-            .pushNamed(CreativityProductivityTestPage.routeName),
-      ),
-    );
+    if (await CreativityProductivityTestService().isActive(currDate)) {
+      result.add(
+        ListTile(
+          title: Text(CreativityProductivityTestPage.title),
+          trailing: Icon(
+            Icons.check,
+            color: Colors.blue,
+          ),
+          onTap: null,
+        ),
+      );
+    } else {
+      result.add(
+        ListTile(
+          title: Text(CreativityProductivityTestPage.title),
+          trailing: null,
+          onTap: () => Navigator.of(context)
+              .pushNamed(CreativityProductivityTestPage.routeName),
+        ),
+      );
+    }
 
     return result;
   }

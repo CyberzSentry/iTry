@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class TestDescriptionFragment extends StatelessWidget {
-  
   final List<Widget> children;
   final String title;
 
@@ -9,11 +8,18 @@ class TestDescriptionFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    children.add(MaterialButton(
-              color: Colors.green,
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Continue'),
-            ));
+    children.add(
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          MaterialButton(
+            color: Colors.green,
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Continue'),
+          )
+        ],
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text(title),

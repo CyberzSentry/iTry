@@ -1,6 +1,5 @@
 import 'package:itry/database/database_provider.dart';
 import 'package:itry/database/models/finger_tapping_test.dart';
-import 'package:itry/database/models/finger_tapping_test.dart' as fttest;
 
 class FingerTappingTestService {
 
@@ -64,7 +63,7 @@ class FingerTappingTestService {
     fingTappTests.sort((a, b) => a.date.compareTo(b.date));
     return fingTappTests.length == 0 ||
         date
-                .subtract(fttest.testInterval)
+                .subtract(testInterval)
                 .compareTo(fingTappTests.last.date) >
             0;
   }

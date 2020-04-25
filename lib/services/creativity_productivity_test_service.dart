@@ -1,54 +1,54 @@
 import 'package:itry/database/database_provider.dart';
-import 'package:itry/database/models/creativity_productivity_survey.dart';
+import 'package:itry/database/models/creativity_productivity_test.dart';
 
-class CreativityProductivitySurveyService{
+class CreativityProductivityTestService{
 
-  CreativityProductivitySurveyService._();
+  CreativityProductivityTestService._();
 
-  static final CreativityProductivitySurveyService _instance = CreativityProductivitySurveyService._();
+  static final CreativityProductivityTestService _instance = CreativityProductivityTestService._();
 
-  factory CreativityProductivitySurveyService() {
+  factory CreativityProductivityTestService() {
     return _instance;
   }
 
-  Future<CreativityProductivitySurvey> insert(CreativityProductivitySurvey test) async {
+  Future<CreativityProductivityTest> insert(CreativityProductivityTest test) async {
     var db = await DatabaseProvider().database;
-    test.id = await db.insert(tableCreativityProductivitySurvey, test.toMap());
+    test.id = await db.insert(tableCreativityProductivityTest, test.toMap());
     return test;
   }
 
-  Future<CreativityProductivitySurvey> getSingle(int id) async {
+  Future<CreativityProductivityTest> getSingle(int id) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableCreativityProductivitySurvey,
+    List<Map> maps = await db.query(tableCreativityProductivityTest,
         columns: [columnId, columnScore, columnDate],
         where: '$columnId = ?',
         whereArgs: [id]);
     if (maps.length > 0) {
-      return CreativityProductivitySurvey.fromMap(maps.first);
+      return CreativityProductivityTest.fromMap(maps.first);
     }
     return null;
   }
 
-  Future<List<CreativityProductivitySurvey>> getAll() async{
+  Future<List<CreativityProductivityTest>> getAll() async{
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableCreativityProductivitySurvey);
-    List<CreativityProductivitySurvey> result = <CreativityProductivitySurvey>[];
-    maps.forEach((row) => result.add(CreativityProductivitySurvey.fromMap(row)));
+    List<Map> maps = await db.query(tableCreativityProductivityTest);
+    List<CreativityProductivityTest> result = <CreativityProductivityTest>[];
+    maps.forEach((row) => result.add(CreativityProductivityTest.fromMap(row)));
     return result;
   }
 
   Future<int> delete(int id) async {
     var db = await DatabaseProvider().database;
-    return await db.delete(tableCreativityProductivitySurvey, where: '$columnId = ?', whereArgs: [id]);
+    return await db.delete(tableCreativityProductivityTest, where: '$columnId = ?', whereArgs: [id]);
   }
 
-  Future<int> updateTest(CreativityProductivitySurvey test) async {
+  Future<int> updateTest(CreativityProductivityTest test) async {
     var db = await DatabaseProvider().database;
-    return await db.update(tableCreativityProductivitySurvey, test.toMap(),
+    return await db.update(tableCreativityProductivityTest, test.toMap(),
         where: '$columnId = ?', whereArgs: [test.id]);
   }
 
-  Future<List<CreativityProductivitySurvey>> getBetweenDates(DateTime from, DateTime to) async {
+  Future<List<CreativityProductivityTest>> getBetweenDates(DateTime from, DateTime to) async {
     var creativityProductivityList = await getAll();
     var creativityProductivityListFiltered = creativityProductivityList.where((x) =>
         x.date.isAfter(from.add(Duration(days: -1))) &
