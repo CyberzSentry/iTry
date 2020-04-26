@@ -1,55 +1,55 @@
 import 'package:itry/database/database_provider.dart';
-import 'package:itry/database/models/finger_tapping_test.dart';
+import 'package:itry/database/models/spatial_memory_test.dart';
 
-class FingerTappingTestService {
+class SpatialMemoryTestService {
 
-  FingerTappingTestService._();
+  SpatialMemoryTestService._();
 
-  static final FingerTappingTestService _instance = FingerTappingTestService._();
+  static final SpatialMemoryTestService _instance = SpatialMemoryTestService._();
 
-  factory FingerTappingTestService() {
+  factory SpatialMemoryTestService() {
     return _instance;
   }
 
-  Future<FingerTappingTest> insert(FingerTappingTest test) async {
+  Future<SpatialMemoryTest> insert(SpatialMemoryTest test) async {
     var db = await DatabaseProvider().database;
-    test.id = await db.insert(tableFingerTappingTests, test.toMap());
+    test.id = await db.insert(tableSpatialMemoryTests, test.toMap());
     return test;
   }
 
-  Future<FingerTappingTest> getSingle(int id) async {
+  Future<SpatialMemoryTest> getSingle(int id) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableFingerTappingTests,
-        columns: [columnId, columnScoreNonDominant, columnScoreDominant, columnDate],
+    List<Map> maps = await db.query(tableSpatialMemoryTests,
+        columns: [columnId, columnScore, columnDate],
         where: '$columnId = ?',
         whereArgs: [id]);
     if (maps.length > 0) {
-      return FingerTappingTest.fromMap(maps.first);
+      return SpatialMemoryTest.fromMap(maps.first);
     }
     return null;
   }
 
-  Future<List<FingerTappingTest>> getAll() async {
+  Future<List<SpatialMemoryTest>> getAll() async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableFingerTappingTests);
-    List<FingerTappingTest> result = <FingerTappingTest>[];
-    maps.forEach((row) => result.add(FingerTappingTest.fromMap(row)));
+    List<Map> maps = await db.query(tableSpatialMemoryTests);
+    List<SpatialMemoryTest> result = <SpatialMemoryTest>[];
+    maps.forEach((row) => result.add(SpatialMemoryTest.fromMap(row)));
     return result;
   }
 
   Future<int> delete(int id) async {
     var db = await DatabaseProvider().database;
-    return await db.delete(tableFingerTappingTests,
+    return await db.delete(tableSpatialMemoryTests,
         where: '$columnId = ?', whereArgs: [id]);
   }
 
-  Future<int> updateTest(FingerTappingTest test) async {
+  Future<int> updateTest(SpatialMemoryTest test) async {
     var db = await DatabaseProvider().database;
-    return await db.update(tableFingerTappingTests, test.toMap(),
+    return await db.update(tableSpatialMemoryTests, test.toMap(),
         where: '$columnId = ?', whereArgs: [test.id]);
   }
 
-  Future<List<FingerTappingTest>> getBetweenDates(DateTime from, DateTime to) async {
+  Future<List<SpatialMemoryTest>> getBetweenDates(DateTime from, DateTime to) async {
     var testList = await getAll();
     var testListFiltered = testList.where((x) =>
         x.date.isAfter(from.add(Duration(days: -1))) &

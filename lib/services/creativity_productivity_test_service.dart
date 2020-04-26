@@ -49,21 +49,21 @@ class CreativityProductivityTestService{
   }
 
   Future<List<CreativityProductivityTest>> getBetweenDates(DateTime from, DateTime to) async {
-    var creativityProductivityList = await getAll();
-    var creativityProductivityListFiltered = creativityProductivityList.where((x) =>
+    var surveysList = await getAll();
+    var surveysListFiltered = surveysList.where((x) =>
         x.date.isAfter(from.add(Duration(days: -1))) &
         x.date.isBefore(to.add(Duration(days: 1)))).toList();
 
-    return creativityProductivityListFiltered;
+    return surveysListFiltered;
   }
 
   Future<bool> isActive(DateTime date) async {
-    var creativityProductivitySurveys = await getAll();
-    creativityProductivitySurveys.sort((a, b) => a.date.compareTo(b.date));
-    return creativityProductivitySurveys.length == 0 ||
+    var surveys = await getAll();
+    surveys.sort((a, b) => a.date.compareTo(b.date));
+    return surveys.length == 0 ||
         date
                 .subtract(testInterval)
-                .compareTo(creativityProductivitySurveys.last.date) >
+                .compareTo(surveys.last.date) >
             0;
   }
 }

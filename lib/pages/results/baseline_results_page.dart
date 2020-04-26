@@ -4,6 +4,7 @@ import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
+import 'package:itry/services/spatial_memory_test_service.dart';
 
 class BaselineResultsPage extends StatefulWidget {
   static const String routeName = '/baselineResults';
@@ -17,8 +18,9 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
   FingerTappingTestService _fttService = FingerTappingTestService();
   CreativityProductivitySurveyService _cpsService = CreativityProductivitySurveyService();
   CreativityProductivityTestService _cptService = CreativityProductivityTestService();
+  SpatialMemoryTestService _smtService = SpatialMemoryTestService();
 
-  var _enabledDataTypes = [true, true, true]; // finger_tapping, cp_survey, cp_test
+  var _enabledDataTypes = [true, true, true, true]; // finger_tapping, cp_survey, cp_test, spatial_mem
 
   DateTime _from = DateTime.now().subtract(Duration(days: 30));
   DateTime _to = DateTime.now();
@@ -55,6 +57,16 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       }
       creativityProductivityData.sort((a, b) => a.day.compareTo(b.day));
       data.creativityProductivityTestData = creativityProductivityData;
+    }
+    if (_enabledDataTypes[3]) {
+      List<GraphDataType> spatialMemoryData = <GraphDataType>[];
+      var spatialMemoryListFiltered = await _smtService.getBetweenDates(_from, _to);
+      for (var item in spatialMemoryListFiltered) {
+        spatialMemoryData.add(GraphDataType(
+            item.date.difference(_from).inDays, item.percentageScore));
+      }
+      spatialMemoryData.sort((a, b) => a.day.compareTo(b.day));
+      data.spatialMemoryTestData = spatialMemoryData;
     }
 
     return data;
@@ -95,6 +107,18 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
             measureFn: (GraphDataType point, _) => point.result),
       );
     }
+
+    if (data.spatialMemoryTestData != null) {
+      seriesList.add(
+        chart.Series(
+            id: 'SpatialMemoryTest',
+            data: data.spatialMemoryTestData,
+            colorFn: (_, __) => chart.MaterialPalette.lime.shadeDefault,
+            domainFn: (GraphDataType point, _) => point.day,
+            measureFn: (GraphDataType point, _) => point.result),
+      );
+    }
+
 
     return chart.LineChart(
       seriesList,
@@ -198,6 +222,14 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       }),
                       title: Text('Creativity productivity test'),
                       activeColor: Colors.red,
+                    ),
+                    SwitchListTile(
+                      value: _enabledDataTypes[3],
+                      onChanged: (val) => setState(() {
+                        _enabledDataTypes[3] = val;
+                      }),
+                      title: Text('Spatial memory test'),
+                      activeColor: Colors.lime,
                     )
                   ],
                 ),
@@ -214,6 +246,7 @@ class GraphData {
   List<GraphDataType> fingerTappingTestData;
   List<GraphDataType> creativityProductivitySurveyData;
   List<GraphDataType> creativityProductivityTestData;
+  List<GraphDataType> spatialMemoryTestData;
 }
 
 class GraphDataType {

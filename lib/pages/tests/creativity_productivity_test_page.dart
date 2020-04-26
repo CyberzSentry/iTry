@@ -48,19 +48,15 @@ class _CreativityProductivityTestPageState
 
   void _startTimer() {
     const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-      (Timer timer)
-      {
-        setState(() {
-          _time -= 1;
-        });
-        if (_time <= 0) {
-          _timeOut = true;
-          timer.cancel();
-        }
+    _timer = new Timer.periodic(oneSec, (Timer timer) {
+      setState(() {
+        _time -= 1;
+      });
+      if (_time <= 0) {
+        _timeOut = true;
+        timer.cancel();
       }
-    );
+    });
   }
 
   void _acceptResult() {
@@ -167,51 +163,52 @@ class _CreativityProductivityTestPageState
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          GestureDetector(
-            child: Icon(
-              Icons.info_outline,
-              color: Colors.grey,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            GestureDetector(
+              child: Icon(
+                Icons.info_outline,
+                color: Colors.grey,
+              ),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        CreativityProductivityTestDescriptionPage()),
+              ),
             ),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      CreativityProductivityTestDescriptionPage()),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[Text('Score:')],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              '$_score',
+              style: TextStyle(fontSize: 40),
+            )
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            MaterialButton(
+              color: Colors.green,
+              onPressed: _acceptResult,
+              child: Text('Accept'),
             ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Text('Score:')],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            '$_score',
-            style: TextStyle(fontSize: 40),
-          )
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          MaterialButton(
-            color: Colors.green,
-            onPressed: _acceptResult,
-            child: Text('Accept'),
-          ),
-          MaterialButton(
-            color: Colors.green,
-            onPressed: _retakeTest,
-            child: Text('Retake'),
-          ),
-        ],
-      )
-    ]);
+            MaterialButton(
+              color: Colors.green,
+              onPressed: _retakeTest,
+              child: Text('Retake'),
+            ),
+          ],
+        )
+      ],
+    );
   }
 
   @override
@@ -220,6 +217,12 @@ class _CreativityProductivityTestPageState
     new Timer(new Duration(milliseconds: 200), () {
       _checkFirstSeen();
     });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 }
 

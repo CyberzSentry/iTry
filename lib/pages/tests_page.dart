@@ -3,9 +3,11 @@ import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
+import 'package:itry/pages/tests/spatial_memory_test_page.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
+import 'package:itry/services/spatial_memory_test_service.dart';
 
 class TestsPage extends StatefulWidget {
   static const String routeName = '/tests';
@@ -17,14 +19,6 @@ class TestsPage extends StatefulWidget {
 }
 
 class _TestsPageState extends State<TestsPage> {
-  // List<Widget> _buildRow(String text){
-  //   final bool doneToday = true;
-  //   return  ListTile(
-  //           title: Text(text),
-  //           trailing: doneToday ? Icon(Icons.done, color: Colors.blue) : null,
-  //         );
-  // }
-
   Future<List<Widget>> _buildTestsList() async {
     var result = <Widget>[];
 
@@ -100,6 +94,15 @@ class _TestsPageState extends State<TestsPage> {
       result.add(
         ListTile(
           title: Text(CreativityProductivityTestPage.title),
+          trailing: null,
+          onTap: () => Navigator.of(context)
+              .pushNamed(CreativityProductivityTestPage.routeName),
+        ),
+      );
+    } else {
+      result.add(
+        ListTile(
+          title: Text(CreativityProductivityTestPage.title),
           trailing: Icon(
             Icons.check,
             color: Colors.blue,
@@ -107,13 +110,26 @@ class _TestsPageState extends State<TestsPage> {
           onTap: null,
         ),
       );
+    }
+
+    if (await SpatialMemoryTestService().isActive(currDate)) {
+      result.add(
+        ListTile(
+          title: Text(SpatialMemoryTestPage.title),
+          trailing: null,
+          onTap: () =>
+              Navigator.of(context).pushNamed(SpatialMemoryTestPage.routeName),
+        ),
+      );
     } else {
       result.add(
         ListTile(
-          title: Text(CreativityProductivityTestPage.title),
-          trailing: null,
-          onTap: () => Navigator.of(context)
-              .pushNamed(CreativityProductivityTestPage.routeName),
+          title: Text(SpatialMemoryTestPage.title),
+          trailing: Icon(
+            Icons.check,
+            color: Colors.blue,
+          ),
+          onTap: null,
         ),
       );
     }
