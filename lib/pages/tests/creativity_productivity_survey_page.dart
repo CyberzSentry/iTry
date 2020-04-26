@@ -17,21 +17,8 @@ class CreativityProductivitySurveyPage extends StatefulWidget {
 
 class _CreativityProductivitySurveyPageState
     extends State<CreativityProductivitySurveyPage> {
-  static final _questionsMultiAns = <String>[
-    'Have you been creative this past week?',
-    'Have you been contemplative this past week?',
-    'Have you been focused this past week?',
-    'Have you been productive this past week?',
-    'Have you experienced fatigue due to lack of sleep this past week?',
-    'Have you been distracted due to some unusual event this past week?',
-  ];
-
-  static final _possibleAnswers = <String>[
-    'Not at all',
-    'From time to time',
-    'Most of the time',
-    'Nearly all the time'
-  ];
+  static final _questionsMultiAns = questionsMultiAns;
+  static final _possibleAnswers = possibleAnswers;
 
   CreativityProductivitySurveyService service =
       CreativityProductivitySurveyService();
@@ -78,16 +65,11 @@ class _CreativityProductivitySurveyPageState
   }
 
   void _confirm() {
-    _answers[4] = _answers[4] * -1;
-    _answers[5] = _answers[5] * -1;
-    var sum = 0;
-    for (var val in _answers) {
-      sum = sum + val;
-    }
+    var score = calculateScore(_answers);
 
     var result = CreativityProductivitySurvey();
     result.date = DateTime.now();
-    result.score = sum;
+    result.score = score;
 
     print(result.toMap());
     service.insert(result);
@@ -200,6 +182,19 @@ class _CreativityProductivitySurveyPageState
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[Text('Are you happy with your answers?')],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[Text('Score:')],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                calculateScore(_answers).toString() + "/$maxScore",
+                style: TextStyle(fontSize: 40),
+              )
+            ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
