@@ -22,7 +22,7 @@ class DatabaseProvider {
   Database _database;
 
   Future<Database> get database async {
-    if (_database != null) return _database;
+    if (_database != null && _database?.isOpen == true) return _database;
     _database = await getDatabaseInstance();
     return _database;
   }
@@ -40,5 +40,12 @@ class DatabaseProvider {
         await db.execute(creativityProductivitySurveyCreateString);
         await db.execute(creativityProductivityTestCreateString);
         await db.execute(spatialMemoryTestCreateString);
+  }
+
+  Future resetDatabase() async {
+    _database.close();
+    var directoryPath = await getDatabasesPath();
+    String fullPath = join(directoryPath, _databaseName);
+    await deleteDatabase(fullPath);
   }
 }

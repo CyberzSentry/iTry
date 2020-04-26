@@ -299,7 +299,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
   @override
   void initState() {
     super.initState();
-    new Timer(new Duration(milliseconds: 200), () {
+    new Timer(new Duration(milliseconds: 10), () {
       _checkFirstSeen();
     });
   }

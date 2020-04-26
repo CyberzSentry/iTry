@@ -279,7 +279,7 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
   @override
   void initState() {
     super.initState();
-    new Timer(new Duration(milliseconds: 200), () {
+    new Timer(new Duration(milliseconds: 10), () {
       _checkFirstSeen();
     });
   }

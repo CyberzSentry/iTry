@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:itry/database/database_provider.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
+import 'package:itry/services/settings_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   static const String routeName = '/settings';
@@ -11,7 +14,11 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  void _resetApplicaton() {
+  Settings _settings;
+  SettingsService service = SettingsService();
+  DatabaseProvider database = DatabaseProvider();
+
+  void _resetApplication() {
     print('Reset application');
 
     showDialog(
@@ -24,7 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
             actions: <Widget>[
               FlatButton(
                 color: Colors.red,
-                onPressed: () {},
+                onPressed: _resetApplicationConfirmed,
                 child: Text('Continue'),
               ),
               FlatButton(
@@ -36,6 +43,15 @@ class _SettingsPageState extends State<SettingsPage> {
         });
   }
 
+  void _resetApplicationConfirmed(){
+    service.resetSettings();
+    database.resetDatabase();
+    setState(() {
+      
+    });
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,16 +59,31 @@ class _SettingsPageState extends State<SettingsPage> {
         title: Text(SettingsPage.title),
       ),
       drawer: DrawerFragment(),
-      body: ListView(
-        children: <Widget>[
-          SwitchListTile(
-              title: Text('Notifications'), value: true, onChanged: null),
-          ListTile(
-            title: Text('Reset application'),
-            onTap: _resetApplicaton,
-            trailing: Icon(Icons.delete_outline),
-          )
-        ],
+      body: FutureBuilder<Settings>(
+        future: service.settings,
+        builder: (BuildContext context, AsyncSnapshot<Settings> snapshot) {
+          if (snapshot.hasData) {
+            _settings = snapshot.data;
+            return ListView(
+              children: <Widget>[
+                SwitchListTile(
+                  title: Text('Notifications'),
+                  value: _settings.notifications,
+                  onChanged: (value) => setState(() {
+                    service.notifications = value;
+                  }),
+                ),
+                ListTile(
+                  title: Text('Reset application'),
+                  onTap: _resetApplication,
+                  trailing: Icon(Icons.delete_outline),
+                )
+              ],
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }
