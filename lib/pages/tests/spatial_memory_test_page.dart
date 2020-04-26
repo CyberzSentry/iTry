@@ -92,7 +92,8 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
 
   void _display() async {
     _repeating = false;
-    _displayTimer = Timer.periodic(Duration(milliseconds: disabledMs + enabledMs), (timer) {
+    _displayTimer =
+        Timer.periodic(Duration(milliseconds: disabledMs + enabledMs), (timer) {
       if (_currSeriesMember < _currSeriesAns.length) {
         setState(() {
           _lighted = _currSeriesAns[_currSeriesMember];
@@ -103,11 +104,12 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
         setState(() {
           _repeating = true;
           _currSeriesMember = 0;
-        });  
+        });
       }
     });
     Future.delayed(Duration(milliseconds: enabledMs)).whenComplete(() {
-      _displayOffsetTimer = Timer.periodic(Duration(milliseconds: disabledMs + enabledMs), (timer) {
+      _displayOffsetTimer = Timer.periodic(
+          Duration(milliseconds: disabledMs + enabledMs), (timer) {
         if (_currSeriesMember < _currSeriesAns.length) {
           setState(() {
             _lighted = -1;
@@ -178,33 +180,32 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
             ),
           ],
         ),
-        Expanded(
-          child: GridView.count(
-            // Create a grid with 2 columns. If you change the scrollDirection to
-            // horizontal, this produces 2 rows.
-            crossAxisCount: 4,
-            // Generate 100 widgets that display their index in the List.
-            children: List.generate(
-              16,
-              (index) {
-                return Container(
-                  margin: EdgeInsets.all(5),
-                  decoration: new BoxDecoration(
-                    borderRadius: new BorderRadius.circular(10.0),
-                    color: index == _lighted ? Colors.green : Colors.white,
-                    boxShadow: [
-                      new BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 3.0,
-                          offset: new Offset(1.0, 1.0))
-                    ],
-                  ),
-                  child: GestureDetector(
-                    onTap: () => _buttonPressed(index),
-                  ),
-                );
-              },
-            ),
+        GridView.count(
+          shrinkWrap: true,
+          // Create a grid with 2 columns. If you change the scrollDirection to
+          // horizontal, this produces 2 rows.
+          crossAxisCount: 4,
+          // Generate 100 widgets that display their index in the List.
+          children: List.generate(
+            16,
+            (index) {
+              return Container(
+                margin: EdgeInsets.all(5),
+                decoration: new BoxDecoration(
+                  borderRadius: new BorderRadius.circular(10.0),
+                  color: index == _lighted ? Colors.green : Colors.white,
+                  boxShadow: [
+                    new BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 3.0,
+                        offset: new Offset(1.0, 1.0))
+                  ],
+                ),
+                child: GestureDetector(
+                  onTap: () => _buttonPressed(index),
+                ),
+              );
+            },
           ),
         ),
         Row(

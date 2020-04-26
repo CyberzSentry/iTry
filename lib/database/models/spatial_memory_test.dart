@@ -1,4 +1,4 @@
-final String tableSpatialMemoryTests = 'creativityProductivityTests';
+final String tableSpatialMemoryTests = 'spatialMemoryTests';
 final String columnId = '_id';
 final String columnScore = 'score';
 final String columnDate = 'date';
