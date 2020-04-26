@@ -13,7 +13,7 @@ final String fingerTappingTestCreateString = '''
               )
               ''';
 
-final int maxScore = 100;
+final int maxScore = 200;
 
 final Duration testInterval = Duration(days: 1);
 
