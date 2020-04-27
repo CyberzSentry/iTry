@@ -63,9 +63,10 @@ class _CreativityProductivityTestPageState
   void _acceptResult() {
     print('$_score');
     var result = CreativityProductivityTest();
+    var date = DateTime.now();
     result.score = _score;
-    result.date = DateTime.now();
-    service.insert(result);
+    result.date = date;
+    service.insertIfActive(result, date);
     Navigator.of(context).pop();
   }
 

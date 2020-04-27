@@ -123,10 +123,11 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
       print('$_scoreNonDominant');
       print(DateTime.now().toString());
       var testResult = FingerTappingTest();
-      testResult.date = DateTime.now();
+      var date = DateTime.now();
+      testResult.date = date;
       testResult.scoreDominant = _scoreDominant;
       testResult.scoreNonDominant = _scoreNonDominant;
-      service.insert(testResult);
+      service.insertIfActive(testResult, date);
       Navigator.of(context).pop();
     }
   }

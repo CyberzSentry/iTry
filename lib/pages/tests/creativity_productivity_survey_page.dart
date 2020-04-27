@@ -69,11 +69,12 @@ class _CreativityProductivitySurveyPageState
     var score = calculateScore(_answers);
 
     var result = CreativityProductivitySurvey();
-    result.date = DateTime.now();
+    var date = DateTime.now();
+    result.date = date;
     result.score = score;
 
     print(result.toMap());
-    service.insert(result);
+    service.insertIfActive(result, date);
     Navigator.of(context).pop();
   }
 

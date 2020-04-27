@@ -127,9 +127,10 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
 
   void _acceptResult() {
     var test = SpatialMemoryTest();
-    test.date = DateTime.now();
+    var date = DateTime.now();
+    test.date = date;
     test.score = calculateScore(_seriesScore);
-    service.insert(test);
+    service.insertIfActive(test, date);
     Navigator.of(context).pop();
   }
 
