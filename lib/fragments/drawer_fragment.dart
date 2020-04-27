@@ -16,8 +16,10 @@ class DrawerFragment extends StatelessWidget {
   final drawerItems = [
     new DrawerItem(HomePage.title, HomePage.icon, HomePage.routeName),
     new DrawerItem(TestsPage.title, TestsPage.icon, TestsPage.routeName),
-    new DrawerItem(ResultsPage.title, ResultsPage.icon, BaselineResultsPage.routeName),
-    new DrawerItem(SettingsPage.title, SettingsPage.icon, SettingsPage.routeName)
+    new DrawerItem(
+        ResultsPage.title, ResultsPage.icon, BaselineResultsPage.routeName),
+    new DrawerItem(
+        SettingsPage.title, SettingsPage.icon, SettingsPage.routeName)
   ];
 
   @override
@@ -26,12 +28,9 @@ class DrawerFragment extends StatelessWidget {
 
     drawerOptions.add(
       DrawerHeader(
-        decoration: BoxDecoration(
-          color: Colors.green
-        ),
-        child: Text(
-          "iTry",
-          style: TextStyle(fontSize: 20),
+        decoration: BoxDecoration(color: Colors.green),
+        child: Center(
+          child: Image(image: AssetImage("assets/launcher/icon.png"))
         ),
       ),
     );
