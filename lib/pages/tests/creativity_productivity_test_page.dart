@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:itry/database/models/creativity_productivity_test.dart';
 import 'package:itry/fragments/test_description_fragment.dart';
+import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:random_words/random_words.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -213,8 +214,9 @@ class _CreativityProductivityTestPageState
 
   @override
   void initState() {
-    super.initState();
+    AdsService().hideBanner();
     _checkFirstSeen();
+    super.initState();
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:itry/database/models/finger_tapping_test.dart';
 import 'package:itry/fragments/test_description_fragment.dart';
+import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -298,8 +299,9 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
 
   @override
   void initState() {
-    super.initState();
+    AdsService().hideBanner();
     _checkFirstSeen();
+    super.initState();
   }
 
   @override

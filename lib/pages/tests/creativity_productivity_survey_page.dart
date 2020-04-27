@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:itry/database/models/creativity_productivity_survey.dart';
 import 'package:itry/fragments/test_description_fragment.dart';
+import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
@@ -230,8 +231,9 @@ class _CreativityProductivitySurveyPageState
 
   @override
   void initState() {
-    super.initState();
+    AdsService().hideBanner();
     _checkFirstSeen();
+    super.initState();
   }
 }
 

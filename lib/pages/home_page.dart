@@ -1,7 +1,6 @@
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
-import 'package:itry/ads/ads.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
+import 'package:itry/services/ads_service.dart';
 
 class DrawerItem {
   String title;
@@ -19,19 +18,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  BannerAd _bannerAd;
 
   @override
   void initState() {
-    _bannerAd = Ads.createBannerAd()
-      ..load()
-      ..show();
+    AdsService().showBanner();
     super.initState();
   }
 
   @override
   void dispose() {
-    _bannerAd?.dispose();
     super.dispose();
   }
 

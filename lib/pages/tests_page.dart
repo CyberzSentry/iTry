@@ -4,6 +4,7 @@ import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/spatial_memory_test_page.dart';
+import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
@@ -32,7 +33,7 @@ class _TestsPageState extends State<TestsPage> {
             title: Text(FingerTappingTestPage.title),
             trailing: null,
             onTap: () => Navigator.of(context)
-                .pushNamed(FingerTappingTestPage.routeName),
+                .pushNamed(FingerTappingTestPage.routeName).whenComplete((){AdsService().showBanner();}),
           ),
           decoration: BoxDecoration(
               // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
@@ -65,7 +66,7 @@ class _TestsPageState extends State<TestsPage> {
             title: Text(CreativityProductivitySurveyPage.title),
             trailing: null,
             onTap: () => Navigator.of(context)
-                .pushNamed(CreativityProductivitySurveyPage.routeName),
+                .pushNamed(CreativityProductivitySurveyPage.routeName).whenComplete((){AdsService().showBanner();}),
           ),
           decoration: BoxDecoration(
               //border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
@@ -96,7 +97,7 @@ class _TestsPageState extends State<TestsPage> {
           title: Text(CreativityProductivityTestPage.title),
           trailing: null,
           onTap: () => Navigator.of(context)
-              .pushNamed(CreativityProductivityTestPage.routeName),
+              .pushNamed(CreativityProductivityTestPage.routeName).whenComplete((){AdsService().showBanner();}),
         ),
       );
     } else {
@@ -118,7 +119,7 @@ class _TestsPageState extends State<TestsPage> {
           title: Text(SpatialMemoryTestPage.title),
           trailing: null,
           onTap: () =>
-              Navigator.of(context).pushNamed(SpatialMemoryTestPage.routeName),
+              Navigator.of(context).pushNamed(SpatialMemoryTestPage.routeName).whenComplete((){AdsService().showBanner();}),
         ),
       );
     } else {
@@ -155,5 +156,11 @@ class _TestsPageState extends State<TestsPage> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    AdsService().showBanner();
+    super.initState();
   }
 }

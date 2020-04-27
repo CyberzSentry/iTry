@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:flutter/material.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
+import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
@@ -16,11 +17,18 @@ class BaselineResultsPage extends StatefulWidget {
 
 class _BaselineResultsPageState extends State<BaselineResultsPage> {
   FingerTappingTestService _fttService = FingerTappingTestService();
-  CreativityProductivitySurveyService _cpsService = CreativityProductivitySurveyService();
-  CreativityProductivityTestService _cptService = CreativityProductivityTestService();
+  CreativityProductivitySurveyService _cpsService =
+      CreativityProductivitySurveyService();
+  CreativityProductivityTestService _cptService =
+      CreativityProductivityTestService();
   SpatialMemoryTestService _smtService = SpatialMemoryTestService();
 
-  var _enabledDataTypes = [true, true, true, true]; // finger_tapping, cp_survey, cp_test, spatial_mem
+  var _enabledDataTypes = [
+    true,
+    true,
+    true,
+    true
+  ]; // finger_tapping, cp_survey, cp_test, spatial_mem
 
   DateTime _from = DateTime.now().subtract(Duration(days: 30));
   DateTime _to = DateTime.now();
@@ -30,7 +38,8 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
 
     if (_enabledDataTypes[0]) {
       List<GraphDataType> fingerTappingData = <GraphDataType>[];
-      var creativityProductivityListFiltered = await _fttService.getBetweenDates(_from, _to);
+      var creativityProductivityListFiltered =
+          await _fttService.getBetweenDates(_from, _to);
       for (var item in creativityProductivityListFiltered) {
         fingerTappingData.add(GraphDataType(
             item.date.difference(_from).inDays, item.percentageScore));
@@ -40,7 +49,8 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     }
     if (_enabledDataTypes[1]) {
       List<GraphDataType> creativityProductivityData = <GraphDataType>[];
-      var creativityProductivityListFiltered = await _cpsService.getBetweenDates(_from, _to);
+      var creativityProductivityListFiltered =
+          await _cpsService.getBetweenDates(_from, _to);
       for (var item in creativityProductivityListFiltered) {
         creativityProductivityData.add(GraphDataType(
             item.date.difference(_from).inDays, item.percentageScore));
@@ -50,7 +60,8 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     }
     if (_enabledDataTypes[2]) {
       List<GraphDataType> creativityProductivityData = <GraphDataType>[];
-      var creativityProductivityListFiltered = await _cptService.getBetweenDates(_from, _to);
+      var creativityProductivityListFiltered =
+          await _cptService.getBetweenDates(_from, _to);
       for (var item in creativityProductivityListFiltered) {
         creativityProductivityData.add(GraphDataType(
             item.date.difference(_from).inDays, item.percentageScore));
@@ -60,7 +71,8 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     }
     if (_enabledDataTypes[3]) {
       List<GraphDataType> spatialMemoryData = <GraphDataType>[];
-      var spatialMemoryListFiltered = await _smtService.getBetweenDates(_from, _to);
+      var spatialMemoryListFiltered =
+          await _smtService.getBetweenDates(_from, _to);
       for (var item in spatialMemoryListFiltered) {
         spatialMemoryData.add(GraphDataType(
             item.date.difference(_from).inDays, item.percentageScore));
@@ -119,7 +131,6 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       );
     }
 
-
     return chart.LineChart(
       seriesList,
       // defaultRenderer:
@@ -130,14 +141,14 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
           //renderSpec: chart.NoneRenderSpec(),
           ),
       domainAxis: chart.NumericAxisSpec(
-          renderSpec: chart.NoneRenderSpec(),
-          tickProviderSpec: chart.StaticNumericTickProviderSpec(
-            <chart.TickSpec<num>>[
-              chart.TickSpec<num>(0),
-              chart.TickSpec<num>(_to.difference(_from).inDays),
-            ],
-          ),
-          ),
+        renderSpec: chart.NoneRenderSpec(),
+        tickProviderSpec: chart.StaticNumericTickProviderSpec(
+          <chart.TickSpec<num>>[
+            chart.TickSpec<num>(0),
+            chart.TickSpec<num>(_to.difference(_from).inDays),
+          ],
+        ),
+      ),
     );
   }
 
@@ -230,7 +241,8 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       }),
                       title: Text('Spatial memory test'),
                       activeColor: Colors.lime,
-                    )
+                    ),
+                    ListTile(),
                   ],
                 ),
               ),
@@ -239,6 +251,12 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    AdsService().showBanner();
+    super.initState();
   }
 }
 
