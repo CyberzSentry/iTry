@@ -4,6 +4,7 @@ import 'package:itry/database/models/creativity_productivity_test.dart';
 import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
+import 'package:itry/services/settings_service.dart';
 import 'package:random_words/random_words.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -66,7 +67,13 @@ class _CreativityProductivityTestPageState
     var date = DateTime.now();
     result.score = _score;
     result.date = date;
-    service.insertIfActive(result, date);
+    SettingsService().getTestTimeBlocking().then((value) {
+      if (value) {
+        service.insertIfActive(result, date);
+      } else {
+        service.insert(result);
+      }
+    });
     Navigator.of(context).pop();
   }
 

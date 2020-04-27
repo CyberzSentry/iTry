@@ -4,6 +4,7 @@ import 'package:itry/database/models/creativity_productivity_survey.dart';
 import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
+import 'package:itry/services/settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
@@ -72,9 +73,13 @@ class _CreativityProductivitySurveyPageState
     var date = DateTime.now();
     result.date = date;
     result.score = score;
-
-    print(result.toMap());
-    service.insertIfActive(result, date);
+    SettingsService().getTestTimeBlocking().then((value) {
+      if (value) {
+        service.insertIfActive(result, date);
+      } else {
+        service.insert(result);
+      }
+    });
     Navigator.of(context).pop();
   }
 

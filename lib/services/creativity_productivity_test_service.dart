@@ -75,7 +75,7 @@ class CreativityProductivityTestService
     var surveys = await getAll();
     surveys.sort((a, b) => a.date.compareTo(b.date));
     return surveys.length == 0 ||
-        date.subtract(testInterval).compareTo(surveys.last.date) > 0;
+        date.subtract(CreativityProductivityTest.testInterval).compareTo(surveys.last.date) > 0;
   }
 
   @override
@@ -87,7 +87,7 @@ class CreativityProductivityTestService
     maps.forEach((row) => result.add(CreativityProductivityTest.fromMap(row)));
     result.sort((a, b) => a.date.compareTo(b.date));
     if (result.length == 0 ||
-        date.subtract(testInterval).compareTo(result.last.date) > 0) {
+        date.subtract(CreativityProductivityTest.testInterval).compareTo(result.last.date) > 0) {
       test.id = await db.insert(tableCreativityProductivityTest, test.toMap());
     }
     return test;

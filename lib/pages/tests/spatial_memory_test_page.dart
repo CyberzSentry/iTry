@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/services/ads_service.dart';
+import 'package:itry/services/settings_service.dart';
 import 'package:itry/services/spatial_memory_test_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:itry/database/models/spatial_memory_test.dart';
@@ -130,7 +131,14 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
     var date = DateTime.now();
     test.date = date;
     test.score = calculateScore(_seriesScore);
-    service.insertIfActive(test, date);
+    SettingsService().getTestTimeBlocking().then((value) {
+      if (value) {
+        service.insertIfActive(test, date);
+      } else {
+        service.insert(test);
+      }
+    });
+
     Navigator.of(context).pop();
   }
 

@@ -15,13 +15,12 @@ final String fingerTappingTestCreateString = '''
 
 final int maxScore = 200;
 
-final Duration testInterval = Duration(days: 1);
-
 class FingerTappingTest{
   int id;
   int scoreDominant;
   int scoreNonDominant;
   DateTime date;
+  static final Duration testInterval = Duration(days: 1);
 
   double get percentageScore {
     return (scoreDominant + scoreNonDominant) / (maxScore *2);

@@ -4,6 +4,7 @@ import 'package:itry/database/models/finger_tapping_test.dart';
 import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
+import 'package:itry/services/settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FingerTappingTestPage extends StatefulWidget {
@@ -127,7 +128,13 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
       testResult.date = date;
       testResult.scoreDominant = _scoreDominant;
       testResult.scoreNonDominant = _scoreNonDominant;
-      service.insertIfActive(testResult, date);
+      SettingsService().getTestTimeBlocking().then((value) {
+      if (value) {
+        service.insertIfActive(testResult, date);
+      } else {
+        service.insert(testResult);
+      }
+    });
       Navigator.of(context).pop();
     }
   }

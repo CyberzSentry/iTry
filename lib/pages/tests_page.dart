@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:itry/database/models/creativity_productivity_survey.dart';
+import 'package:itry/database/models/creativity_productivity_test.dart';
+import 'package:itry/database/models/finger_tapping_test.dart';
+import 'package:itry/database/models/spatial_memory_test.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
@@ -8,6 +12,7 @@ import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
+import 'package:itry/services/settings_service.dart';
 import 'package:itry/services/spatial_memory_test_service.dart';
 import 'package:itry/services/test_service_interface.dart';
 import 'package:tuple/tuple.dart';
@@ -22,25 +27,35 @@ class TestsPage extends StatefulWidget {
 }
 
 class _TestsPageState extends State<TestsPage> {
-  List<Tuple3<TestServiceInterface, String, String>> _tests = [
-    Tuple3<TestServiceInterface, String, String>(FingerTappingTestService(),
-        FingerTappingTestPage.title, FingerTappingTestPage.routeName),
-    Tuple3<TestServiceInterface, String, String>(
+  List<Tuple4<TestServiceInterface, String, String, Duration>> _tests = [
+    Tuple4<TestServiceInterface, String, String, Duration>(
+        FingerTappingTestService(),
+        FingerTappingTestPage.title,
+        FingerTappingTestPage.routeName,
+        FingerTappingTest.testInterval),
+    Tuple4<TestServiceInterface, String, String, Duration>(
         CreativityProductivitySurveyService(),
         CreativityProductivitySurveyPage.title,
-        CreativityProductivitySurveyPage.routeName),
-    Tuple3<TestServiceInterface, String, String>(
+        CreativityProductivitySurveyPage.routeName,
+        CreativityProductivitySurvey.testInterval),
+    Tuple4<TestServiceInterface, String, String, Duration>(
         CreativityProductivityTestService(),
         CreativityProductivityTestPage.title,
-        CreativityProductivityTestPage.routeName),
-    Tuple3<TestServiceInterface, String, String>(SpatialMemoryTestService(),
-        SpatialMemoryTestPage.title, SpatialMemoryTestPage.routeName),
+        CreativityProductivityTestPage.routeName,
+        CreativityProductivityTest.testInterval),
+    Tuple4<TestServiceInterface, String, String, Duration>(
+        SpatialMemoryTestService(),
+        SpatialMemoryTestPage.title,
+        SpatialMemoryTestPage.routeName,
+        SpatialMemoryTest.testInterval),
   ];
 
   Future<List<Widget>> _buildTestsList() async {
     var result = <Widget>[];
 
     var currDate = DateTime.now();
+
+    var settings = await SettingsService().settings;
 
     for (var test in _tests) {
       if (await test.item1.isActive(currDate)) {
@@ -50,9 +65,8 @@ class _TestsPageState extends State<TestsPage> {
             child: ListTile(
               title: Text(test.item2),
               trailing: null,
-              onTap: () => Navigator.of(context)
-                  .pushNamed(test.item3)
-                  .whenComplete(() {
+              onTap: () =>
+                  Navigator.of(context).pushNamed(test.item3).whenComplete(() {
                 AdsService().showBanner();
               }),
             ),
@@ -62,21 +76,72 @@ class _TestsPageState extends State<TestsPage> {
           ),
         );
       } else {
-        result.add(
-          Container(
-            child: ListTile(
-              title: Text(test.item2),
-              trailing: Icon(
-                Icons.check,
-                color: Colors.blue,
-              ),
-              onTap: null,
-            ),
-            decoration: BoxDecoration(
-                // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
+        if (settings.testTimeBlocking) {
+          result.add(
+            Container(
+              child: ListTile(
+                title: Text(test.item2),
+                trailing: Icon(
+                  Icons.check,
+                  color: Colors.blue,
                 ),
-          ),
-        );
+                onTap: () => showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Test already done'),
+                        content: Text(
+                          'You already did this test in the past ' +
+                              test.item4.inHours.toString() +
+                              ' hours. You can continue but the results wont be saved to the database.\n\nYou can disable \'test intervals\' in the settings tab.',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        actions: <Widget>[
+                          FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              Navigator.of(context)
+                                  .pushNamed(test.item3)
+                                  .whenComplete(() {
+                                AdsService().showBanner();
+                              });
+                            },
+                            child: Text('Continue'),
+                          ),
+                          FlatButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text('Cancel'),
+                          )
+                        ],
+                      );
+                    }),
+              ),
+              decoration: BoxDecoration(
+                  // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
+                  ),
+            ),
+          );
+        } else {
+          result.add(
+            Container(
+              child: ListTile(
+                title: Text(test.item2),
+                trailing: Icon(
+                  Icons.check,
+                  color: Colors.blue,
+                ),
+                onTap: () => Navigator.of(context)
+                    .pushNamed(test.item3)
+                    .whenComplete(() {
+                  AdsService().showBanner();
+                }),
+              ),
+              decoration: BoxDecoration(
+                  // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
+                  ),
+            ),
+          );
+        }
       }
     }
     return result;

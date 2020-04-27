@@ -13,12 +13,11 @@ final String creativityProductivityTestCreateString = '''
 
 final int maxScore = 60;
 
-final Duration testInterval = Duration(days: 1);
-
 class CreativityProductivityTest{
   int id;
   int score;
   DateTime date;
+  static final Duration testInterval = Duration(days: 1);
 
    double get percentageScore {
     return score / maxScore;

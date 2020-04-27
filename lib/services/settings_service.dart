@@ -5,6 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 String notificationsString = 'notificationsSetting';
 bool notificationsDefault = false;
 
+String testTimeBlockingString = 'testTimeBlockingSetting';
+bool testTimeBlockingDefault = true;
+
 class SettingsService {
   SettingsService._() {
     _sharedPreferences = SharedPreferences.getInstance();
@@ -25,6 +28,9 @@ class SettingsService {
     settings.notifications =
         (prefs.getBool(notificationsString) ?? notificationsDefault);
 
+    settings.testTimeBlocking =
+        (prefs.getBool(testTimeBlockingString) ?? testTimeBlockingDefault);
+
     return settings;
   }
 
@@ -34,13 +40,26 @@ class SettingsService {
     });
   }
 
+  set testTimeBlocking(bool value) {
+    _sharedPreferences.then((onValue) {
+      onValue.setBool(testTimeBlockingString, value);
+    });
+  }
+
+  Future<bool> getTestTimeBlocking() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return (prefs.getBool(notificationsString) ?? notificationsDefault);
+  }
+
   resetSettings() {
     _sharedPreferences.then((onValue) {
       onValue.setBool(notificationsString, notificationsDefault);
+      onValue.setBool(testTimeBlockingString, testTimeBlockingDefault);
     });
   }
 }
 
 class Settings {
   bool notifications;
+  bool testTimeBlocking;
 }

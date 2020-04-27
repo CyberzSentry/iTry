@@ -79,7 +79,7 @@ class FingerTappingTestService
     var tests = await getAll();
     tests.sort((a, b) => a.date.compareTo(b.date));
     return tests.length == 0 ||
-        date.subtract(testInterval).compareTo(tests.last.date) > 0;
+        date.subtract(FingerTappingTest.testInterval).compareTo(tests.last.date) > 0;
   }
 
   @override
@@ -91,7 +91,7 @@ class FingerTappingTestService
     maps.forEach((row) => result.add(FingerTappingTest.fromMap(row)));
     result.sort((a, b) => a.date.compareTo(b.date));
     if (result.length == 0 ||
-        date.subtract(testInterval).compareTo(result.last.date) > 0) {
+        date.subtract(FingerTappingTest.testInterval).compareTo(result.last.date) > 0) {
       test.id = await db.insert(tableFingerTappingTests, test.toMap());
     }
     return test;

@@ -13,7 +13,7 @@ final String spatialMemoryTestCreateString = '''
 
 final int maxScore = 2 * series.length;
 
-final Duration testInterval = Duration(days: 1);
+
 
 int calculateScore(List<int> goodAnswers){
   int score = 0;
@@ -39,6 +39,7 @@ class SpatialMemoryTest{
   int id;
   int score;
   DateTime date;
+  static final Duration testInterval = Duration(days: 1);
 
    double get percentageScore {
     return score / maxScore;

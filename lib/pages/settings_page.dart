@@ -75,6 +75,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     service.notifications = value;
                   }),
                 ),
+                SwitchListTile(
+                  title: Text('Apply test intervals'),
+                  value: _settings.testTimeBlocking,
+                  onChanged: (value) => setState(() {
+                    service.testTimeBlocking = value;
+                  }),
+                ),
                 ListTile(
                   title: Text('Reset application'),
                   onTap: _resetApplication,

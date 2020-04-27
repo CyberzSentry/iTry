@@ -74,7 +74,7 @@ class SpatialMemoryTestService
     var tests = await getAll();
     tests.sort((a, b) => a.date.compareTo(b.date));
     return tests.length == 0 ||
-        date.subtract(testInterval).compareTo(tests.last.date) > 0;
+        date.subtract(SpatialMemoryTest.testInterval).compareTo(tests.last.date) > 0;
   }
 
   @override
@@ -86,7 +86,7 @@ class SpatialMemoryTestService
     maps.forEach((row) => result.add(SpatialMemoryTest.fromMap(row)));
     result.sort((a, b) => a.date.compareTo(b.date));
     if (result.length == 0 ||
-        date.subtract(testInterval).compareTo(result.last.date) > 0) {
+        date.subtract(SpatialMemoryTest.testInterval).compareTo(result.last.date) > 0) {
       test.id = await db.insert(tableSpatialMemoryTests, test.toMap());
     }
     return test;

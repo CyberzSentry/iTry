@@ -14,8 +14,6 @@ final String creativityProductivitySurveyCreateString = '''
 
 final int maxScore = 12;
 
-final Duration testInterval = Duration(days: 1);
-
 final questionsMultiAns = <String>[
   'Have you been creative this past week?',
   'Have you been contemplative this past week?',
@@ -46,6 +44,7 @@ class CreativityProductivitySurvey {
   int id;
   int score;
   DateTime date;
+  static final Duration testInterval = Duration(days: 1);
 
   double get percentageScore {
     return score / maxScore;
