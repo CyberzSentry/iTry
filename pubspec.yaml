@@ -31,6 +31,7 @@ dependencies:
   random_words: ^1.0.2
   permission_handler: ^5.0.0+hotfix.4
   firebase_core: ^0.4.0+9
+  tuple: 1.0.3
 
 dev_dependencies:
   flutter_test:

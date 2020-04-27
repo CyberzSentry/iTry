@@ -1,7 +1,8 @@
 import 'package:itry/database/database_provider.dart';
 import 'package:itry/database/models/spatial_memory_test.dart';
+import 'package:itry/services/test_service_interface.dart';
 
-class SpatialMemoryTestService {
+class SpatialMemoryTestService implements TestServiceInterface<SpatialMemoryTest> {
 
   SpatialMemoryTestService._();
 

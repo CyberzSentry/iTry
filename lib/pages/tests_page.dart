@@ -9,6 +9,8 @@ import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
 import 'package:itry/services/spatial_memory_test_service.dart';
+import 'package:itry/services/test_service_interface.dart';
+import 'package:tuple/tuple.dart';
 
 class TestsPage extends StatefulWidget {
   static const String routeName = '/tests';
@@ -20,121 +22,63 @@ class TestsPage extends StatefulWidget {
 }
 
 class _TestsPageState extends State<TestsPage> {
+  List<Tuple3<TestServiceInterface, String, String>> _tests = [
+    Tuple3<TestServiceInterface, String, String>(FingerTappingTestService(),
+        FingerTappingTestPage.title, FingerTappingTestPage.routeName),
+    Tuple3<TestServiceInterface, String, String>(
+        CreativityProductivitySurveyService(),
+        CreativityProductivitySurveyPage.title,
+        CreativityProductivitySurveyPage.routeName),
+    Tuple3<TestServiceInterface, String, String>(
+        CreativityProductivityTestService(),
+        CreativityProductivityTestPage.title,
+        CreativityProductivityTestPage.routeName),
+    Tuple3<TestServiceInterface, String, String>(SpatialMemoryTestService(),
+        SpatialMemoryTestPage.title, SpatialMemoryTestPage.routeName),
+  ];
+
   Future<List<Widget>> _buildTestsList() async {
     var result = <Widget>[];
 
     var currDate = DateTime.now();
 
-    if (await FingerTappingTestService().isActive(currDate)) {
-      result.insert(
-        0,
-        Container(
-          child: ListTile(
-            title: Text(FingerTappingTestPage.title),
-            trailing: null,
-            onTap: () => Navigator.of(context)
-                .pushNamed(FingerTappingTestPage.routeName).whenComplete((){AdsService().showBanner();}),
-          ),
-          decoration: BoxDecoration(
-              // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
-              ),
-        ),
-      );
-    } else {
-      result.add(
-        Container(
-          child: ListTile(
-            title: Text(FingerTappingTestPage.title),
-            trailing: Icon(
-              Icons.check,
-              color: Colors.blue,
+    for (var test in _tests) {
+      if (await test.item1.isActive(currDate)) {
+        result.insert(
+          0,
+          Container(
+            child: ListTile(
+              title: Text(test.item2),
+              trailing: null,
+              onTap: () => Navigator.of(context)
+                  .pushNamed(test.item3)
+                  .whenComplete(() {
+                AdsService().showBanner();
+              }),
             ),
-            onTap: null,
+            decoration: BoxDecoration(
+                // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
+                ),
           ),
-          decoration: BoxDecoration(
-              // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
+        );
+      } else {
+        result.add(
+          Container(
+            child: ListTile(
+              title: Text(test.item2),
+              trailing: Icon(
+                Icons.check,
+                color: Colors.blue,
               ),
-        ),
-      );
-    }
-
-    if (await CreativityProductivitySurveyService().isActive(currDate)) {
-      result.insert(
-        0,
-        Container(
-          child: ListTile(
-            title: Text(CreativityProductivitySurveyPage.title),
-            trailing: null,
-            onTap: () => Navigator.of(context)
-                .pushNamed(CreativityProductivitySurveyPage.routeName).whenComplete((){AdsService().showBanner();}),
-          ),
-          decoration: BoxDecoration(
-              //border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
-              ),
-        ),
-      );
-    } else {
-      result.add(
-        Container(
-          child: ListTile(
-            title: Text(CreativityProductivitySurveyPage.title),
-            trailing: Icon(
-              Icons.check,
-              color: Colors.blue,
+              onTap: null,
             ),
-            onTap: null,
+            decoration: BoxDecoration(
+                // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
+                ),
           ),
-          decoration: BoxDecoration(
-              //border: Border(bottom: BorderSide(width: 0.3, color: Colors.blueAccent)),
-              ),
-        ),
-      );
+        );
+      }
     }
-
-    if (await CreativityProductivityTestService().isActive(currDate)) {
-      result.add(
-        ListTile(
-          title: Text(CreativityProductivityTestPage.title),
-          trailing: null,
-          onTap: () => Navigator.of(context)
-              .pushNamed(CreativityProductivityTestPage.routeName).whenComplete((){AdsService().showBanner();}),
-        ),
-      );
-    } else {
-      result.add(
-        ListTile(
-          title: Text(CreativityProductivityTestPage.title),
-          trailing: Icon(
-            Icons.check,
-            color: Colors.blue,
-          ),
-          onTap: null,
-        ),
-      );
-    }
-
-    if (await SpatialMemoryTestService().isActive(currDate)) {
-      result.add(
-        ListTile(
-          title: Text(SpatialMemoryTestPage.title),
-          trailing: null,
-          onTap: () =>
-              Navigator.of(context).pushNamed(SpatialMemoryTestPage.routeName).whenComplete((){AdsService().showBanner();}),
-        ),
-      );
-    } else {
-      result.add(
-        ListTile(
-          title: Text(SpatialMemoryTestPage.title),
-          trailing: Icon(
-            Icons.check,
-            color: Colors.blue,
-          ),
-          onTap: null,
-        ),
-      );
-    }
-
     return result;
   }
 

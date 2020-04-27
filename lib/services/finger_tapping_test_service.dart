@@ -1,7 +1,8 @@
 import 'package:itry/database/database_provider.dart';
 import 'package:itry/database/models/finger_tapping_test.dart';
+import 'package:itry/services/test_service_interface.dart';
 
-class FingerTappingTestService {
+class FingerTappingTestService implements TestServiceInterface<FingerTappingTest> {
 
   FingerTappingTestService._();
 
