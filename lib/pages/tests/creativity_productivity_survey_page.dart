@@ -231,9 +231,7 @@ class _CreativityProductivitySurveyPageState
   @override
   void initState() {
     super.initState();
-    new Timer(new Duration(milliseconds: 10), () {
-      _checkFirstSeen();
-    });
+    _checkFirstSeen();
   }
 }
 

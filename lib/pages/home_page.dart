@@ -19,7 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   BannerAd _bannerAd;
 
   @override
@@ -43,64 +42,124 @@ class _HomePageState extends State<HomePage> {
         title: Text(HomePage.title),
       ),
       drawer: DrawerFragment(),
-      body: Container(
-        margin: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    'What is iTry?',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.fromLTRB(20, 20, 20, 60),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text(
+                      'What is iTry?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              children: <Widget>[
-                Flexible(
-                  child: const Text(
-                    'This application is created for people who aim to improve themselves. It gives you the posibility to check how your new workout routine or different supplements impact your everyday performance.',
-                    textAlign: TextAlign.justify,
-                  ),
+                  ],
                 ),
-              ],
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 10, bottom: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    'How it works?',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8, bottom: 8),
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: const Text(
+                        'This application is created for people who aim to improve themselves. It gives you the posibility to check how your new workout routine or different supplements impact your everyday performance.',
+                        textAlign: TextAlign.justify,
+                      ),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              children: <Widget>[
-                Flexible(
-                  child: const Text(
-                    'Through regular participation in series of questionnaires and cognitive tests you will be able to monitor your results in the fields of cognitive functions such as; visual and hearing abilities, hand coordination, working of short memory, information processing, as well as in the psychological areas of overall well being, creativity and productivity.',
-                    textAlign: TextAlign.justify,
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ],
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10, bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text(
+                      'How it works?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8, bottom: 8),
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: const Text(
+                        'Through regular participation in the series of questionnaires and cognitive tests you will be able to monitor your results in the field of cognitive functions, as well as in the psychological area.',
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8, bottom: 8),
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: const Text(
+                        'If you are ready to begin your journey through development go to the tab “Tests”. There you can find different challenges aimed to assess your visual and hearing abilities, hand coordination, working of short memory, information processing, overall well being, creativity and productivity. To ensure the trustworthy results, complete the tests providing honest answers in compliance with your best beliefs.',
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8, bottom: 8),
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: const Text(
+                        'To see the descriptions click on each test and begin whenever you will be ready. For the surveys you can correct the answers by going to previous questions or retaking the test after finishing. The tests needed to be repeated as shown below, but don’t worry! You will get a notification every time the test will be ready to do again. ',
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8, bottom: 8),
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: const Text(
+                        'Frequency of the tests:\n\nFinger tapping performance test - once every two weeks,\nSpatial memory span test - once every two weeks,\nCreativity and productivity survey - once a week,\nCreativity test - once a week,\nDepression, anxiety and stress survey - once a week.',
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 8, bottom: 8),
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: const Text(
+                        'Once you accomplish the first tests you can go to the “Results” tab. In there you can change the date range, you are interested to evaluate, as well as mark tests from which you want to see the results. All the data is stored only on your device. \n\nAny thoughts or questions? \n\nDo not hesitate to contact us via:\nconnectitry@gmail.com',
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

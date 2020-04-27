@@ -279,9 +279,7 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
   @override
   void initState() {
     super.initState();
-    new Timer(new Duration(milliseconds: 10), () {
-      _checkFirstSeen();
-    });
+    _checkFirstSeen();
   }
 
   @override
@@ -298,7 +296,15 @@ class SpatialMemoryTestDescriptionPage extends StatelessWidget {
     return TestDescriptionFragment(
       children: <Widget>[
         Text(
-          "description",
+          "Test for spatial visual memory is based on the Corsi Block Test. Its aimed to assess work of the short term memory. ",
+          textAlign: TextAlign.justify,
+        ),
+        Text(
+          "Remember the sequence of objects shown in the grid below and repeat the sequence. ",
+          textAlign: TextAlign.justify,
+        ),
+        Text(
+          "You can access this info during the test by tapping info icon in the upper left corner. ",
           textAlign: TextAlign.justify,
         ),
       ],

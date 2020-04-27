@@ -214,9 +214,7 @@ class _CreativityProductivityTestPageState
   @override
   void initState() {
     super.initState();
-    new Timer(new Duration(milliseconds: 10), () {
-      _checkFirstSeen();
-    });
+    _checkFirstSeen();
   }
 
   @override
@@ -230,7 +228,7 @@ class CreativityProductivityTestDescriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TestDescriptionFragment(
-      children: <Widget>[Text("description")],
+      children: <Widget>[Text("This is the test for ability to produce new ideas. During the test you will see a random word, a noun, and your task is to look for words that you associate with the given one. After every word, confirm the answer, and start writing the next one.")],
       title: CreativityProductivityTestPage.title,
     );
   }

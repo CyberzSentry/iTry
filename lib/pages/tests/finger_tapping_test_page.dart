@@ -299,9 +299,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
   @override
   void initState() {
     super.initState();
-    new Timer(new Duration(milliseconds: 10), () {
-      _checkFirstSeen();
-    });
+    _checkFirstSeen();
   }
 
   @override
@@ -317,15 +315,19 @@ class FingerTappingTestDescriptionPage extends StatelessWidget {
     return TestDescriptionFragment(
       children: <Widget>[
         Text(
-          "Finger tapping performance test is a quantitative assessment tool used to evaluate hand skill and coordination. Hand performance can depend on many variables including our emotional and physical health and any factors that impact our nervous system.",
+          "Finger tapping performance test is a quantitative assessment tool used to evaluate hand skill and coordination. Hand performance can depend on many variables including our emotional and physical health and any factors that impact our nervous system. ",
           textAlign: TextAlign.justify,
         ),
         Text(
-          "In this test you are asked to determine your dominant hand and use your index and middle finger to tap alternately two buttons in the period of 15 seconds. For both hands you will receive results in average intertap - interval, tapping speed and overall number of taps.",
+          "In this test you are asked to determine your dominant hand and use your index and middle finger to tap alternately two buttons in the period of 15 seconds. For both hands you will receive results in average intertap - interval, tapping speed and overall number of taps. ",
           textAlign: TextAlign.justify,
         ),
         Text(
           "By completing this test regularly you can measure and evaluate changes in your motor system. ",
+          textAlign: TextAlign.justify,
+        ),
+        Text(
+          "You can access this info during the test by tapping info icon in the upper left corner. ",
           textAlign: TextAlign.justify,
         ),
       ],
