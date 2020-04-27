@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:itry/database/database_provider.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
+import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,8 +44,9 @@ class _SettingsPageState extends State<SettingsPage> {
         });
   }
 
-  void _resetApplicationConfirmed(){
-    service.resetSettings();
+  void _resetApplicationConfirmed() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
     database.resetDatabase();
     setState(() {
       
@@ -86,5 +88,11 @@ class _SettingsPageState extends State<SettingsPage> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    AdsService().showBanner();
+    super.initState();
   }
 }
