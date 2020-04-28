@@ -20,7 +20,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
     _testBase = BaseTestPage<FingerTappingTestService, FingerTappingTest>(service);
   }
 
-  static final double _buttonRadius = 30;
+  static final double _buttonRadius = 40;
   static final int _testTime = 15;
 
   Timer _timer;
@@ -277,6 +277,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
             shape: CircleBorder(),
             padding: EdgeInsets.all(_buttonRadius),
           ),
+          Container(padding: EdgeInsets.all(10),),
           RaisedButton(
             onPressed: _tapRight,
             child: Text('right'),
