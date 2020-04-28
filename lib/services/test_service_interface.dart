@@ -1,18 +1,28 @@
+import 'package:flutter/cupertino.dart';
+
 abstract class TestServiceInterface<T>{
   
-  Future<T> insert(T test);
+  @required
+  Future<T> insert(T test) {return null;}
 
-  Future<T> insertIfActive(T test, DateTime date);
+  @required
+  Future<T> insertIfActive(T test, DateTime date) {return null;}
 
-  Future<T> getSingle(int id);
+  @required
+  Future<T> getSingle(int id) {return null;}
 
-  Future<List<T>> getAll();
+  @required
+  Future<List<T>> getAll() {return null;}
 
-  Future<int> delete(int id);
+  @required
+  Future<int> delete(int id) {return null;}
 
-  Future<int> updateTest(T test);
+  @required
+  Future<int> updateTest(T test) {return null;}
 
-  Future<List<T>> getBetweenDates(DateTime from, DateTime to);
+  @required
+  Future<List<T>> getBetweenDates(DateTime from, DateTime to) {return null;}
 
-  Future<bool> isActive(DateTime date);
+  @required
+  Future<bool> isActive(DateTime date) {return null;}
 }

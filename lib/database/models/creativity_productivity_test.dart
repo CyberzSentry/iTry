@@ -1,3 +1,5 @@
+import 'package:itry/database/models/test_interface.dart';
+
 final String tableCreativityProductivityTest = 'creativityProductivityTests';
 final String columnId = '_id';
 final String columnScore = 'score';
@@ -13,7 +15,7 @@ final String creativityProductivityTestCreateString = '''
 
 final int maxScore = 60;
 
-class CreativityProductivityTest{
+class CreativityProductivityTest implements TestInterface{
   int id;
   int score;
   DateTime date;
@@ -40,5 +42,10 @@ class CreativityProductivityTest{
     id = map[columnId];
     score = map[columnScore];
     date = DateTime.parse(map[columnDate]);
+  }
+
+  @override
+  Duration getTestInterval() {
+    return CreativityProductivityTest.testInterval;
   }
 }

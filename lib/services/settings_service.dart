@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String notificationsString = 'notificationsSetting';
-bool notificationsDefault = false;
+bool notificationsDefault = true;
 
 String testTimeBlockingString = 'testTimeBlockingSetting';
 bool testTimeBlockingDefault = true;
@@ -46,7 +46,12 @@ class SettingsService {
     });
   }
 
-  Future<bool> getTestTimeBlocking() async{
+  Future<bool> getTestTimeBlocking() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return (prefs.getBool(notificationsString) ?? notificationsDefault);
+  }
+
+  Future<bool> getNotifications() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return (prefs.getBool(notificationsString) ?? notificationsDefault);
   }

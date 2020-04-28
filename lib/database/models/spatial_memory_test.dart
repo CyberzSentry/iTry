@@ -1,3 +1,5 @@
+import 'package:itry/database/models/test_interface.dart';
+
 final String tableSpatialMemoryTests = 'spatialMemoryTests';
 final String columnId = '_id';
 final String columnScore = 'score';
@@ -35,10 +37,11 @@ final int enabledMs = 1000;
 final int disabledMs = 1000;
 final double partialScoreStep = 0.5;
 
-class SpatialMemoryTest{
+class SpatialMemoryTest implements TestInterface{
   int id;
   int score;
   DateTime date;
+
   static final Duration testInterval = Duration(days: 1);
 
    double get percentageScore {
@@ -62,5 +65,10 @@ class SpatialMemoryTest{
     id = map[columnId];
     score = map[columnScore];
     date = DateTime.parse(map[columnDate]);
+  }
+
+  @override
+  Duration getTestInterval() {
+    return SpatialMemoryTest.testInterval;
   }
 }

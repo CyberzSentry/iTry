@@ -67,6 +67,7 @@ class _TestsPageState extends State<TestsPage> {
               trailing: null,
               onTap: () =>
                   Navigator.of(context).pushNamed(test.item3).whenComplete(() {
+                setState(() {});
                 AdsService().showBanner();
               }),
             ),
@@ -103,6 +104,7 @@ class _TestsPageState extends State<TestsPage> {
                               Navigator.of(context)
                                   .pushNamed(test.item3)
                                   .whenComplete(() {
+                                setState(() {});
                                 AdsService().showBanner();
                               });
                             },

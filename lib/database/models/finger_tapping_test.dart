@@ -1,3 +1,5 @@
+import 'package:itry/database/models/test_interface.dart';
+
 final String tableFingerTappingTests = 'fingerTappingTests';
 final String columnId = '_id';
 final String columnScoreDominant = 'scoreDominant';
@@ -15,12 +17,12 @@ final String fingerTappingTestCreateString = '''
 
 final int maxScore = 200;
 
-class FingerTappingTest{
+class FingerTappingTest implements TestInterface{
   int id;
   int scoreDominant;
   int scoreNonDominant;
   DateTime date;
-  static final Duration testInterval = Duration(days: 1);
+  static final Duration testInterval = Duration(hours: 1);
 
   double get percentageScore {
     return (scoreDominant + scoreNonDominant) / (maxScore *2);
@@ -45,5 +47,10 @@ class FingerTappingTest{
     scoreDominant = map[columnScoreDominant];
     scoreNonDominant = map[columnScoreNonDominant];
     date = DateTime.parse(map[columnDate]);
+  }
+
+  @override
+  Duration getTestInterval() {
+    return FingerTappingTest.testInterval;
   }
 }

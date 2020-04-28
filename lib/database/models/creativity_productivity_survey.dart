@@ -1,3 +1,5 @@
+import 'package:itry/database/models/test_interface.dart';
+
 final String tableCreativityProductivitySurvey =
     'creativityProductivitySurveys';
 final String columnId = '_id';
@@ -12,7 +14,7 @@ final String creativityProductivitySurveyCreateString = '''
               )
               ''';
 
-final int maxScore = 12;
+final int maxScore = 18;
 
 final questionsMultiAns = <String>[
   'Have you been creative this past week?',
@@ -37,13 +39,14 @@ int calculateScore(List<int> answers){
   for (var val in answers) {
     sum += val;
   }
-  return sum;
+  return sum + 6;
 }
 
-class CreativityProductivitySurvey {
+class CreativityProductivitySurvey implements TestInterface {
   int id;
   int score;
   DateTime date;
+
   static final Duration testInterval = Duration(days: 1);
 
   double get percentageScore {
@@ -67,5 +70,10 @@ class CreativityProductivitySurvey {
     id = map[columnId];
     score = map[columnScore];
     date = DateTime.parse(map[columnDate]);
+  }
+
+  @override
+  Duration getTestInterval() {
+    return CreativityProductivitySurvey.testInterval;
   }
 }

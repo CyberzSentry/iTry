@@ -3,8 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:itry/fragments/test_description_fragment.dart';
+import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/ads_service.dart';
-import 'package:itry/services/settings_service.dart';
 import 'package:itry/services/spatial_memory_test_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:itry/database/models/spatial_memory_test.dart';
@@ -18,6 +18,10 @@ class SpatialMemoryTestPage extends StatefulWidget {
 }
 
 class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
+  _SpatialMemoryTestPageState(){
+    _testBase = BaseTestPage<SpatialMemoryTestService, SpatialMemoryTest>(service);
+  }
+
   static final List<int> _series = series;
   final int _lightedOnTapMs = 750;
   int _lighted = -1;
@@ -31,6 +35,7 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
   SpatialMemoryTestService service = SpatialMemoryTestService();
   Timer _displayTimer;
   Timer _displayOffsetTimer;
+  BaseTestPage<SpatialMemoryTestService, SpatialMemoryTest> _testBase;
 
   Future _checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -131,13 +136,7 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
     var date = DateTime.now();
     test.date = date;
     test.score = calculateScore(_seriesScore);
-    SettingsService().getTestTimeBlocking().then((value) {
-      if (value) {
-        service.insertIfActive(test, date);
-      } else {
-        service.insert(test);
-      }
-    });
+    _testBase.commitResult(test);
 
     Navigator.of(context).pop();
   }

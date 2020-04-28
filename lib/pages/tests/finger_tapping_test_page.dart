@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:itry/database/models/finger_tapping_test.dart';
 import 'package:itry/fragments/test_description_fragment.dart';
+import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
-import 'package:itry/services/settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FingerTappingTestPage extends StatefulWidget {
@@ -16,6 +16,10 @@ class FingerTappingTestPage extends StatefulWidget {
 }
 
 class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
+  _FingerTappingTestPageState(){
+    _testBase = BaseTestPage<FingerTappingTestService, FingerTappingTest>(service);
+  }
+
   static final double _buttonRadius = 30;
   static final int _testTime = 15;
 
@@ -29,6 +33,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
   bool _activeButtons = false;
   bool _dominant = true;
   FingerTappingTestService service = FingerTappingTestService();
+  BaseTestPage<FingerTappingTestService, FingerTappingTest> _testBase;
 
   void _startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -128,13 +133,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
       testResult.date = date;
       testResult.scoreDominant = _scoreDominant;
       testResult.scoreNonDominant = _scoreNonDominant;
-      SettingsService().getTestTimeBlocking().then((value) {
-      if (value) {
-        service.insertIfActive(testResult, date);
-      } else {
-        service.insert(testResult);
-      }
-    });
+      _testBase.commitResult(testResult);
       Navigator.of(context).pop();
     }
   }
