@@ -12,16 +12,14 @@ class BaseTestPage<T extends TestServiceInterface, S extends TestInterface>{
 
   T _testService;
 
-  void commitResult(S result){
-    SettingsService().getTestTimeBlocking().then((value) async {
-      if (value) {
-        if(await _testService.isActive(result.date)){
-          _testService.insert(result);
+  Future<void> commitResult(S result) async{
+    if(await SettingsService().getTestTimeBlocking()){
+      if(await _testService.isActive(result.date)){
+          await _testService.insert(result);
           NotificationsService().scheduleTestNotification(result.getTestInterval());
-        }
-      } else {
-        _testService.insert(result);
       }
-    });
+    }else{
+      await _testService.insert(result);
+    }
   }
 }

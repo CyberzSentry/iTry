@@ -115,7 +115,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
     }
   }
 
-  void _acceptResult() {
+  void _acceptResult() async {
     if (_dominant) {
       setState(() {
         _dominant = false;
@@ -133,7 +133,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
       testResult.date = date;
       testResult.scoreDominant = _scoreDominant;
       testResult.scoreNonDominant = _scoreNonDominant;
-      _testBase.commitResult(testResult);
+      await _testBase.commitResult(testResult);
       Navigator.of(context).pop();
     }
   }

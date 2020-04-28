@@ -72,14 +72,15 @@ class _CreativityProductivitySurveyPageState
     });
   }
 
-  void _confirm() {
+  void _confirm() async {
     var score = calculateScore(_answers);
 
     var result = CreativityProductivitySurvey();
     var date = DateTime.now();
     result.date = date;
     result.score = score;
-    _testBase.commitResult(result);
+    await _testBase.commitResult(result);
+    
     Navigator.of(context).pop();
   }
 

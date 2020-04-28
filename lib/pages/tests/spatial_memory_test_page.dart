@@ -131,12 +131,12 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
     });
   }
 
-  void _acceptResult() {
+  void _acceptResult() async {
     var test = SpatialMemoryTest();
     var date = DateTime.now();
     test.date = date;
     test.score = calculateScore(_seriesScore);
-    _testBase.commitResult(test);
+    await _testBase.commitResult(test);
 
     Navigator.of(context).pop();
   }

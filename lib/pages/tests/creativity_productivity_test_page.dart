@@ -67,13 +67,13 @@ class _CreativityProductivityTestPageState
     });
   }
 
-  void _acceptResult() {
+  void _acceptResult() async{
     print('$_score');
     var result = CreativityProductivityTest();
     var date = DateTime.now();
     result.score = _score;
     result.date = date;
-    _testBase.commitResult(result);
+    await _testBase.commitResult(result);
     Navigator.of(context).pop();
   }
 
