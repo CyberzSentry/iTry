@@ -42,7 +42,7 @@ class SpatialMemoryTest implements TestInterface{
   int score;
   DateTime date;
 
-  static final Duration testInterval = Duration(days: 1);
+  static final Duration testInterval = Duration(days: 3);
 
    double get percentageScore {
     return score / maxScore;

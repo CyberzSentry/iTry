@@ -47,7 +47,7 @@ class CreativityProductivitySurvey implements TestInterface {
   int score;
   DateTime date;
 
-  static final Duration testInterval = Duration(days: 1);
+  static final Duration testInterval = Duration(days: 7);
 
   double get percentageScore {
     return score / maxScore;
