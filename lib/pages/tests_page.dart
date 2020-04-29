@@ -93,8 +93,8 @@ class _TestsPageState extends State<TestsPage> {
                         title: Text('Test already done'),
                         content: Text(
                           'You already did this test in the past ' +
-                              test.item4.inHours.toString() +
-                              ' hours. You can continue but the results wont be saved to the database.\n\nYou can disable \'test intervals\' in the settings tab.',
+                              test.item4.inDays.toString() +
+                              ' days. You can continue but the results wont be saved to the database.\n\nYou can disable \'test intervals\' in the settings tab.',
                           style: TextStyle(fontSize: 14),
                         ),
                         actions: <Widget>[
