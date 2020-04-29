@@ -29,6 +29,13 @@ class NotificationsService {
   Future selectNotification(String payload) async {
     if (payload != null) {
       print('notification payload: ' + payload);
+      switch (payload) {
+        case "tests":
+          //Navigator.pushReplacementNamed(,TestsPage.routeName);
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -78,7 +85,8 @@ class NotificationsService {
             'You can check it in the \'tests\' tab.',
             scheduledNotificationDateTime,
             platformChannelSpecifics,
-            androidAllowWhileIdle: true);
+            androidAllowWhileIdle: true,
+            payload: "tests");
       }
     }
   }
@@ -102,7 +110,8 @@ class NotificationsService {
             'You can check it in the \'tests\' tab.',
             scheduledNotificationDateTime,
             platformChannelSpecifics,
-            androidAllowWhileIdle: true);
+            androidAllowWhileIdle: true,
+            payload: "tests");
       }
     }
   }

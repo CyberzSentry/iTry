@@ -1,6 +1,11 @@
 import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:flutter/material.dart';
+import 'package:itry/database/models/finger_tapping_test.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
+import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
+import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
+import 'package:itry/pages/tests/finger_tapping_test_page.dart';
+import 'package:itry/pages/tests/spatial_memory_test_page.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
@@ -215,7 +220,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       onChanged: (val) => setState(() {
                         _enabledDataTypes[0] = val;
                       }),
-                      title: Text('Dexterity'),
+                      title: Text(FingerTappingTestPage.title),
                       activeColor: Colors.blue,
                     ),
                     SwitchListTile(
@@ -223,7 +228,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       onChanged: (val) => setState(() {
                         _enabledDataTypes[1] = val;
                       }),
-                      title: Text('Creativity productivity survey'),
+                      title: Text(CreativityProductivitySurveyPage.title),
                       activeColor: Colors.purple,
                     ),
                     SwitchListTile(
@@ -231,7 +236,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       onChanged: (val) => setState(() {
                         _enabledDataTypes[2] = val;
                       }),
-                      title: Text('Creativity productivity test'),
+                      title: Text(CreativityProductivityTestPage.title),
                       activeColor: Colors.red,
                     ),
                     SwitchListTile(
@@ -239,7 +244,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       onChanged: (val) => setState(() {
                         _enabledDataTypes[3] = val;
                       }),
-                      title: Text('Spatial memory test'),
+                      title: Text(SpatialMemoryTestPage.title),
                       activeColor: Colors.lime,
                     ),
                     ListTile(),
