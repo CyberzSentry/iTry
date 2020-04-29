@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CreativityProductivityTestPage extends StatefulWidget {
   static final String routeName = '/creativityProductivityTest';
-  static final String title = "Creativity and productivity test";
+  static final String title = "Creativity test";
 
   @override
   _CreativityProductivityTestPageState createState() =>
@@ -32,11 +32,15 @@ class _CreativityProductivityTestPageState
   String _randomWord = "The word will appear here.";
   int _score = 0;
 
-  BaseTestPage<CreativityProductivityTestService, CreativityProductivityTest> _testBase;
+  BaseTestPage<CreativityProductivityTestService, CreativityProductivityTest>
+      _testBase;
 
-  _CreativityProductivityTestPageState(){
-    _testBase = BaseTestPage<CreativityProductivityTestService, CreativityProductivityTest>(service);
+  _CreativityProductivityTestPageState() {
+    _testBase = BaseTestPage<CreativityProductivityTestService,
+        CreativityProductivityTest>(service);
   }
+
+  List<String> _answers = <String>[];
 
   void _start() {
     if (_started == false) {
@@ -49,9 +53,14 @@ class _CreativityProductivityTestPageState
   }
 
   void _next(String value) {
+    if (value.length > 0) {
+      setState(() {
+        _answers.insert(0, value);
+      });
+      _controller.clear();
+      _score += 1;
+    }
     _focusNode.requestFocus();
-    _controller.clear();
-    _score += 1;
   }
 
   void _startTimer() {
@@ -67,7 +76,7 @@ class _CreativityProductivityTestPageState
     });
   }
 
-  void _acceptResult() async{
+  void _acceptResult() async {
     print('$_score');
     var result = CreativityProductivityTest();
     var date = DateTime.now();
@@ -83,6 +92,7 @@ class _CreativityProductivityTestPageState
       _time = _testTime;
       _started = false;
       _timeOut = false;
+      _answers = <String>[];
       _score = 0;
     });
   }
@@ -109,7 +119,7 @@ class _CreativityProductivityTestPageState
         title: Text(CreativityProductivityTestPage.title),
       ),
       body: Container(
-        margin: EdgeInsets.fromLTRB(20, 40, 20, 40),
+        margin: EdgeInsets.fromLTRB(20, 40, 20, 0),
         child: _timeOut ? _confirmationColumn() : _testColumn(),
       ),
     );
@@ -154,8 +164,8 @@ class _CreativityProductivityTestPageState
               focusNode: _focusNode,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: _started ? '' : 'Tap here to start'),
+                border: InputBorder.none,
+              ),
               onTap: _start,
               onChanged: (text) {
                 print("First text field: $text");
@@ -164,6 +174,33 @@ class _CreativityProductivityTestPageState
             ))
           ],
         ),
+        _started
+            ? Expanded(
+                child: ListView.builder(
+                  itemCount: _answers.length,
+                  itemBuilder: (ctxt, index) {
+                    return ListTile(
+                      title: Text(
+                        _answers[index],
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  },
+                ),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  MaterialButton(
+                    onPressed: () {
+                      _start();
+                      _focusNode.requestFocus();
+                    },
+                    child: Text('Start'),
+                    color: Colors.green,
+                  )
+                ],
+              )
       ],
     );
   }
@@ -201,20 +238,23 @@ class _CreativityProductivityTestPageState
             )
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            MaterialButton(
-              color: Colors.green,
-              onPressed: _acceptResult,
-              child: Text('Accept'),
-            ),
-            MaterialButton(
-              color: Colors.green,
-              onPressed: _retakeTest,
-              child: Text('Retake'),
-            ),
-          ],
+        Container(
+          padding: EdgeInsets.only(bottom: 40),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              MaterialButton(
+                color: Colors.green,
+                onPressed: _acceptResult,
+                child: Text('Accept'),
+              ),
+              MaterialButton(
+                color: Colors.green,
+                onPressed: _retakeTest,
+                child: Text('Retake'),
+              ),
+            ],
+          ),
         )
       ],
     );
@@ -238,7 +278,10 @@ class CreativityProductivityTestDescriptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TestDescriptionFragment(
-      children: <Widget>[Text("This is the test for ability to produce new ideas. During the test you will see a random word, a noun, and your task is to look for words that you associate with the given one. After every word, confirm the answer, and start writing the next one.")],
+      children: <Widget>[
+        Text(
+            "This is the test for ability to produce new ideas. During the test you will see a random word, a noun, and your task is to look for words that you associate with the given one. After every word, confirm the answer, and start writing the next one.")
+      ],
       title: CreativityProductivityTestPage.title,
     );
   }
