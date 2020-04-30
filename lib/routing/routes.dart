@@ -9,7 +9,7 @@ import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/spatial_memory_test_page.dart';
 import 'package:itry/pages/tests_page.dart';
 
- var routes = <String, WidgetBuilder>{
+  var routes = <String, WidgetBuilder>{
   HomePage.routeName : (context) => HomePage(),
   ResultsPage.routeName : (context) => ResultsPage(),
   SettingsPage.routeName : (context) => SettingsPage(),
@@ -19,4 +19,5 @@ import 'package:itry/pages/tests_page.dart';
   CreativityProductivitySurveyPage.routeName : (context) => CreativityProductivitySurveyPage(),
   CreativityProductivityTestPage.routeName : (context) => CreativityProductivityTestPage(),
   SpatialMemoryTestPage.routeName : (context) => SpatialMemoryTestPage(),
+ // DepressionSurveyPage.routeName : (context) => DepressionSurveyPage(),
 };
