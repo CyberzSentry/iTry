@@ -8,6 +8,7 @@ import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
 import 'package:itry/pages/tests/depression_survey_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/spatial_memory_test_page.dart';
+import 'package:itry/pages/tests/stress_survey_page.dart';
 import 'package:itry/pages/tests_page.dart';
 
   var routes = <String, WidgetBuilder>{
@@ -21,4 +22,5 @@ import 'package:itry/pages/tests_page.dart';
   CreativityProductivityTestPage.routeName : (context) => CreativityProductivityTestPage(),
   SpatialMemoryTestPage.routeName : (context) => SpatialMemoryTestPage(),
   DepressionSurveyPage.routeName : (context) => DepressionSurveyPage(),
+  StressSurveyPage.routeName : (context) => StressSurveyPage(),
 };

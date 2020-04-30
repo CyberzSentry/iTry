@@ -3,6 +3,7 @@ import 'package:itry/database/models/depression_survey.dart';
 import 'package:itry/database/models/finger_tapping_test.dart';
 import 'package:itry/database/models/creativity_productivity_survey.dart';
 import 'package:itry/database/models/spatial_memory_test.dart';
+import 'package:itry/database/models/stress_survey.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -31,7 +32,7 @@ class DatabaseProvider {
   Future<Database> getDatabaseInstance() async {
     var directoryPath = await getDatabasesPath();
     String fullPath = join(directoryPath, _databaseName);
-    return await openDatabase(fullPath, version: 8,
+    return await openDatabase(fullPath, version: 9,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
     );
@@ -44,9 +45,13 @@ class DatabaseProvider {
         await db.execute(creativityProductivityTestCreateString);
         await db.execute(spatialMemoryTestCreateString);
         await db.execute(depressionSurveyCreateString);
+        await db.execute(stressSurveyCreateString);
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if(oldVersion < 9){
+      await db.execute(stressSurveyCreateString);
+    }
     if(oldVersion < 8){
       await db.execute(depressionSurveyCreateString);
     }

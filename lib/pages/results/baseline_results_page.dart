@@ -6,12 +6,14 @@ import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
 import 'package:itry/pages/tests/depression_survey_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/spatial_memory_test_page.dart';
+import 'package:itry/pages/tests/stress_survey_page.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:itry/services/depression_survey_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
 import 'package:itry/services/spatial_memory_test_service.dart';
+import 'package:itry/services/stress_survey_service.dart';
 
 class BaselineResultsPage extends StatefulWidget {
   static const String routeName = '/baselineResults';
@@ -29,14 +31,16 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       CreativityProductivityTestService();
   SpatialMemoryTestService _smtService = SpatialMemoryTestService();
   DepressionSurveyService _dsService = DepressionSurveyService();
+  StressSurveyService _ssService = StressSurveyService();
 
   var _enabledDataTypes = [
     true,
     true,
     true,
     true,
+    true,
     true
-  ]; // finger_tapping, cp_survey, cp_test, spatial_mem, depression_survey
+  ]; // finger_tapping, cp_survey, cp_test, spatial_mem, depression_survey, stress_survey
 
   DateTime _from = DateTime.now().subtract(Duration(days: 30));
   DateTime _to = DateTime.now();
@@ -90,14 +94,25 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     }
     if (_enabledDataTypes[4]) {
       List<GraphDataType> depressionData = <GraphDataType>[];
-      var spatialMemoryListFiltered =
+      var depressionListFiltered =
           await _dsService.getBetweenDates(_from, _to);
-      for (var item in spatialMemoryListFiltered) {
+      for (var item in depressionListFiltered) {
         depressionData.add(GraphDataType(
             item.date.difference(_from).inDays, item.percentageScore));
       }
       depressionData.sort((a, b) => a.day.compareTo(b.day));
       data.depressionSurveyData = depressionData;
+    }
+    if (_enabledDataTypes[5]) {
+      List<GraphDataType> stressData = <GraphDataType>[];
+      var stressListFiltered =
+          await _ssService.getBetweenDates(_from, _to);
+      for (var item in stressListFiltered) {
+        stressData.add(GraphDataType(
+            item.date.difference(_from).inDays, item.percentageScore));
+      }
+      stressData.sort((a, b) => a.day.compareTo(b.day));
+      data.stressSurveyData = stressData;
     }
 
     return data;
@@ -156,6 +171,17 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
             id: 'DepressionSurvey',
             data: data.depressionSurveyData,
             colorFn: (_, __) => chart.MaterialPalette.green.shadeDefault,
+            domainFn: (GraphDataType point, _) => point.day,
+            measureFn: (GraphDataType point, _) => point.result),
+      );
+    }
+
+    if (data.stressSurveyData != null) {
+      seriesList.add(
+        chart.Series(
+            id: 'StressSurvey',
+            data: data.stressSurveyData,
+            colorFn: (_, __) => chart.MaterialPalette.cyan.shadeDefault,
             domainFn: (GraphDataType point, _) => point.day,
             measureFn: (GraphDataType point, _) => point.result),
       );
@@ -280,6 +306,14 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       title: Text(DepressionSurveyPage.title),
                       activeColor: Colors.green,
                     ),
+                    SwitchListTile(
+                      value: _enabledDataTypes[5],
+                      onChanged: (val) => setState(() {
+                        _enabledDataTypes[5] = val;
+                      }),
+                      title: Text(StressSurveyPage.title),
+                      activeColor: Colors.cyan,
+                    ),
                     ListTile(),
                   ],
                 ),
@@ -304,6 +338,7 @@ class GraphData {
   List<GraphDataType> creativityProductivityTestData;
   List<GraphDataType> spatialMemoryTestData;
   List<GraphDataType> depressionSurveyData;
+  List<GraphDataType> stressSurveyData;
 }
 
 class GraphDataType {

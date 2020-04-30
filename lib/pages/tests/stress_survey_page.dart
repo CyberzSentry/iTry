@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:itry/database/models/depression_survey.dart';
+import 'package:itry/database/models/stress_survey.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
-import 'package:itry/services/depression_survey_service.dart';
+import 'package:itry/services/stress_survey_service.dart';
 
-class DepressionSurveyPage extends BaseTestPage {
-  static final String routeName = '/depressionSurvey';
-  static final String title = "Depression survey";
+class StressSurveyPage extends BaseTestPage {
+  static final String routeName = '/stressSurvey';
+  static final String title = "Stress survey";
 
   @override
-  _DepressionSurveyPageState createState() =>
-      _DepressionSurveyPageState();
+  _StressSurveyPageState createState() =>
+      _StressSurveyPageState();
 }
 
-class _DepressionSurveyPageState extends BaseTestState<
-    DepressionSurveyPage,
-    DepressionSurveyService,
-    DepressionSurvey> {
+class _StressSurveyPageState extends BaseTestState<
+    StressSurveyPage,
+    StressSurveyService,
+    StressSurvey> {
   static final _questionsMultiAns = questionsMultiAns;
   static final _possibleAnswers = possibleAnswers;
 
-  DepressionSurveyService service =
-      DepressionSurveyService();
+  StressSurveyService service =
+      StressSurveyService();
 
    var _answers = List<int>.filled(_questionsMultiAns.length, -1);
   int _questionIndex = 0;
@@ -52,7 +52,7 @@ class _DepressionSurveyPageState extends BaseTestState<
   void _confirm() async {
     var score = calculateScore(_answers);
 
-    var result = DepressionSurvey();
+    var result = StressSurvey();
     var date = DateTime.now();
     result.date = date;
     result.score = score;
@@ -213,16 +213,16 @@ class _DepressionSurveyPageState extends BaseTestState<
 
   @override
   String descriptionTitle() {
-    return DepressionSurveyPage.title;
+    return StressSurveyPage.title;
   }
 
   @override
   String route() {
-    return DepressionSurveyPage.routeName;
+    return StressSurveyPage.routeName;
   }
 
   @override
   String title() {
-    return DepressionSurveyPage.title;
+    return StressSurveyPage.title;
   }
 }
