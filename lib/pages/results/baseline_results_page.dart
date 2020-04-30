@@ -1,14 +1,15 @@
 import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:flutter/material.dart';
-import 'package:itry/database/models/finger_tapping_test.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
+import 'package:itry/pages/tests/depression_survey_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/spatial_memory_test_page.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
+import 'package:itry/services/depression_survey_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
 import 'package:itry/services/spatial_memory_test_service.dart';
 
@@ -27,13 +28,15 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
   CreativityProductivityTestService _cptService =
       CreativityProductivityTestService();
   SpatialMemoryTestService _smtService = SpatialMemoryTestService();
+  DepressionSurveyService _dsService = DepressionSurveyService();
 
   var _enabledDataTypes = [
     true,
     true,
     true,
+    true,
     true
-  ]; // finger_tapping, cp_survey, cp_test, spatial_mem
+  ]; // finger_tapping, cp_survey, cp_test, spatial_mem, depression_survey
 
   DateTime _from = DateTime.now().subtract(Duration(days: 30));
   DateTime _to = DateTime.now();
@@ -85,6 +88,17 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       spatialMemoryData.sort((a, b) => a.day.compareTo(b.day));
       data.spatialMemoryTestData = spatialMemoryData;
     }
+    if (_enabledDataTypes[4]) {
+      List<GraphDataType> depressionData = <GraphDataType>[];
+      var spatialMemoryListFiltered =
+          await _dsService.getBetweenDates(_from, _to);
+      for (var item in spatialMemoryListFiltered) {
+        depressionData.add(GraphDataType(
+            item.date.difference(_from).inDays, item.percentageScore));
+      }
+      depressionData.sort((a, b) => a.day.compareTo(b.day));
+      data.depressionSurveyData = depressionData;
+    }
 
     return data;
   }
@@ -131,6 +145,17 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
             id: 'SpatialMemoryTest',
             data: data.spatialMemoryTestData,
             colorFn: (_, __) => chart.MaterialPalette.lime.shadeDefault,
+            domainFn: (GraphDataType point, _) => point.day,
+            measureFn: (GraphDataType point, _) => point.result),
+      );
+    }
+
+    if (data.depressionSurveyData != null) {
+      seriesList.add(
+        chart.Series(
+            id: 'DepressionSurvey',
+            data: data.depressionSurveyData,
+            colorFn: (_, __) => chart.MaterialPalette.green.shadeDefault,
             domainFn: (GraphDataType point, _) => point.day,
             measureFn: (GraphDataType point, _) => point.result),
       );
@@ -247,6 +272,14 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       title: Text(SpatialMemoryTestPage.title),
                       activeColor: Colors.lime,
                     ),
+                    SwitchListTile(
+                      value: _enabledDataTypes[4],
+                      onChanged: (val) => setState(() {
+                        _enabledDataTypes[4] = val;
+                      }),
+                      title: Text(DepressionSurveyPage.title),
+                      activeColor: Colors.green,
+                    ),
                     ListTile(),
                   ],
                 ),
@@ -270,6 +303,7 @@ class GraphData {
   List<GraphDataType> creativityProductivitySurveyData;
   List<GraphDataType> creativityProductivityTestData;
   List<GraphDataType> spatialMemoryTestData;
+  List<GraphDataType> depressionSurveyData;
 }
 
 class GraphDataType {

@@ -6,7 +6,7 @@ const String columnId = '_id';
 const String columnScore = 'score';
 const String columnDate = 'date';
 
-const String creativityProductivitySurveyCreateString = '''
+const String depressionSurveyCreateString = '''
               CREATE TABLE $tableDepressionSurvey (
                 $columnId INTEGER PRIMARY KEY,
                 $columnScore INTEGER NOT NULL,
@@ -14,7 +14,7 @@ const String creativityProductivitySurveyCreateString = '''
               )
               ''';
 
-const int maxScore = 18;
+const int maxScore = 24;
 
 const questionsMultiAns = <String>[
   'How often have you been bothered by feeling down, depressed or hopeless?',
@@ -35,7 +35,11 @@ const possibleAnswers = <String>[
 ];
 
 int calculateScore(List<int> answers){
-  return 0;
+  int sum = maxScore;
+  for(var value in answers){
+    sum -= value;
+  }
+  return sum;
 }
 
 class DepressionSurvey implements TestInterface {

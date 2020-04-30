@@ -29,6 +29,7 @@ class _CreativityProductivitySurveyPageState extends BaseTestState<
 
   void _previous() {
     setState(() {
+      _answers[_questionIndex] = _currAnsw;
       _questionIndex--;
       _currAnsw = _answers[_questionIndex];
     });

@@ -5,6 +5,7 @@ import 'package:itry/pages/results_page.dart';
 import 'package:itry/pages/settings_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
+import 'package:itry/pages/tests/depression_survey_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/spatial_memory_test_page.dart';
 import 'package:itry/pages/tests_page.dart';
@@ -19,5 +20,5 @@ import 'package:itry/pages/tests_page.dart';
   CreativityProductivitySurveyPage.routeName : (context) => CreativityProductivitySurveyPage(),
   CreativityProductivityTestPage.routeName : (context) => CreativityProductivityTestPage(),
   SpatialMemoryTestPage.routeName : (context) => SpatialMemoryTestPage(),
- // DepressionSurveyPage.routeName : (context) => DepressionSurveyPage(),
+  DepressionSurveyPage.routeName : (context) => DepressionSurveyPage(),
 };

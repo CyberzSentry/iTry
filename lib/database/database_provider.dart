@@ -1,4 +1,5 @@
 import 'package:itry/database/models/creativity_productivity_test.dart';
+import 'package:itry/database/models/depression_survey.dart';
 import 'package:itry/database/models/finger_tapping_test.dart';
 import 'package:itry/database/models/creativity_productivity_survey.dart';
 import 'package:itry/database/models/spatial_memory_test.dart';
@@ -30,16 +31,25 @@ class DatabaseProvider {
   Future<Database> getDatabaseInstance() async {
     var directoryPath = await getDatabasesPath();
     String fullPath = join(directoryPath, _databaseName);
-    return await openDatabase(fullPath, version: 6,
-        onCreate: _onCreate
+    return await openDatabase(fullPath, version: 8,
+        onCreate: _onCreate,
+        onUpgrade: _onUpgrade,
     );
   }
 
+  //increment db version when changing
   Future _onCreate(Database db, int version) async {
         await db.execute(fingerTappingTestCreateString);
         await db.execute(creativityProductivitySurveyCreateString);
         await db.execute(creativityProductivityTestCreateString);
         await db.execute(spatialMemoryTestCreateString);
+        await db.execute(depressionSurveyCreateString);
+  }
+
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if(oldVersion < 8){
+      await db.execute(depressionSurveyCreateString);
+    }
   }
 
   Future resetDatabase() async {
