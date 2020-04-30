@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:itry/database/models/creativity_productivity_survey.dart';
-import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
-import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
 
-class CreativityProductivitySurveyPage extends StatefulWidget {
+class CreativityProductivitySurveyPage extends BaseTestPage {
   static final String routeName = '/creativityProductivitySurvey';
   static final String title = "Creativity and productivity survey";
 
@@ -17,38 +13,19 @@ class CreativityProductivitySurveyPage extends StatefulWidget {
       _CreativityProductivitySurveyPageState();
 }
 
-class _CreativityProductivitySurveyPageState
-    extends State<CreativityProductivitySurveyPage> {
+class _CreativityProductivitySurveyPageState extends BaseTestState<
+    CreativityProductivitySurveyPage,
+    CreativityProductivitySurveyService,
+    CreativityProductivitySurvey> {
   static final _questionsMultiAns = questionsMultiAns;
   static final _possibleAnswers = possibleAnswers;
 
   CreativityProductivitySurveyService service =
       CreativityProductivitySurveyService();
 
-  _CreativityProductivitySurveyPageState(){
-    _testBase = BaseTestPage<CreativityProductivitySurveyService, CreativityProductivitySurvey>(service);
-  }
-
-  BaseTestPage<CreativityProductivitySurveyService, CreativityProductivitySurvey> _testBase;
   var _answers = List<int>.filled(_questionsMultiAns.length, -1);
   int _questionIndex = 0;
   int _currAnsw = -1;
-
-  Future _checkFirstSeen() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen =
-        (prefs.getBool('seenCreativityProductivitySurveyPage') ?? false);
-
-    if (_seen == false) {
-      await prefs.setBool('seenCreativityProductivitySurveyPage', true);
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) =>
-              CreativityProductivitySurveyDescriptionPage(),
-        ),
-      );
-    }
-  }
 
   void _previous() {
     setState(() {
@@ -79,8 +56,7 @@ class _CreativityProductivitySurveyPageState
     var date = DateTime.now();
     result.date = date;
     result.score = score;
-    await _testBase.commitResult(result);
-    
+    await commitResult(result);
     Navigator.of(context).pop();
   }
 
@@ -100,11 +76,8 @@ class _CreativityProductivitySurveyPageState
                     Icons.info_outline,
                     color: Colors.grey,
                   ),
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            CreativityProductivitySurveyDescriptionPage()),
-                  ),
+                  onTap: () => showDescription(),
+
                 ),
                 Text((_questionIndex + 1).toString() +
                     '/' +
@@ -225,38 +198,38 @@ class _CreativityProductivitySurveyPageState
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(CreativityProductivitySurveyPage.title),
-      ),
-      body: _questionIndex < _questionsMultiAns.length
-          ? _questionScreen()
-          : _confirmScreen(),
-    );
+  Widget body() {
+    if (_questionIndex < _questionsMultiAns.length) {
+      return _questionScreen();
+    } else {
+      return _confirmScreen();
+    }
   }
 
   @override
-  void initState() {
-    AdsService().hideBanner();
-    _checkFirstSeen();
-    super.initState();
+  String title() {
+    return CreativityProductivitySurveyPage.title;
   }
-}
 
-class CreativityProductivitySurveyDescriptionPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return TestDescriptionFragment(
-      children: <Widget>[
-        Text(
-            "In creative and productivity test you can determine changes in your ability to produce new ideas and challenge tasks.",
-            textAlign: TextAlign.justify),
-        Text(
-            "Using 4-point scale;\n0 - Not at all\n1 - From time to time\n2 - Most of the time\n3 - Nearly all the time",
-            textAlign: TextAlign.justify),
-      ],
-      title: CreativityProductivitySurveyPage.title,
-    );
+  List<Widget> descriptionBody() {
+    return <Widget>[
+      Text(
+          "In creative and productivity test you can determine changes in your ability to produce new ideas and challenge tasks.",
+          textAlign: TextAlign.justify),
+      Text(
+          "Using 4-point scale;\n0 - Not at all\n1 - From time to time\n2 - Most of the time\n3 - Nearly all the time",
+          textAlign: TextAlign.justify),
+    ];
+  }
+
+  @override
+  String descriptionTitle() {
+    return CreativityProductivitySurveyPage.title;
+  }
+
+  @override
+  String route() {
+    return CreativityProductivitySurveyPage.routeName;
   }
 }

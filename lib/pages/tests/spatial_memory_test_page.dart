@@ -2,14 +2,11 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
-import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/spatial_memory_test_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:itry/database/models/spatial_memory_test.dart';
 
-class SpatialMemoryTestPage extends StatefulWidget {
+class SpatialMemoryTestPage extends BaseTestPage {
   static final String routeName = '/spatialMemoryTest';
   static final String title = "Spatial memory test";
 
@@ -17,10 +14,8 @@ class SpatialMemoryTestPage extends StatefulWidget {
   _SpatialMemoryTestPageState createState() => _SpatialMemoryTestPageState();
 }
 
-class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
-  _SpatialMemoryTestPageState(){
-    _testBase = BaseTestPage<SpatialMemoryTestService, SpatialMemoryTest>(service);
-  }
+class _SpatialMemoryTestPageState extends BaseTestState<SpatialMemoryTestPage,
+    SpatialMemoryTestService, SpatialMemoryTest> {
 
   static final List<int> _series = series;
   final int _lightedOnTapMs = 750;
@@ -35,21 +30,6 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
   SpatialMemoryTestService service = SpatialMemoryTestService();
   Timer _displayTimer;
   Timer _displayOffsetTimer;
-  BaseTestPage<SpatialMemoryTestService, SpatialMemoryTest> _testBase;
-
-  Future _checkFirstSeen() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool('seenSpatialMemoryPage') ?? false);
-
-    if (_seen == false) {
-      await prefs.setBool('seenSpatialMemoryPage', true);
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) => SpatialMemoryTestDescriptionPage(),
-        ),
-      );
-    }
-  }
 
   void _buttonPressed(int count) {
     if (_repeating == true) {
@@ -136,7 +116,7 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
     var date = DateTime.now();
     test.date = date;
     test.score = calculateScore(_seriesScore);
-    await _testBase.commitResult(test);
+    await commitResult(test);
 
     Navigator.of(context).pop();
   }
@@ -153,19 +133,6 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(SpatialMemoryTestPage.title),
-      ),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(20, 40, 20, 40),
-        child: _finished ? _connfirmationColumn() : _testColumn(),
-      ),
-    );
-  }
-
   Widget _testColumn() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,11 +147,7 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
                   Icons.info_outline,
                   color: Colors.grey,
                 ),
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          SpatialMemoryTestDescriptionPage()),
-                ),
+                onTap: () => showDescription(),
               ),
             ),
           ],
@@ -245,11 +208,7 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
                 Icons.info_outline,
                 color: Colors.grey,
               ),
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        SpatialMemoryTestDescriptionPage()),
-              ),
+              onTap: () => showDescription(),
             ),
           ],
         ),
@@ -286,39 +245,50 @@ class _SpatialMemoryTestPageState extends State<SpatialMemoryTestPage> {
   }
 
   @override
-  void initState() {
-    AdsService().hideBanner();
-    _checkFirstSeen();
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _displayTimer?.cancel();
     _displayOffsetTimer?.cancel();
     super.dispose();
   }
-}
 
-class SpatialMemoryTestDescriptionPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return TestDescriptionFragment(
-      children: <Widget>[
-        Text(
-          "Test for spatial visual memory is based on the Corsi Block Test. Its aimed to assess work of the short term memory. ",
-          textAlign: TextAlign.justify,
-        ),
-        Text(
-          "Remember the sequence of objects shown in the grid below and repeat the sequence. ",
-          textAlign: TextAlign.justify,
-        ),
-        Text(
-          "You can access this info during the test by tapping info icon in the upper left corner. ",
-          textAlign: TextAlign.justify,
-        ),
-      ],
-      title: SpatialMemoryTestPage.title,
+  Widget body() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(20, 40, 20, 40),
+      child: _finished ? _connfirmationColumn() : _testColumn(),
     );
+  }
+
+  @override
+  List<Widget> descriptionBody() {
+    return <Widget>[
+      Text(
+        "Test for spatial visual memory is based on the Corsi Block Test. Its aimed to assess work of the short term memory. ",
+        textAlign: TextAlign.justify,
+      ),
+      Text(
+        "Remember the sequence of objects shown in the grid below and repeat the sequence. ",
+        textAlign: TextAlign.justify,
+      ),
+      Text(
+        "You can access this info during the test by tapping info icon in the upper left corner. ",
+        textAlign: TextAlign.justify,
+      ),
+    ];
+  }
+
+  @override
+  String descriptionTitle() {
+    return SpatialMemoryTestPage.title;
+  }
+
+  @override
+  String route() {
+    return SpatialMemoryTestPage.routeName;
+  }
+
+  @override
+  String title() {
+    return SpatialMemoryTestPage.title;
   }
 }

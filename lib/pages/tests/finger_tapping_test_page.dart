@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:itry/database/models/finger_tapping_test.dart';
-import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
-import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class FingerTappingTestPage extends StatefulWidget {
+class FingerTappingTestPage extends BaseTestPage {
   static final String routeName = '/fingerTappingTest';
   static final String title = "Finger tapping test";
 
@@ -15,11 +12,8 @@ class FingerTappingTestPage extends StatefulWidget {
   _FingerTappingTestPageState createState() => _FingerTappingTestPageState();
 }
 
-class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
-  _FingerTappingTestPageState(){
-    _testBase = BaseTestPage<FingerTappingTestService, FingerTappingTest>(service);
-  }
-
+class _FingerTappingTestPageState extends BaseTestState<FingerTappingTestPage,
+    FingerTappingTestService, FingerTappingTest> {
   static final double _buttonRadius = 40;
   static final int _testTime = 15;
 
@@ -33,7 +27,6 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
   bool _activeButtons = false;
   bool _dominant = true;
   FingerTappingTestService service = FingerTappingTestService();
-  BaseTestPage<FingerTappingTestService, FingerTappingTest> _testBase;
 
   void _startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -133,7 +126,7 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
       testResult.date = date;
       testResult.scoreDominant = _scoreDominant;
       testResult.scoreNonDominant = _scoreNonDominant;
-      await _testBase.commitResult(testResult);
+      await super.commitResult(testResult);
       Navigator.of(context).pop();
     }
   }
@@ -156,36 +149,17 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
     });
   }
 
-  Future _checkFirstSeen() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool('seenFingerTappingPage') ?? false);
-
-    if (_seen == false) {
-      await prefs.setBool('seenFingerTappingPage', true);
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) => FingerTappingTestDescriptionPage(),
-        ),
-      );
-    }
-  }
-
   List<Widget> _confirmColumn() {
     return <Widget>[
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           GestureDetector(
-            child: Icon(
-              Icons.info_outline,
-              color: Colors.grey,
-            ),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      FingerTappingTestDescriptionPage()),
-            ),
-          ),
+              child: Icon(
+                Icons.info_outline,
+                color: Colors.grey,
+              ),
+              onTap: () => super.showDescription()),
         ],
       ),
       Row(
@@ -234,16 +208,11 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           GestureDetector(
-            child: Icon(
-              Icons.info_outline,
-              color: Colors.grey,
-            ),
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      FingerTappingTestDescriptionPage()),
-            ),
-          ),
+              child: Icon(
+                Icons.info_outline,
+                color: Colors.grey,
+              ),
+              onTap: () => super.showDescription()),
         ],
       ),
       Row(
@@ -277,7 +246,9 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
             shape: CircleBorder(),
             padding: EdgeInsets.all(_buttonRadius),
           ),
-          Container(padding: EdgeInsets.all(10),),
+          Container(
+            padding: EdgeInsets.all(10),
+          ),
           RaisedButton(
             onPressed: _tapRight,
             child: Text('right'),
@@ -290,58 +261,55 @@ class _FingerTappingTestPageState extends State<FingerTappingTestPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(FingerTappingTestPage.title),
-      ),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(20, 40, 20, 40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: _timeOut ? _confirmColumn() : _testColumn(),
-        ),
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    AdsService().hideBanner();
-    _checkFirstSeen();
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
   }
-}
 
-class FingerTappingTestDescriptionPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return TestDescriptionFragment(
-      children: <Widget>[
-        Text(
-          "Finger tapping performance test is a quantitative assessment tool used to evaluate hand skill and coordination. Hand performance can depend on many variables including our emotional and physical health and any factors that impact our nervous system. ",
-          textAlign: TextAlign.justify,
-        ),
-        Text(
-          "In this test you are asked to determine your dominant hand and use your index and middle finger to tap alternately two buttons in the period of 15 seconds. For both hands you will receive results in average intertap - interval, tapping speed and overall number of taps. ",
-          textAlign: TextAlign.justify,
-        ),
-        Text(
-          "By completing this test regularly you can measure and evaluate changes in your motor system. ",
-          textAlign: TextAlign.justify,
-        ),
-        Text(
-          "You can access this info during the test by tapping info icon in the upper left corner. ",
-          textAlign: TextAlign.justify,
-        ),
-      ],
-      title: FingerTappingTestPage.title,
-    );
+  Widget body() {
+    return Container(
+        padding: EdgeInsets.fromLTRB(20, 40, 20, 40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: _timeOut ? _confirmColumn() : _testColumn(),
+        ));
+  }
+
+  @override
+  List<Widget> descriptionBody() {
+    return <Widget>[
+      Text(
+        "Finger tapping performance test is a quantitative assessment tool used to evaluate hand skill and coordination. Hand performance can depend on many variables including our emotional and physical health and any factors that impact our nervous system. ",
+        textAlign: TextAlign.justify,
+      ),
+      Text(
+        "In this test you are asked to determine your dominant hand and use your index and middle finger to tap alternately two buttons in the period of 15 seconds. For both hands you will receive results in average intertap - interval, tapping speed and overall number of taps. ",
+        textAlign: TextAlign.justify,
+      ),
+      Text(
+        "By completing this test regularly you can measure and evaluate changes in your motor system. ",
+        textAlign: TextAlign.justify,
+      ),
+      Text(
+        "You can access this info during the test by tapping info icon in the upper left corner. ",
+        textAlign: TextAlign.justify,
+      ),
+    ];
+  }
+
+  @override
+  String descriptionTitle() {
+    return FingerTappingTestPage.title;
+  }
+
+  @override
+  String route() {
+    return FingerTappingTestPage.routeName;
+  }
+
+  @override
+  String title() {
+    return FingerTappingTestPage.title;
   }
 }

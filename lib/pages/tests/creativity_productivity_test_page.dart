@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:itry/database/models/creativity_productivity_test.dart';
-import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
-import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:random_words/random_words.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class CreativityProductivityTestPage extends StatefulWidget {
+class CreativityProductivityTestPage extends BaseTestPage {
   static final String routeName = '/creativityProductivityTest';
   static final String title = "Creativity test";
 
@@ -18,10 +15,13 @@ class CreativityProductivityTestPage extends StatefulWidget {
 }
 
 class _CreativityProductivityTestPageState
-    extends State<CreativityProductivityTestPage> {
+    extends BaseTestState<CreativityProductivityTestPage, CreativityProductivityTestService, CreativityProductivityTest> {
   static final int _testTime = 60;
+
   final FocusNode _focusNode = FocusNode();
+
   final TextEditingController _controller = new TextEditingController();
+
   CreativityProductivityTestService service =
       CreativityProductivityTestService();
 
@@ -31,14 +31,6 @@ class _CreativityProductivityTestPageState
   bool _started = false;
   String _randomWord = "The word will appear here.";
   int _score = 0;
-
-  BaseTestPage<CreativityProductivityTestService, CreativityProductivityTest>
-      _testBase;
-
-  _CreativityProductivityTestPageState() {
-    _testBase = BaseTestPage<CreativityProductivityTestService,
-        CreativityProductivityTest>(service);
-  }
 
   List<String> _answers = <String>[];
 
@@ -82,47 +74,20 @@ class _CreativityProductivityTestPageState
     var date = DateTime.now();
     result.score = _score;
     result.date = date;
-    await _testBase.commitResult(result);
+    await commitResult(result);
     Navigator.of(context).pop();
   }
 
   void _retakeTest() {
     setState(() {
       _randomWord = "The word will appear here.";
+      _controller.clear();
       _time = _testTime;
       _started = false;
       _timeOut = false;
       _answers = <String>[];
       _score = 0;
     });
-  }
-
-  Future _checkFirstSeen() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool('seenCreativityProductivityTestPage') ?? false);
-
-    if (_seen == false) {
-      await prefs.setBool('seenCreativityProductivityTestPage', true);
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) =>
-              CreativityProductivityTestDescriptionPage(),
-        ),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(CreativityProductivityTestPage.title),
-      ),
-      body: Container(
-        margin: EdgeInsets.fromLTRB(20, 40, 20, 0),
-        child: _timeOut ? _confirmationColumn() : _testColumn(),
-      ),
-    );
   }
 
   Widget _testColumn() {
@@ -137,11 +102,7 @@ class _CreativityProductivityTestPageState
                 Icons.info_outline,
                 color: Colors.grey,
               ),
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        CreativityProductivityTestDescriptionPage()),
-              ),
+              onTap: () => showDescription(),
             ),
             Text('$_time')
           ],
@@ -217,11 +178,7 @@ class _CreativityProductivityTestPageState
                 Icons.info_outline,
                 color: Colors.grey,
               ),
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        CreativityProductivityTestDescriptionPage()),
-              ),
+              onTap: () => showDescription(),
             ),
           ],
         ),
@@ -261,28 +218,39 @@ class _CreativityProductivityTestPageState
   }
 
   @override
-  void initState() {
-    AdsService().hideBanner();
-    _checkFirstSeen();
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _timer?.cancel();
     super.dispose();
   }
-}
 
-class CreativityProductivityTestDescriptionPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return TestDescriptionFragment(
-      children: <Widget>[
+  Widget body() {
+    return Container(
+        margin: EdgeInsets.fromLTRB(20, 40, 20, 0),
+        child: _timeOut ? _confirmationColumn() : _testColumn(),
+      );
+  }
+
+  @override
+  List<Widget> descriptionBody() {
+    return <Widget>[
         Text(
             "This is the test for ability to produce new ideas. During the test you will see a random word, a noun, and your task is to look for words that you associate with the given one. After every word, confirm the answer, and start writing the next one.")
-      ],
-      title: CreativityProductivityTestPage.title,
-    );
+      ];
+  }
+
+  @override
+  String descriptionTitle() {
+    return CreativityProductivityTestPage.title;
+  }
+
+  @override
+  String route() {
+    return CreativityProductivityTestPage.routeName;
+  }
+
+  @override
+  String title() {
+    return CreativityProductivityTestPage.title;
   }
 }
