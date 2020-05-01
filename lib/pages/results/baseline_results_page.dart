@@ -192,19 +192,21 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       // defaultRenderer:
       //     chart.LineRendererConfig(includeArea: true, stacked: true),
       animate: true,
-      //defaultInteractions: true,
+      defaultInteractions: true,
       primaryMeasureAxis: chart.NumericAxisSpec(
-          //renderSpec: chart.NoneRenderSpec(),
+          renderSpec: chart.NoneRenderSpec(),
+          
           ),
-      domainAxis: chart.NumericAxisSpec(
-        renderSpec: chart.NoneRenderSpec(),
-        tickProviderSpec: chart.StaticNumericTickProviderSpec(
-          <chart.TickSpec<num>>[
-            chart.TickSpec<num>(0),
-            chart.TickSpec<num>(_to.difference(_from).inDays),
-          ],
-        ),
-      ),
+      // domainAxis: chart.NumericAxisSpec(
+      //   renderSpec: chart.NoneRenderSpec(),
+      //   showAxisLine: true,
+      //   tickProviderSpec: chart.StaticNumericTickProviderSpec(
+      //     <chart.TickSpec<num>>[
+      //       chart.TickSpec<num>(0),
+      //       chart.TickSpec<num>(_to.difference(_from).inDays),
+      //     ],
+      //   ),
+      // ),
     );
   }
 
