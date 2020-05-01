@@ -343,7 +343,7 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                calculateScore(_answersMulti, _answersCheck, _answersAdditionalToCheck).toString(),
+                calculateScore(_answersMulti, _answersCheck, _answersAdditionalToCheck).toString() + "/$maxScore",
                 // calculateScore(_answers).toString() + "/$maxScore",
                 style: TextStyle(fontSize: 40),
               )
