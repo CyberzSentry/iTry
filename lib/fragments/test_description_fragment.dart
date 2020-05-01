@@ -26,9 +26,11 @@ class TestDescriptionFragment extends StatelessWidget {
       ),
       body: Container(
         margin: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: children,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: children,
+          ),
         ),
       ),
     );

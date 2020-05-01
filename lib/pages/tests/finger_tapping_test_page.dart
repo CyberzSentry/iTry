@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:itry/database/models/finger_tapping_test.dart';
+import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
 
@@ -279,21 +280,50 @@ class _FingerTappingTestPageState extends BaseTestState<FingerTappingTestPage,
   @override
   List<Widget> descriptionBody() {
     return <Widget>[
-      Text(
-        "Finger tapping performance test is a quantitative assessment tool used to evaluate hand skill and coordination. Hand performance can depend on many variables including our emotional and physical health and any factors that impact our nervous system. ",
-        textAlign: TextAlign.justify,
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "Finger tapping performance test is a quantitative assessment tool used to evaluate hand skill and coordination. Hand performance can depend on many variables including our emotional and physical health and any factors that impact our nervous system.",
+            textAlign: TextAlign.justify),
       ),
-      Text(
-        "In this test you are asked to determine your dominant hand and use your index and middle finger to tap alternately two buttons in the period of 15 seconds. For both hands you will receive results in average intertap - interval, tapping speed and overall number of taps. ",
-        textAlign: TextAlign.justify,
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "In this test you are asked to determine your dominant hand and use your index and middle finger to tap alternately two buttons in the period of 15 seconds. For both hands you will receive results in average intertap - interval, tapping speed and overall number of taps.",
+            textAlign: TextAlign.justify),
       ),
-      Text(
-        "By completing this test regularly you can measure and evaluate changes in your motor system. ",
-        textAlign: TextAlign.justify,
+      Image(image: AssetImage('assets/images/finger_tapping.png')),
+      
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "By completing this test regularly you can measure and evaluate changes in your motor system.",
+            textAlign: TextAlign.justify),
       ),
-      Text(
-        "You can access this info during the test by tapping info icon in the upper left corner. ",
-        textAlign: TextAlign.justify,
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "The interval of the survey: once a week.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: IconTextFragment(),
       ),
     ];
   }

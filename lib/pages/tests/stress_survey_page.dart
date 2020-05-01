@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itry/database/models/stress_survey.dart';
+import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/stress_survey_service.dart';
 
@@ -208,7 +209,67 @@ class _StressSurveyPageState extends BaseTestState<
 
   @override
   List<Widget> descriptionBody() {
-    return <Widget>[Row(children: <Widget>[Text('description')],)];
+    return <Widget>[
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "Stress survey aims to assess chronic stress levels, which while high, can be alert to bring our system to balance or keep up our score low and not let stress overwhelm us too fast.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "Every question should be followed with retrospection of this past week, where the described symptoms were appearing:",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Flexible(
+              child: Text(
+                  "0 - Not at all\n1 - From time to time\n2 - Most of the time\n3 - Nearly all the time",
+                  textAlign: TextAlign.justify),
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "answer the following questions using your best beliefs.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "The interval of the survey: once a week.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: IconTextFragment(),
+      ),
+    ];
   }
 
   @override

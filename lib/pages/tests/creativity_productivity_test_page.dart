@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:itry/database/models/creativity_productivity_test.dart';
+import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:random_words/random_words.dart';
@@ -234,9 +235,31 @@ class _CreativityProductivityTestPageState
   @override
   List<Widget> descriptionBody() {
     return <Widget>[
-        Text(
-            "This is the test for ability to produce new ideas. During the test you will see a random word, a noun, and your task is to look for words that you associate with the given one. After every word, confirm the answer, and start writing the next one.")
-      ];
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "This is the test for ability to produce new ideas. During the test you will see a random word, a noun, and your task is to look for words that you associate with the given one. After every word, confirm the answer, and start writing the next one.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text("The interval of the survey: once a week.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: IconTextFragment(),
+      ),
+    ];
   }
 
   @override

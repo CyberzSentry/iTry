@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:itry/database/models/creativity_productivity_survey.dart';
+import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 
@@ -215,12 +216,65 @@ class _CreativityProductivitySurveyPageState extends BaseTestState<
   @override
   List<Widget> descriptionBody() {
     return <Widget>[
-      Text(
-          "In creative and productivity test you can determine changes in your ability to produce new ideas and challenge tasks.",
-          textAlign: TextAlign.justify),
-      Text(
-          "Using 4-point scale;\n0 - Not at all\n1 - From time to time\n2 - Most of the time\n3 - Nearly all the time",
-          textAlign: TextAlign.justify),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "In creativity and productivity test you can determine changes in your ability to produce new ideas and challenge tasks.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "Using 4-point scale:",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Flexible(
+              child: Text(
+                  "0 - Not at all\n1 - From time to time\n2 - Most of the time\n3 - Nearly all the time",
+                  textAlign: TextAlign.justify),
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "answer the following questions using your best beliefs.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "The interval of the survey: once a week.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: IconTextFragment(),
+      ),
     ];
   }
 

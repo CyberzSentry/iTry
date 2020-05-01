@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:itry/database/models/anxiety_survey.dart';
+import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/anxiety_survey_service.dart';
 
@@ -480,9 +481,65 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
   @override
   List<Widget> descriptionBody() {
     return <Widget>[
-      Row(
-        children: <Widget>[Text('description')],
-      )
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "Anxiety is a regular reaction of our body to constant stress, although it can limit our ability to get into new situations and perform our everyday tasks. It is useful, while appearing from time to time, but overwhelming fear could be devastating, so if your results keep high or increasing through a long period of time, you should consider getting professional help.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "Every question in this survey should be followed with retrospection of this past week, where the described symptoms were appearing:",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Flexible(
+              child: Text(
+                  "0 - Not at all\n1 - From time to time\n2 - Most of the time\n3 - Nearly all the time",
+                  textAlign: TextAlign.justify),
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "answer the following questions using your best beliefs.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "The interval of the survey: once a week.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: IconTextFragment(),
+      ),
     ];
   }
 

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/spatial_memory_test_service.dart';
 import 'package:itry/database/models/spatial_memory_test.dart';
@@ -16,7 +17,6 @@ class SpatialMemoryTestPage extends BaseTestPage {
 
 class _SpatialMemoryTestPageState extends BaseTestState<SpatialMemoryTestPage,
     SpatialMemoryTestService, SpatialMemoryTest> {
-
   static final List<int> _series = series;
   final int _lightedOnTapMs = 750;
   int _lighted = -1;
@@ -262,17 +262,38 @@ class _SpatialMemoryTestPageState extends BaseTestState<SpatialMemoryTestPage,
   @override
   List<Widget> descriptionBody() {
     return <Widget>[
-      Text(
-        "Test for spatial visual memory is based on the Corsi Block Test. Its aimed to assess work of the short term memory. ",
-        textAlign: TextAlign.justify,
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "Test for spatial visual memory is based on the Corsi Block Test. Its aimed to assess work of the short term memory.",
+            textAlign: TextAlign.justify),
       ),
-      Text(
-        "Remember the sequence of objects shown in the grid below and repeat the sequence. ",
-        textAlign: TextAlign.justify,
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "Remember the sequence of objects shown in the grid below and repeat the sequence.",
+            textAlign: TextAlign.justify),
       ),
-      Text(
-        "You can access this info during the test by tapping info icon in the upper left corner. ",
-        textAlign: TextAlign.justify,
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text("The interval of the survey: once a week.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: IconTextFragment(),
       ),
     ];
   }

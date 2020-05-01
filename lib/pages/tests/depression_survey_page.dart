@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itry/database/models/depression_survey.dart';
+import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/depression_survey_service.dart';
 
@@ -8,21 +9,17 @@ class DepressionSurveyPage extends BaseTestPage {
   static final String title = "Depression survey";
 
   @override
-  _DepressionSurveyPageState createState() =>
-      _DepressionSurveyPageState();
+  _DepressionSurveyPageState createState() => _DepressionSurveyPageState();
 }
 
-class _DepressionSurveyPageState extends BaseTestState<
-    DepressionSurveyPage,
-    DepressionSurveyService,
-    DepressionSurvey> {
+class _DepressionSurveyPageState extends BaseTestState<DepressionSurveyPage,
+    DepressionSurveyService, DepressionSurvey> {
   static final _questionsMultiAns = questionsMultiAns;
   static final _possibleAnswers = possibleAnswers;
 
-  DepressionSurveyService service =
-      DepressionSurveyService();
+  DepressionSurveyService service = DepressionSurveyService();
 
-   var _answers = List<int>.filled(_questionsMultiAns.length, -1);
+  var _answers = List<int>.filled(_questionsMultiAns.length, -1);
   int _questionIndex = 0;
   int _currAnsw = -1;
 
@@ -77,7 +74,6 @@ class _DepressionSurveyPageState extends BaseTestState<
                     color: Colors.grey,
                   ),
                   onTap: () => showDescription(),
-
                 ),
                 Text((_questionIndex + 1).toString() +
                     '/' +
@@ -208,7 +204,67 @@ class _DepressionSurveyPageState extends BaseTestState<
 
   @override
   List<Widget> descriptionBody() {
-    return <Widget>[Row(children: <Widget>[Text('description')],)];
+    return <Widget>[
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "Depression survey helps to self-assess your overall being, which can affect how you feel and the way you think and act. The high score in this survey doesn’t mean you are depressed, you can be only temporarily on low in your life. Although if your results continue to be high or increasing through a long period of time, you should consider getting professional help.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "Every question should be followed with retrospection of this past week, where the described symptoms were appearing:",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Flexible(
+              child: Text(
+                  "0 - Not at all\n1 - From time to time\n2 - Most of the time\n3 - Nearly all the time",
+                  textAlign: TextAlign.justify),
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "answer the following questions using your best beliefs.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "The interval of the survey: once a week.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: IconTextFragment(),
+      ),
+    ];
   }
 
   @override
