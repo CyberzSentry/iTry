@@ -98,8 +98,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     }
     if (_enabledDataTypes[4]) {
       List<GraphDataType> depressionData = <GraphDataType>[];
-      var depressionListFiltered =
-          await _dsService.getBetweenDates(_from, _to);
+      var depressionListFiltered = await _dsService.getBetweenDates(_from, _to);
       for (var item in depressionListFiltered) {
         depressionData.add(GraphDataType(
             item.date.difference(_from).inDays, item.percentageScore));
@@ -109,8 +108,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     }
     if (_enabledDataTypes[5]) {
       List<GraphDataType> stressData = <GraphDataType>[];
-      var stressListFiltered =
-          await _ssService.getBetweenDates(_from, _to);
+      var stressListFiltered = await _ssService.getBetweenDates(_from, _to);
       for (var item in stressListFiltered) {
         stressData.add(GraphDataType(
             item.date.difference(_from).inDays, item.percentageScore));
@@ -120,8 +118,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     }
     if (_enabledDataTypes[6]) {
       List<GraphDataType> anxietyData = <GraphDataType>[];
-      var anxietyListFiltered =
-          await _asService.getBetweenDates(_from, _to);
+      var anxietyListFiltered = await _asService.getBetweenDates(_from, _to);
       for (var item in anxietyListFiltered) {
         anxietyData.add(GraphDataType(
             item.date.difference(_from).inDays, item.percentageScore));
@@ -213,7 +210,6 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       );
     }
 
-
     return chart.LineChart(
       seriesList,
       // defaultRenderer:
@@ -221,9 +217,8 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       animate: true,
       defaultInteractions: true,
       primaryMeasureAxis: chart.NumericAxisSpec(
-          renderSpec: chart.NoneRenderSpec(),
-          
-          ),
+        renderSpec: chart.NoneRenderSpec(),
+      ),
       // domainAxis: chart.NumericAxisSpec(
       //   renderSpec: chart.NoneRenderSpec(),
       //   showAxisLine: true,
@@ -257,108 +252,114 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: DrawerFragment(),
-      appBar: AppBar(
-        title: Text(BaselineResultsPage.title),
-      ),
-      body: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            SizedBox(
-              height: 200,
-              child: FutureBuilder<GraphData>(
-                future: _getGraphData(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<GraphData> snapshot) {
-                  if (snapshot.hasData) {
-                    return _generateChart(snapshot.data);
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                },
-              ),
-            ),
-            Expanded(
-              child: SizedBox(
-                height: 300,
-                child: ListView(
-                  children: <Widget>[
-                    ListTile(
-                      title: Text('Date from:'),
-                      trailing: Text(_from.toString().substring(0, 10)),
-                      onTap: _selectFromDate,
-                    ),
-                    ListTile(
-                      title: Text('Date to:'),
-                      trailing: Text(_to.toString().substring(0, 10)),
-                      onTap: _selectToDate,
-                    ),
-                    SwitchListTile(
-                      value: _enabledDataTypes[0],
-                      onChanged: (val) => setState(() {
-                        _enabledDataTypes[0] = val;
-                      }),
-                      title: Text(FingerTappingTestPage.title),
-                      activeColor: Colors.blue,
-                    ),
-                    SwitchListTile(
-                      value: _enabledDataTypes[1],
-                      onChanged: (val) => setState(() {
-                        _enabledDataTypes[1] = val;
-                      }),
-                      title: Text(CreativityProductivitySurveyPage.title),
-                      activeColor: Colors.purple,
-                    ),
-                    SwitchListTile(
-                      value: _enabledDataTypes[2],
-                      onChanged: (val) => setState(() {
-                        _enabledDataTypes[2] = val;
-                      }),
-                      title: Text(CreativityProductivityTestPage.title),
-                      activeColor: Colors.red,
-                    ),
-                    SwitchListTile(
-                      value: _enabledDataTypes[3],
-                      onChanged: (val) => setState(() {
-                        _enabledDataTypes[3] = val;
-                      }),
-                      title: Text(SpatialMemoryTestPage.title),
-                      activeColor: Colors.lime,
-                    ),
-                    SwitchListTile(
-                      value: _enabledDataTypes[4],
-                      onChanged: (val) => setState(() {
-                        _enabledDataTypes[4] = val;
-                      }),
-                      title: Text(DepressionSurveyPage.title),
-                      activeColor: Colors.green,
-                    ),
-                    SwitchListTile(
-                      value: _enabledDataTypes[5],
-                      onChanged: (val) => setState(() {
-                        _enabledDataTypes[5] = val;
-                      }),
-                      title: Text(StressSurveyPage.title),
-                      activeColor: Colors.cyan,
-                    ),
-                    SwitchListTile(
-                      value: _enabledDataTypes[6],
-                      onChanged: (val) => setState(() {
-                        _enabledDataTypes[6] = val;
-                      }),
-                      title: Text(AnxietySurveyPage.title),
-                      activeColor: Colors.teal,
-                    ),
-                    ListTile(),
-                  ],
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        // if (Orientation.portrait == orientation) {
+        //   AdsService().showBanner();
+        // } else {
+        //   AdsService().hideBanner();
+        // }
+
+        return Scaffold(
+          drawer: DrawerFragment(),
+          appBar: AppBar(
+            title: Text(BaselineResultsPage.title),
+          ),
+          body: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Flexible(
+                  child: FutureBuilder<GraphData>(
+                    future: _getGraphData(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<GraphData> snapshot) {
+                      if (snapshot.hasData) {
+                        return _generateChart(snapshot.data);
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
                 ),
-              ),
+                Flexible(
+                  child: ListView(
+                    children: <Widget>[
+                      ListTile(
+                        title: Text('Date from:'),
+                        trailing: Text(_from.toString().substring(0, 10)),
+                        onTap: _selectFromDate,
+                      ),
+                      ListTile(
+                        title: Text('Date to:'),
+                        trailing: Text(_to.toString().substring(0, 10)),
+                        onTap: _selectToDate,
+                      ),
+                      SwitchListTile(
+                        value: _enabledDataTypes[0],
+                        onChanged: (val) => setState(() {
+                          _enabledDataTypes[0] = val;
+                        }),
+                        title: Text(FingerTappingTestPage.title),
+                        activeColor: Colors.blue,
+                      ),
+                      SwitchListTile(
+                        value: _enabledDataTypes[1],
+                        onChanged: (val) => setState(() {
+                          _enabledDataTypes[1] = val;
+                        }),
+                        title: Text(CreativityProductivitySurveyPage.title),
+                        activeColor: Colors.purple,
+                      ),
+                      SwitchListTile(
+                        value: _enabledDataTypes[2],
+                        onChanged: (val) => setState(() {
+                          _enabledDataTypes[2] = val;
+                        }),
+                        title: Text(CreativityProductivityTestPage.title),
+                        activeColor: Colors.red,
+                      ),
+                      SwitchListTile(
+                        value: _enabledDataTypes[3],
+                        onChanged: (val) => setState(() {
+                          _enabledDataTypes[3] = val;
+                        }),
+                        title: Text(SpatialMemoryTestPage.title),
+                        activeColor: Colors.lime,
+                      ),
+                      SwitchListTile(
+                        value: _enabledDataTypes[4],
+                        onChanged: (val) => setState(() {
+                          _enabledDataTypes[4] = val;
+                        }),
+                        title: Text(DepressionSurveyPage.title),
+                        activeColor: Colors.green,
+                      ),
+                      SwitchListTile(
+                        value: _enabledDataTypes[5],
+                        onChanged: (val) => setState(() {
+                          _enabledDataTypes[5] = val;
+                        }),
+                        title: Text(StressSurveyPage.title),
+                        activeColor: Colors.cyan,
+                      ),
+                      SwitchListTile(
+                        value: _enabledDataTypes[6],
+                        onChanged: (val) => setState(() {
+                          _enabledDataTypes[6] = val;
+                        }),
+                        title: Text(AnxietySurveyPage.title),
+                        activeColor: Colors.teal,
+                      ),
+                      ListTile(),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
