@@ -22,7 +22,14 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
       _answersCheck
           .add(List<bool>.filled(_possibleAnswersCheck[i].length, false));
     }
+    for (int i = 0; i < _additionalToCheck.length; i++) {
+      _answersAdditionalToCheck
+          .add(List<int>.filled(_additionalToCheck[i].length, -1));
+    }
     for (var questionType in _questionsMulti) {
+      _sumAllQuestions += questionType.length;
+    }
+    for (var questionType in _additionalToCheck) {
       _sumAllQuestions += questionType.length;
     }
     _sumAllQuestions += _questionsCheck.length;
@@ -30,8 +37,10 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
 
   static final _questionsMulti = questionsMulti;
   static final _questionsCheck = questionsCheck;
+  static final _additionalToCheck = additionalToCheck;
   static final _possibleAnswersMulti = possibleAnswersMulti;
   static final _possibleAnswersCheck = possibleAnswersCheck;
+  static final _additionaToCheckAnswers = additionalToCheckAns;
 
   AnxietySurveyService service = AnxietySurveyService();
 
@@ -40,6 +49,7 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
 
   List<List<int>> _answersMulti = List<List<int>>();
   List<List<bool>> _answersCheck = List<List<bool>>();
+  List<List<int>> _answersAdditionalToCheck = List<List<int>>();
 
   int _sumAllQuestions = 0;
   int _sumGlobalCurrQuestion = 0;
@@ -47,9 +57,10 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
 
   bool _finished = false;
   bool _questionType = false; //false - multi, true - check
+  bool _additional = false;
 
   void _confirm() async {
-    var score = calculateScore(_answersMulti, _answersCheck);
+    var score = calculateScore(_answersMulti, _answersCheck, _answersAdditionalToCheck);
 
     var result = AnxietySurvey();
     var date = DateTime.now();
@@ -62,8 +73,7 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
   void _retake() {
     setState(() {
       _finished = false;
-      _prevCheck();
-
+      //_prevCheck();
     });
   }
 
@@ -134,10 +144,100 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
     );
   }
 
+  Widget _additionalQuestion() {
+    return Container(
+      margin: EdgeInsets.fromLTRB(10, 20, 10, 40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              GestureDetector(
+                child: Icon(
+                  Icons.info_outline,
+                  color: Colors.grey,
+                ),
+                onTap: () => showDescription(),
+              ),
+              Text((_sumGlobalCurrQuestion + 1).toString() +
+                  '/' +
+                  (_sumAllQuestions).toString()),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Flexible(
+                child: Text(
+                  _additionalToCheck[0][0],
+                  style: TextStyle(fontSize: 15),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: _buildRadioButtonsAdditional(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: _buildAnswersRowAdditional(),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              MaterialButton(
+                color: Colors.green,
+                onPressed: () {
+                  _additional = false;
+                  _prevCheck();
+                },
+                child: Text('Previous'),
+              ),
+              MaterialButton(
+                color: Colors.green,
+                onPressed: (){
+                  setState(() {
+                    _finished = true;
+                  });
+                },
+                child: Text('Next'),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   List<Widget> _buildAnswersRow() {
     var output = <Widget>[];
 
     for (var ans in _possibleAnswersMulti[_questionGroupIndex]) {
+      output.add(
+        Expanded(
+          child: Text(
+            ans,
+            softWrap: true,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    return output;
+  }
+
+  List<Widget> _buildAnswersRowAdditional() {
+    var output = <Widget>[];
+
+    for (var ans in _additionaToCheckAnswers[0]) {
       output.add(
         Expanded(
           child: Text(
@@ -160,6 +260,28 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
         i++) {
       output.add(Expanded(
           child: Radio(value: i, groupValue: _currAnsw, onChanged: _setRadio)));
+    }
+
+    return output;
+  }
+
+  List<Widget> _buildRadioButtonsAdditional() {
+    var output = <Widget>[];
+
+    for (int i = 0; i < _additionaToCheckAnswers[0].length; i++) {
+      output.add(
+        Expanded(
+          child: Radio(
+            value: i,
+            groupValue: _answersAdditionalToCheck[0][0],
+            onChanged: (value) {
+              setState(() {
+                _answersAdditionalToCheck[0][0] = value;
+              });
+            },
+          ),
+        ),
+      );
     }
 
     return output;
@@ -221,7 +343,7 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                calculateScore(_answersMulti, _answersCheck).toString(),
+                calculateScore(_answersMulti, _answersCheck, _answersAdditionalToCheck).toString(),
                 // calculateScore(_answers).toString() + "/$maxScore",
                 style: TextStyle(fontSize: 40),
               )
@@ -252,9 +374,9 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
     setState(() {
       _questionIndex--;
       if (_questionIndex < 0) {
-          _questionGroupIndex = _questionsMulti.length - 1;
-          _questionIndex = _questionsMulti[_questionGroupIndex].length - 1;
-          _questionType = false;
+        _questionGroupIndex = _questionsMulti.length - 1;
+        _questionIndex = _questionsMulti[_questionGroupIndex].length - 1;
+        _questionType = false;
       }
     });
   }
@@ -264,7 +386,7 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
     setState(() {
       _questionIndex++;
       if (_questionIndex == _questionsCheck.length) {
-          _finished = true;
+        _additional = true;
       }
     });
   }
@@ -344,7 +466,11 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
       return _confirmScreen();
     } else {
       if (_questionType) {
-        return _checkQuestion();
+        if (_additional) {
+          return _additionalQuestion();
+        } else {
+          return _checkQuestion();
+        }
       } else {
         return _multipleAnswerQuestion();
       }

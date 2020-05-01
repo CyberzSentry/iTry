@@ -25,10 +25,8 @@ const questionsMulti = <List<String>>[
     'How often have you been bothered by becoming easily annoyed or irritable?',
     'How often have you been bothered by feeling afraid as if something awful might happen?',
   ],
-  <String>[
-    'If this questionnaire has highlighted any problems, how difficult have these problems made it for you to do your work, take care of things at home, or get along with other people?'
-  ],
-  <String>['Have you had an anxiety attack (suddenly feeling fear or panic)?']
+  <String>['Have you had an anxiety attack (suddenly feeling fear or panic)?'],
+  
 ];
 
 const possibleAnswersMulti = <List<String>>[
@@ -39,15 +37,30 @@ const possibleAnswersMulti = <List<String>>[
     'Nearly all the time'
   ],
   <String>[
+    'No',
+    'Yes',
+  ],
+  <String>[
     'Not difficult at all',
     'Somewhat difficult',
     'Very difficult',
     'Extremely difficult'
   ],
+];
+
+const additionalToCheck = <List<String>>[
   <String>[
-    'No',
-    'Yes',
-  ]
+    'If this questionnaire has highlighted any problems, how difficult have these problems made it for you to do your work, take care of things at home, or get along with other people?'
+  ],
+];
+
+const additionalToCheckAns = <List<String>>[
+  <String>[
+    'Not difficult at all',
+    'Somewhat difficult',
+    'Very difficult',
+    'Extremely difficult'
+  ],
 ];
 
 const questionsCheck = <String>[
@@ -65,17 +78,16 @@ const possibleAnswersCheck = <List<String>>[
     'By financial problems or worries',
     'Having no one to turn to',
     'Something bad that happened recently'
-  ]
+  ],
 ];
 
 int calculateScore(
-    List<List<int>> answersMulti, List<List<bool>> answersCheck) {
+    List<List<int>> answersMulti, List<List<bool>> answersCheck, List<List<int>> additional) {
   int sum = 0;
   for (var ans in answersMulti[0]) {
     sum += ans;
   }
-  sum += answersMulti[1][0];
-  sum += answersMulti[2][0] * 3;
+  sum += answersMulti[1][0] * 3;
 
   int sumBool = 0;
 
@@ -95,7 +107,9 @@ int calculateScore(
     sum += 3;
   }
 
-  return maxScore - sum;
+  sum += additional[0][0];
+
+  return sum;
 }
 
 class AnxietySurvey implements TestInterface {
