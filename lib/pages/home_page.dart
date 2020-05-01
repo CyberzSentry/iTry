@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Container(
+              Padding(
                 padding: EdgeInsets.only(top: 8, bottom: 8),
                 child: Row(
                   children: <Widget>[
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Container(
+              Padding(
                 padding: EdgeInsets.only(top: 10, bottom: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Container(
+              Padding(
                 padding: EdgeInsets.only(top: 8, bottom: 8),
                 child: Row(
                   children: <Widget>[
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Container(
+              Padding(
                 padding: EdgeInsets.only(top: 8, bottom: 8),
                 child: Row(
                   children: <Widget>[
@@ -114,13 +114,26 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Container(
+              Padding(
                 padding: EdgeInsets.only(top: 8, bottom: 8),
                 child: Row(
                   children: <Widget>[
                     Flexible(
                       child: const Text(
-                        'To see the descriptions click on each test and begin whenever you will be ready. For the surveys you can correct the answers by going to previous questions or retaking the test after finishing. The tests needed to be repeated as shown below, but don’t worry! You will get a notification every time the test will be ready to do again. ',
+                        'To see the descriptions click on each test and begin whenever you will be ready. For the surveys you can correct the answers by going to previous questions or retake the tests after finishing if something interrupted you. The tests needed to be repeated in intervals, but don’t worry! You will get a notification every time the test will be ready to do again. You can also do the tests more often and add scores to your result table by switching off the option “Apply test intervals” in the “Settings” tab.',
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 8, bottom: 8),
+                child: Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: const Text(
+                        'Once you accomplish the first tests you can go to the “Results” tab. In there you can change the date range, you are interested to evaluate, as well as mark tests from which you want to see the results. All the data is stored only on your device.',
                         textAlign: TextAlign.justify,
                       ),
                     ),
@@ -133,20 +146,7 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     Flexible(
                       child: const Text(
-                        'Frequency of the tests:\n\nFinger tapping performance test - once every two weeks,\nSpatial memory span test - once every two weeks,\nCreativity and productivity survey - once a week,\nCreativity test - once a week,\nDepression, anxiety and stress survey - once a week.',
-                        textAlign: TextAlign.justify,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 8, bottom: 8),
-                child: Row(
-                  children: <Widget>[
-                    Flexible(
-                      child: const Text(
-                        'Once you accomplish the first tests you can go to the “Results” tab. In there you can change the date range, you are interested to evaluate, as well as mark tests from which you want to see the results. All the data is stored only on your device. \n\nAny thoughts or questions? \n\nDo not hesitate to contact us via:\nconnectitry@gmail.com',
+                        '\n\nAny thoughts or questions? \n\nDo not hesitate to contact us via:\nconnectitry@gmail.com',
                         textAlign: TextAlign.justify,
                       ),
                     ),
