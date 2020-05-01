@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:flutter/material.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
+import 'package:itry/pages/tests/anixety_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
 import 'package:itry/pages/tests/depression_survey_page.dart';
@@ -8,6 +9,7 @@ import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/spatial_memory_test_page.dart';
 import 'package:itry/pages/tests/stress_survey_page.dart';
 import 'package:itry/services/ads_service.dart';
+import 'package:itry/services/anxiety_survey_service.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:itry/services/depression_survey_service.dart';
@@ -32,6 +34,7 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
   SpatialMemoryTestService _smtService = SpatialMemoryTestService();
   DepressionSurveyService _dsService = DepressionSurveyService();
   StressSurveyService _ssService = StressSurveyService();
+  AnxietySurveyService _asService = AnxietySurveyService();
 
   var _enabledDataTypes = [
     true,
@@ -39,8 +42,9 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     true,
     true,
     true,
-    true
-  ]; // finger_tapping, cp_survey, cp_test, spatial_mem, depression_survey, stress_survey
+    true,
+    true,
+  ]; // finger_tapping, cp_survey, cp_test, spatial_mem, depression_survey, stress_survey, anxiety_survey
 
   DateTime _from = DateTime.now().subtract(Duration(days: 30));
   DateTime _to = DateTime.now();
@@ -114,6 +118,17 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
       stressData.sort((a, b) => a.day.compareTo(b.day));
       data.stressSurveyData = stressData;
     }
+    if (_enabledDataTypes[6]) {
+      List<GraphDataType> anxietyData = <GraphDataType>[];
+      var anxietyListFiltered =
+          await _asService.getBetweenDates(_from, _to);
+      for (var item in anxietyListFiltered) {
+        anxietyData.add(GraphDataType(
+            item.date.difference(_from).inDays, item.percentageScore));
+      }
+      anxietyData.sort((a, b) => a.day.compareTo(b.day));
+      data.anxietySurveyData = anxietyData;
+    }
 
     return data;
   }
@@ -186,6 +201,18 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
             measureFn: (GraphDataType point, _) => point.result),
       );
     }
+
+    if (data.anxietySurveyData != null) {
+      seriesList.add(
+        chart.Series(
+            id: 'AnxietySurvey',
+            data: data.anxietySurveyData,
+            colorFn: (_, __) => chart.MaterialPalette.teal.shadeDefault,
+            domainFn: (GraphDataType point, _) => point.day,
+            measureFn: (GraphDataType point, _) => point.result),
+      );
+    }
+
 
     return chart.LineChart(
       seriesList,
@@ -316,6 +343,14 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                       title: Text(StressSurveyPage.title),
                       activeColor: Colors.cyan,
                     ),
+                    SwitchListTile(
+                      value: _enabledDataTypes[6],
+                      onChanged: (val) => setState(() {
+                        _enabledDataTypes[6] = val;
+                      }),
+                      title: Text(AnxietySurveyPage.title),
+                      activeColor: Colors.teal,
+                    ),
                     ListTile(),
                   ],
                 ),
@@ -341,6 +376,7 @@ class GraphData {
   List<GraphDataType> spatialMemoryTestData;
   List<GraphDataType> depressionSurveyData;
   List<GraphDataType> stressSurveyData;
+  List<GraphDataType> anxietySurveyData;
 }
 
 class GraphDataType {
