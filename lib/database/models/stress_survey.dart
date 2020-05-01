@@ -35,9 +35,9 @@ const possibleAnswers = <String>[
 ];
 
 int calculateScore(List<int> answers){
-  int sum = maxScore;
+  int sum = 0;
   for(var value in answers){
-    sum -= value;
+    sum += value;
   }
   return sum;
 }
