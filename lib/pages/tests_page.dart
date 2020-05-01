@@ -184,7 +184,14 @@ class _TestsPageState extends State<TestsPage> {
         future: _buildTestsList(),
         builder: (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) {
           if (snapshot.hasData) {
-            return ListView(children: snapshot.data);
+            return ListView.separated(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                return snapshot.data[index];
+              },
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+            );
           } else {
             return Center(child: CircularProgressIndicator());
           }
