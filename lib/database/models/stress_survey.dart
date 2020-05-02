@@ -1,7 +1,6 @@
 import 'package:itry/database/models/test_interface.dart';
 
-const String tableStressSurvey =
-    'stressSurveys';
+const String tableStressSurvey = 'stressSurveys';
 const String columnId = '_id';
 const String columnScore = 'score';
 const String columnDate = 'date';
@@ -34,10 +33,10 @@ const possibleAnswers = <String>[
   'Nearly all the time'
 ];
 
-int calculateScore(List<int> answers){
+int calculateScore(List<int> answers) {
   answers = answers.toList();
   int sum = 0;
-  for(var value in answers){
+  for (var value in answers) {
     sum += value;
   }
   return sum;
@@ -87,6 +86,8 @@ class StressSurvey implements TestInterface {
 
   @override
   double compareResults(TestInterface test) {
-    return -1 * (this.percentageScore - test.percentageScore);
+    return (this.percentageScore - test.percentageScore) == 0
+        ? (this.percentageScore - test.percentageScore)
+        : (this.percentageScore - test.percentageScore) * -1;
   }
 }

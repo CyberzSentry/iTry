@@ -159,6 +159,8 @@ class AnxietySurvey implements TestInterface {
 
   @override
   double compareResults(TestInterface test) {
-    return -(this.percentageScore - test.percentageScore);
+    return (this.percentageScore - test.percentageScore) == 0
+        ? (this.percentageScore - test.percentageScore)
+        : (this.percentageScore - test.percentageScore) * -1;
   }
 }

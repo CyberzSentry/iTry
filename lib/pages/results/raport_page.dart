@@ -120,7 +120,7 @@ class _ReportPageState extends State<ReportPage> {
               return Column(
                 children: <Widget>[
                   Flexible(
-                    child: Column(
+                    child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.all(10),
