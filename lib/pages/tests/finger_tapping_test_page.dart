@@ -295,7 +295,7 @@ class _FingerTappingTestPageState extends BaseTestState<FingerTappingTestPage,
           bottom: 5,
         ),
         child: Text(
-            "In this test you are asked to determine your dominant hand and use your index and middle finger to tap alternately two buttons in the period of 15 seconds. For both hands you will receive results in average intertap - interval, tapping speed and overall number of taps.",
+            "In this test you are asked to determine your dominant hand and use your index and middle finger to tap alternately two buttons in the period of 15 seconds. For both hands you will receive results in number of taps.",
             textAlign: TextAlign.justify),
       ),
       Image(image: AssetImage('assets/images/finger_tapping.png')),
