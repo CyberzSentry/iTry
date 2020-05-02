@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:flutter/material.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
+import 'package:itry/pages/results/raport_page.dart';
 import 'package:itry/pages/tests/anixety_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
@@ -295,61 +296,166 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
                         trailing: Text(_to.toString().substring(0, 10)),
                         onTap: _selectToDate,
                       ),
-                      SwitchListTile(
-                        value: _enabledDataTypes[0],
-                        onChanged: (val) => setState(() {
-                          _enabledDataTypes[0] = val;
-                        }),
-                        title: Text(FingerTappingTestPage.title),
-                        activeColor: Colors.blue,
+                      GestureDetector(
+                        child: SwitchListTile(
+                          value: _enabledDataTypes[0],
+                          onChanged: (val) => setState(() {
+                            _enabledDataTypes[0] = val;
+                          }),
+                          title: Text(FingerTappingTestPage.title),
+                          subtitle: Text('Hold down for details'),
+                          activeColor: Colors.blue,
+                        ),
+                        onLongPress: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => ReportPage(
+                                testService: _fttService,
+                                dateFrom: _from,
+                                dateTo: _to,
+                                raportName: FingerTappingTestPage.title,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      SwitchListTile(
-                        value: _enabledDataTypes[1],
-                        onChanged: (val) => setState(() {
-                          _enabledDataTypes[1] = val;
-                        }),
-                        title: Text(CreativityProductivitySurveyPage.title),
-                        activeColor: Colors.purple,
+                      GestureDetector(
+                        child: SwitchListTile(
+                          value: _enabledDataTypes[1],
+                          onChanged: (val) => setState(() {
+                            _enabledDataTypes[1] = val;
+                          }),
+                          title: Text(CreativityProductivitySurveyPage.title),
+                          subtitle: Text('Hold down for details'),
+                          activeColor: Colors.purple,
+                        ),
+                        onLongPress: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => ReportPage(
+                                testService: _cpsService,
+                                dateFrom: _from,
+                                dateTo: _to,
+                                raportName: CreativityProductivitySurveyPage.title,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      SwitchListTile(
-                        value: _enabledDataTypes[2],
-                        onChanged: (val) => setState(() {
-                          _enabledDataTypes[2] = val;
-                        }),
-                        title: Text(CreativityProductivityTestPage.title),
-                        activeColor: Colors.red,
+                      GestureDetector(
+                        child: SwitchListTile(
+                          value: _enabledDataTypes[2],
+                          onChanged: (val) => setState(() {
+                            _enabledDataTypes[2] = val;
+                          }),
+                          title: Text(CreativityProductivityTestPage.title),
+                          subtitle: Text('Hold down for details'),
+                          activeColor: Colors.red,
+                        ),
+                        onLongPress: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => ReportPage(
+                                testService: _cptService,
+                                dateFrom: _from,
+                                dateTo: _to,
+                                raportName: CreativityProductivityTestPage.title,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      SwitchListTile(
-                        value: _enabledDataTypes[3],
-                        onChanged: (val) => setState(() {
-                          _enabledDataTypes[3] = val;
-                        }),
-                        title: Text(SpatialMemoryTestPage.title),
-                        activeColor: Colors.lime,
+                      GestureDetector(
+                        child: SwitchListTile(
+                          value: _enabledDataTypes[3],
+                          onChanged: (val) => setState(() {
+                            _enabledDataTypes[3] = val;
+                          }),
+                          title: Text(SpatialMemoryTestPage.title),
+                          subtitle: Text('Hold down for details'),
+                          activeColor: Colors.lime,
+                        ),
+                        onLongPress: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => ReportPage(
+                                testService: _smtService,
+                                dateFrom: _from,
+                                dateTo: _to,
+                                raportName: SpatialMemoryTestPage.title,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      SwitchListTile(
-                        value: _enabledDataTypes[4],
-                        onChanged: (val) => setState(() {
-                          _enabledDataTypes[4] = val;
-                        }),
-                        title: Text(DepressionSurveyPage.title),
-                        activeColor: Colors.green,
+                      GestureDetector(
+                        child: SwitchListTile(
+                          value: _enabledDataTypes[4],
+                          onChanged: (val) => setState(() {
+                            _enabledDataTypes[4] = val;
+                          }),
+                          title: Text(DepressionSurveyPage.title),
+                          subtitle: Text('Hold down for details'),
+                          activeColor: Colors.green,
+                        ),
+                        onLongPress: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => ReportPage(
+                                testService: _dsService,
+                                dateFrom: _from,
+                                dateTo: _to,
+                                raportName: DepressionSurveyPage.title,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      SwitchListTile(
-                        value: _enabledDataTypes[5],
-                        onChanged: (val) => setState(() {
-                          _enabledDataTypes[5] = val;
-                        }),
-                        title: Text(StressSurveyPage.title),
-                        activeColor: Colors.cyan,
+                      GestureDetector(
+                        child: SwitchListTile(
+                          value: _enabledDataTypes[5],
+                          onChanged: (val) => setState(() {
+                            _enabledDataTypes[5] = val;
+                          }),
+                          title: Text(StressSurveyPage.title),
+                          subtitle: Text('Hold down for details'),
+                          activeColor: Colors.cyan,
+                        ),
+                        onLongPress: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => ReportPage(
+                                testService: _ssService,
+                                dateFrom: _from,
+                                dateTo: _to,
+                                raportName: StressSurveyPage.title,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      SwitchListTile(
-                        value: _enabledDataTypes[6],
-                        onChanged: (val) => setState(() {
-                          _enabledDataTypes[6] = val;
-                        }),
-                        title: Text(AnxietySurveyPage.title),
-                        activeColor: Colors.teal,
+                      GestureDetector(
+                        child: SwitchListTile(
+                          value: _enabledDataTypes[6],
+                          onChanged: (val) => setState(() {
+                            _enabledDataTypes[6] = val;
+                          }),
+                          title: Text(AnxietySurveyPage.title),
+                          subtitle: Text('Hold down for details'),
+                          activeColor: Colors.teal,
+                        ),
+                        onLongPress: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => ReportPage(
+                                testService: _asService,
+                                dateFrom: _from,
+                                dateTo: _to,
+                                raportName: AnxietySurveyPage.title,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       ListTile(),
                     ],

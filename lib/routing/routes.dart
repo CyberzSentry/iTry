@@ -25,4 +25,5 @@ import 'package:itry/pages/tests_page.dart';
   DepressionSurveyPage.routeName : (context) => DepressionSurveyPage(),
   StressSurveyPage.routeName : (context) => StressSurveyPage(),
   AnxietySurveyPage.routeName : (context) => AnxietySurveyPage(),
+  // ReportPage.routeName : (context) => ReportPage(),
 };

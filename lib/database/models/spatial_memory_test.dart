@@ -71,4 +71,11 @@ class SpatialMemoryTest implements TestInterface{
   Duration getTestInterval() {
     return SpatialMemoryTest.testInterval;
   }
+
+  @override
+  String toString() {
+    var percentageRounded = percentageScore.toStringAsFixed(2);
+
+    return "Score: $score, Percentage score: $percentageRounded%";
+  }
 }

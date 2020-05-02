@@ -15,14 +15,14 @@ final String creativityProductivityTestCreateString = '''
 
 final int maxScore = 60;
 
-class CreativityProductivityTest implements TestInterface{
+class CreativityProductivityTest implements TestInterface {
   int id;
   int score;
   DateTime date;
   static final Duration testInterval = Duration(days: 3);
 
-   double get percentageScore {
-    return score / maxScore;
+  double get percentageScore {
+    return ((score / maxScore) * 100);
   }
 
   CreativityProductivityTest();
@@ -47,5 +47,12 @@ class CreativityProductivityTest implements TestInterface{
   @override
   Duration getTestInterval() {
     return CreativityProductivityTest.testInterval;
+  }
+
+  @override
+  String toString() {
+    var percentageRounded = percentageScore.toStringAsFixed(2);
+
+    return "Score: $score, Percentage score: $percentageRounded%";
   }
 }

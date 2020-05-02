@@ -76,4 +76,11 @@ class StressSurvey implements TestInterface {
   Duration getTestInterval() {
     return StressSurvey.testInterval;
   }
+
+  @override
+  String toString() {
+    var percentageRounded = percentageScore.toStringAsFixed(2);
+
+    return "Score: $score, Percentage score: $percentageRounded%";
+  }
 }

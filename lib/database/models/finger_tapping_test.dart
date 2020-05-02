@@ -25,7 +25,7 @@ class FingerTappingTest implements TestInterface{
   static final Duration testInterval = Duration(days: 3);
 
   double get percentageScore {
-    return (scoreDominant + scoreNonDominant) / (maxScore *2);
+    return (((scoreDominant + scoreNonDominant) / (maxScore *2)) *100);
   }
 
   FingerTappingTest();
@@ -52,5 +52,12 @@ class FingerTappingTest implements TestInterface{
   @override
   Duration getTestInterval() {
     return FingerTappingTest.testInterval;
+  }
+
+  @override
+  String toString() {
+   var percentageRounded = percentageScore.toStringAsFixed(2);
+
+    return "Score dominant: $scoreDominant, nondominant: $scoreNonDominant, Percentage score: $percentageRounded%";
   }
 }

@@ -50,7 +50,7 @@ class CreativityProductivitySurvey implements TestInterface {
   static final Duration testInterval = Duration(days: 7);
 
   double get percentageScore {
-    return score / maxScore;
+    return ((score / maxScore ) *100);
   }
 
   CreativityProductivitySurvey();
@@ -75,5 +75,12 @@ class CreativityProductivitySurvey implements TestInterface {
   @override
   Duration getTestInterval() {
     return CreativityProductivitySurvey.testInterval;
+  }
+
+  @override
+  String toString() {
+    var percentageRounded = percentageScore.toStringAsFixed(2);
+
+    return "Score: $score, Percentage score: $percentageRounded%";
   }
 }

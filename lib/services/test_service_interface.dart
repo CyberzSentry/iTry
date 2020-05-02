@@ -1,23 +1,24 @@
 import 'package:flutter/cupertino.dart';
+import 'package:itry/database/models/test_interface.dart';
 
-abstract class TestServiceInterface<T> {
+abstract class TestServiceInterface<Test extends TestInterface> {
   @required
-  Future<T> insert(T test) {
+  Future<Test> insert(Test test) {
     return null;
   }
 
   @required
-  Future<T> insertIfActive(T test, DateTime date) {
+  Future<Test> insertIfActive(Test test, DateTime date) {
     return null;
   }
 
   @required
-  Future<T> getSingle(int id) {
+  Future<Test> getSingle(int id) {
     return null;
   }
 
   @required
-  Future<List<T>> getAll() {
+  Future<List<Test>> getAll() {
     return null;
   }
 
@@ -27,12 +28,12 @@ abstract class TestServiceInterface<T> {
   }
 
   @required
-  Future<int> updateTest(T test) {
+  Future<int> updateTest(Test test) {
     return null;
   }
 
   @required
-  Future<List<T>> getBetweenDates(DateTime from, DateTime to) {
+  Future<List<Test>> getBetweenDates(DateTime from, DateTime to) {
     return null;
   }
 

@@ -120,7 +120,7 @@ class AnxietySurvey implements TestInterface {
   static const Duration testInterval = Duration(days: 7);
 
   double get percentageScore {
-    return score / maxScore;
+    return ((score / maxScore ) *100);
   }
 
   AnxietySurvey();
@@ -145,5 +145,12 @@ class AnxietySurvey implements TestInterface {
   @override
   Duration getTestInterval() {
     return AnxietySurvey.testInterval;
+  }
+
+  @override
+  String toString() {
+    var percentageRounded = percentageScore.toStringAsFixed(2);
+
+    return "Score: $score, Percentage score: $percentageRounded%";
   }
 }
