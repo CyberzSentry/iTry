@@ -12,7 +12,12 @@ class ReportPage extends StatefulWidget {
   final DateTime dateTo;
   final String raportName;
 
-  ReportPage({Key key, @required this.testService, this.dateFrom, this.dateTo, this.raportName = ''})
+  ReportPage(
+      {Key key,
+      @required this.testService,
+      this.dateFrom,
+      this.dateTo,
+      this.raportName = ''})
       : super(key: key);
 
   @override
@@ -67,7 +72,34 @@ class _ReportPageState extends State<ReportPage> {
                         subtitle: Text(value.date.toString()),
                       ),
                       onDismissed: (direction) {
-                        widget.testService.delete(value.id);
+                        // widget.testService.delete(value.id);
+                        setState(() {
+                          widget.testService.delete(value.id);
+                        });
+                      },
+                      confirmDismiss: (direction) {
+                        return showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Delete'),
+                                content: Text(
+                                    'Are you sure you want to delete this value? You will not be albe to '),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    color: Colors.red,
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
+                                    child: Text('Continue'),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
+                                    child: Text('Abort'),
+                                  )
+                                ],
+                              );
+                            });
                       },
                       background: Container(
                         color: Colors.red,
@@ -79,8 +111,8 @@ class _ReportPageState extends State<ReportPage> {
 
               double percentageImprovement;
               if (snapshot.data.length != 0) {
-                percentageImprovement = snapshot.data.last.percentageScore -
-                    snapshot.data.first.percentageScore;
+                percentageImprovement =
+                    snapshot.data.last.compareResults(snapshot.data.first);
               } else {
                 percentageImprovement = 0;
               }

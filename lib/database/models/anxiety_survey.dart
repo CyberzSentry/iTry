@@ -26,7 +26,6 @@ const questionsMulti = <List<String>>[
     'How often have you been bothered by feeling afraid as if something awful might happen?',
   ],
   <String>['Have you had an anxiety attack (suddenly feeling fear or panic)?'],
-  
 ];
 
 const possibleAnswersMulti = <List<String>>[
@@ -81,8 +80,8 @@ const possibleAnswersCheck = <List<String>>[
   ],
 ];
 
-int calculateScore(
-    List<List<int>> answersMulti, List<List<bool>> answersCheck, List<List<int>> additional) {
+int calculateScore(List<List<int>> answersMulti, List<List<bool>> answersCheck,
+    List<List<int>> additional) {
   int sum = 0;
   for (var ans in answersMulti[0]) {
     sum += ans;
@@ -120,7 +119,7 @@ class AnxietySurvey implements TestInterface {
   static const Duration testInterval = Duration(days: 7);
 
   double get percentageScore {
-    return ((score / maxScore ) *100);
+    return ((score / maxScore) * 100);
   }
 
   AnxietySurvey();
@@ -152,5 +151,10 @@ class AnxietySurvey implements TestInterface {
     var percentageRounded = percentageScore.toStringAsFixed(2);
 
     return "Score: $score, Percentage score: $percentageRounded%";
+  }
+
+  @override
+  double compareResults(TestInterface test) {
+    return -(this.percentageScore - test.percentageScore);
   }
 }

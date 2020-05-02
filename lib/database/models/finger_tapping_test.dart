@@ -60,4 +60,9 @@ class FingerTappingTest implements TestInterface{
 
     return "Score dominant: $scoreDominant, nondominant: $scoreNonDominant, Percentage score: $percentageRounded%";
   }
+
+  @override
+  double compareResults(TestInterface test) {
+    return this.percentageScore - test.percentageScore;
+  }
 }

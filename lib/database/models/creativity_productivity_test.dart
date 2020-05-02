@@ -55,4 +55,9 @@ class CreativityProductivityTest implements TestInterface {
 
     return "Score: $score, Percentage score: $percentageRounded%";
   }
+
+  @override
+  double compareResults(TestInterface test) {
+    return this.percentageScore - test.percentageScore;
+  }
 }

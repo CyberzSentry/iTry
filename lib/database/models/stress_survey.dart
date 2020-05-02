@@ -83,4 +83,9 @@ class StressSurvey implements TestInterface {
 
     return "Score: $score, Percentage score: $percentageRounded%";
   }
+
+  @override
+  double compareResults(TestInterface test) {
+    return -1 * (this.percentageScore - test.percentageScore);
+  }
 }

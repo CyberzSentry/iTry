@@ -13,4 +13,7 @@ abstract class TestInterface{
 
   @required
   Duration getTestInterval();
+
+  @required
+  double compareResults(TestInterface test);
 }
