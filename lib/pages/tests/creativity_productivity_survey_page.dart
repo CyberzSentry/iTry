@@ -36,6 +36,13 @@ class _CreativityProductivitySurveyPageState extends BaseTestState<
     });
   }
 
+  void _restart() {
+    setState(() {
+      _questionIndex--;
+      _currAnsw = _answers[_questionIndex];
+    });
+  }
+
   void _next() {
     setState(() {
       _answers[_questionIndex] = _currAnsw;
@@ -79,7 +86,6 @@ class _CreativityProductivitySurveyPageState extends BaseTestState<
                     color: Colors.grey,
                   ),
                   onTap: () => showDescription(),
-
                 ),
                 Text((_questionIndex + 1).toString() +
                     '/' +
@@ -99,41 +105,74 @@ class _CreativityProductivitySurveyPageState extends BaseTestState<
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Column(
             children: <Widget>[
-              Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Radio(value: 0, groupValue: _currAnsw, onChanged: _setRadio),
-                  Text('0')
+                  Expanded(
+                    child: Radio(
+                      value: 0,
+                      groupValue: _currAnsw,
+                      onChanged: _setRadio,
+                    ),
+                  ),
+                  Expanded(
+                    child: Radio(
+                      value: 1,
+                      groupValue: _currAnsw,
+                      onChanged: _setRadio,
+                    ),
+                  ),
+                  Expanded(
+                    child: Radio(
+                      value: 2,
+                      groupValue: _currAnsw,
+                      onChanged: _setRadio,
+                    ),
+                  ),
+                  Expanded(
+                    child: Radio(
+                      value: 3,
+                      groupValue: _currAnsw,
+                      onChanged: _setRadio,
+                    ),
+                  ),
                 ],
               ),
-              Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Radio(value: 1, groupValue: _currAnsw, onChanged: _setRadio),
-                  Text('1')
+                  Expanded(
+                    child: Text(
+                      _possibleAnswers[0],
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      _possibleAnswers[1],
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      _possibleAnswers[2],
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      _possibleAnswers[3],
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ],
               ),
-              Column(
-                children: <Widget>[
-                  Radio(value: 2, groupValue: _currAnsw, onChanged: _setRadio),
-                  Text('2')
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Radio(value: 3, groupValue: _currAnsw, onChanged: _setRadio),
-                  Text('3')
-                ],
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              _currAnsw != -1
-                  ? Text(_possibleAnswers[_currAnsw].toString())
-                  : Text('')
             ],
           ),
           Row(
@@ -184,7 +223,7 @@ class _CreativityProductivitySurveyPageState extends BaseTestState<
             children: <Widget>[
               MaterialButton(
                 color: Colors.green,
-                onPressed: _questionIndex > 0 ? _previous : null,
+                onPressed: _restart,
                 child: Text('Go back'),
               ),
               MaterialButton(
@@ -230,9 +269,7 @@ class _CreativityProductivitySurveyPageState extends BaseTestState<
           top: 5,
           bottom: 5,
         ),
-        child: Text(
-            "Using 4-point scale:",
-            textAlign: TextAlign.justify),
+        child: Text("Using 4-point scale:", textAlign: TextAlign.justify),
       ),
       Padding(
         padding: EdgeInsets.only(
@@ -255,8 +292,7 @@ class _CreativityProductivitySurveyPageState extends BaseTestState<
           top: 5,
           bottom: 5,
         ),
-        child: Text(
-            "answer the following questions using your best beliefs.",
+        child: Text("answer the following questions using your best beliefs.",
             textAlign: TextAlign.justify),
       ),
       Padding(
@@ -264,8 +300,7 @@ class _CreativityProductivitySurveyPageState extends BaseTestState<
           top: 5,
           bottom: 5,
         ),
-        child: Text(
-            "The interval of the survey: once a week.",
+        child: Text("The interval of the survey: once a week.",
             textAlign: TextAlign.justify),
       ),
       Padding(

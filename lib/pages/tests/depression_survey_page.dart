@@ -40,6 +40,13 @@ class _DepressionSurveyPageState extends BaseTestState<DepressionSurveyPage,
     });
   }
 
+  void _restart() {
+    setState(() {
+      _questionIndex--;
+      _currAnsw = _answers[_questionIndex];
+    });
+  }
+
   void _setRadio(int val) {
     setState(() {
       _currAnsw = val;
@@ -93,31 +100,72 @@ class _DepressionSurveyPageState extends BaseTestState<DepressionSurveyPage,
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Column(
             children: <Widget>[
-              Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Radio(value: 0, groupValue: _currAnsw, onChanged: _setRadio),
-                  Text('0')
+                  Expanded(
+                    child: Radio(
+                      value: 0,
+                      groupValue: _currAnsw,
+                      onChanged: _setRadio,
+                    ),
+                  ),
+                  Expanded(
+                    child: Radio(
+                      value: 1,
+                      groupValue: _currAnsw,
+                      onChanged: _setRadio,
+                    ),
+                  ),
+                  Expanded(
+                    child: Radio(
+                      value: 2,
+                      groupValue: _currAnsw,
+                      onChanged: _setRadio,
+                    ),
+                  ),
+                  Expanded(
+                    child: Radio(
+                      value: 3,
+                      groupValue: _currAnsw,
+                      onChanged: _setRadio,
+                    ),
+                  ),
                 ],
               ),
-              Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Radio(value: 1, groupValue: _currAnsw, onChanged: _setRadio),
-                  Text('1')
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Radio(value: 2, groupValue: _currAnsw, onChanged: _setRadio),
-                  Text('2')
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Radio(value: 3, groupValue: _currAnsw, onChanged: _setRadio),
-                  Text('3')
+                  Expanded(
+                    child: Text(
+                      _possibleAnswers[0],
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      _possibleAnswers[1],
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      _possibleAnswers[2],
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      _possibleAnswers[3],
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -178,7 +226,7 @@ class _DepressionSurveyPageState extends BaseTestState<DepressionSurveyPage,
             children: <Widget>[
               MaterialButton(
                 color: Colors.green,
-                onPressed: _questionIndex > 0 ? _previous : null,
+                onPressed: _questionIndex > 0 ? _restart : null,
                 child: Text('Go back'),
               ),
               MaterialButton(
@@ -244,8 +292,7 @@ class _DepressionSurveyPageState extends BaseTestState<DepressionSurveyPage,
           top: 5,
           bottom: 5,
         ),
-        child: Text(
-            "answer the following questions using your best beliefs.",
+        child: Text("answer the following questions using your best beliefs.",
             textAlign: TextAlign.justify),
       ),
       Padding(
@@ -253,8 +300,7 @@ class _DepressionSurveyPageState extends BaseTestState<DepressionSurveyPage,
           top: 5,
           bottom: 5,
         ),
-        child: Text(
-            "The interval of the survey: once a week.",
+        child: Text("The interval of the survey: once a week.",
             textAlign: TextAlign.justify),
       ),
       Padding(

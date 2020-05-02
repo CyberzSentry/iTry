@@ -82,6 +82,10 @@ const possibleAnswersCheck = <List<String>>[
 
 int calculateScore(List<List<int>> answersMulti, List<List<bool>> answersCheck,
     List<List<int>> additional) {
+  answersMulti = answersMulti.toList();
+  answersCheck = answersCheck.toList();
+  additional = additional.toList();
+
   int sum = 0;
   for (var ans in answersMulti[0]) {
     sum += ans;

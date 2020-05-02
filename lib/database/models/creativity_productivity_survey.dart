@@ -33,6 +33,7 @@ final possibleAnswers = <String>[
 ];
 
 int calculateScore(List<int> answers){
+  answers = answers.toList();
   answers[4] = answers[4] * -1;
   answers[5] = answers[5] * -1;
   var sum = 0;
