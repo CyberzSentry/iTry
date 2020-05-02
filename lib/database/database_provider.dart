@@ -1,3 +1,4 @@
+import 'package:itry/database/models/acuity_contrast_test.dart';
 import 'package:itry/database/models/anxiety_survey.dart';
 import 'package:itry/database/models/creativity_productivity_test.dart';
 import 'package:itry/database/models/depression_survey.dart';
@@ -33,7 +34,7 @@ class DatabaseProvider {
   Future<Database> getDatabaseInstance() async {
     var directoryPath = await getDatabasesPath();
     String fullPath = join(directoryPath, _databaseName);
-    return await openDatabase(fullPath, version: 10,
+    return await openDatabase(fullPath, version: 11,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
     );
@@ -48,9 +49,13 @@ class DatabaseProvider {
         await db.execute(depressionSurveyCreateString);
         await db.execute(stressSurveyCreateString);
         await db.execute(anxietySurveyCreateString);
+        await db.execute(acuityContrastTestCreateString);
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if(oldVersion < 11){
+      await db.execute(acuityContrastTestCreateString);
+    }
     if(oldVersion < 10){
       await db.execute(anxietySurveyCreateString);
     }
