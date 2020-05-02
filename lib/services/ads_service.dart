@@ -39,10 +39,10 @@ class AdsService {
           listener: (MobileAdEvent event) {
             print("BannerAd $event");
           });
-      _banner
+    }
+    _banner
         ..load()
         ..show();
-    }
   }
 
   void hideBanner() async {
@@ -51,17 +51,17 @@ class AdsService {
   }
 
   void showInterstitial() {
-    if (_interstitialAd == null) {
+    // if (_interstitialAd == null) {
       _interstitialAd = InterstitialAd(
           adUnitId: _interstitialUnitId,
           targetingInfo: _targetingInfo,
           listener: (MobileAdEvent event) {
-            print("BannerAd $event");
+            print("InterstitialAd $event");
           });
-      _banner
-        ..load()
-        ..show();
-    }
+    // }
+    _interstitialAd
+      ..load()
+      ..show();
   }
 
   void hideInterstitial() async {

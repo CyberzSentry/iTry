@@ -18,6 +18,7 @@ abstract class BaseTestState<
   TestService service;
 
   Future<void> commitResult(Test result) async {
+    AdsService().showInterstitial();
     if (await SettingsService().getTestTimeBlocking()) {
       if (await service.isActive(result.date)) {
         await service.insert(result);
