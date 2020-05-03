@@ -4,14 +4,17 @@ import 'package:itry/services/test_service_interface.dart';
 
 class AcuityContrastTestService
     implements TestServiceInterface<AcuityContrastTest> {
-  AcuityContrastTestService._();
+  
+  AcuityContrastTestService();
 
-  static final AcuityContrastTestService _instance =
-      AcuityContrastTestService._();
+  // AcuityContrastTestService._();
 
-  factory AcuityContrastTestService() {
-    return _instance;
-  }
+  // static final AcuityContrastTestService _instance =
+  //     AcuityContrastTestService._();
+
+  // factory AcuityContrastTestService() {
+  //   return _instance;
+  // }
 
   @override
   Future<AcuityContrastTest> insert(

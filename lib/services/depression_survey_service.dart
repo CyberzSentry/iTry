@@ -4,14 +4,17 @@ import 'package:itry/services/test_service_interface.dart';
 
 class DepressionSurveyService
     implements TestServiceInterface<DepressionSurvey> {
-  DepressionSurveyService._();
+  
+  DepressionSurveyService();
 
-  static final DepressionSurveyService _instance =
-      DepressionSurveyService._();
+  // DepressionSurveyService._();
 
-  factory DepressionSurveyService() {
-    return _instance;
-  }
+  // static final DepressionSurveyService _instance =
+  //     DepressionSurveyService._();
+
+  // factory DepressionSurveyService() {
+  //   return _instance;
+  // }
 
   @override
   Future<DepressionSurvey> insert(

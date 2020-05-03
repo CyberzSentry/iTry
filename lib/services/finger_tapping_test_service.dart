@@ -4,14 +4,17 @@ import 'package:itry/services/test_service_interface.dart';
 
 class FingerTappingTestService
     implements TestServiceInterface<FingerTappingTest> {
-  FingerTappingTestService._();
+  
+  FingerTappingTestService();
 
-  static final FingerTappingTestService _instance =
-      FingerTappingTestService._();
+  // FingerTappingTestService._();
 
-  factory FingerTappingTestService() {
-    return _instance;
-  }
+  // static final FingerTappingTestService _instance =
+  //     FingerTappingTestService._();
+
+  // factory FingerTappingTestService() {
+  //   return _instance;
+  // }
 
   @override
   Future<FingerTappingTest> insert(FingerTappingTest test) async {

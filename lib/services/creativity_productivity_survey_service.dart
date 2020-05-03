@@ -4,14 +4,17 @@ import 'package:itry/services/test_service_interface.dart';
 
 class CreativityProductivitySurveyService
     implements TestServiceInterface<CreativityProductivitySurvey> {
-  CreativityProductivitySurveyService._();
+  
+  CreativityProductivitySurveyService();
+  
+  // CreativityProductivitySurveyService._();
 
-  static final CreativityProductivitySurveyService _instance =
-      CreativityProductivitySurveyService._();
+  // static final CreativityProductivitySurveyService _instance =
+  //     CreativityProductivitySurveyService._();
 
-  factory CreativityProductivitySurveyService() {
-    return _instance;
-  }
+  // factory CreativityProductivitySurveyService() {
+  //   return _instance;
+  // }
 
   @override
   Future<CreativityProductivitySurvey> insert(

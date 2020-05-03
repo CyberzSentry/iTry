@@ -4,14 +4,17 @@ import 'package:itry/services/test_service_interface.dart';
 
 class SpatialMemoryTestService
     implements TestServiceInterface<SpatialMemoryTest> {
-  SpatialMemoryTestService._();
+  
+  SpatialMemoryTestService();
 
-  static final SpatialMemoryTestService _instance =
-      SpatialMemoryTestService._();
+  // SpatialMemoryTestService._();
 
-  factory SpatialMemoryTestService() {
-    return _instance;
-  }
+  // static final SpatialMemoryTestService _instance =
+  //     SpatialMemoryTestService._();
+
+  // factory SpatialMemoryTestService() {
+  //   return _instance;
+  // }
 
   @override
   Future<SpatialMemoryTest> insert(SpatialMemoryTest test) async {

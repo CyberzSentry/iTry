@@ -4,14 +4,16 @@ import 'package:itry/services/test_service_interface.dart';
 
 class StressSurveyService
     implements TestServiceInterface<StressSurvey> {
-  StressSurveyService._();
+  
+  StressSurveyService();
+  // StressSurveyService._();
 
-  static final StressSurveyService _instance =
-      StressSurveyService._();
+  // static final StressSurveyService _instance =
+  //     StressSurveyService._();
 
-  factory StressSurveyService() {
-    return _instance;
-  }
+  // factory StressSurveyService() {
+  //   return _instance;
+  // }
 
   @override
   Future<StressSurvey> insert(
