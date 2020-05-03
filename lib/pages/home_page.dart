@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/services/ads_service.dart';
+import 'package:itry/services/update_service.dart';
 
 class DrawerItem {
   String title;
@@ -22,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     AdsService().showBanner();
+    UpdateService.versionCheck(context);
     super.initState();
   }
 
