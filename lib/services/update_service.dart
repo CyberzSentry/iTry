@@ -10,37 +10,53 @@ const APP_STORE_URL = '';
 const PLAY_STORE_URL = 'www.google.pl';
 
 class UpdateService {
-  static versionCheck(context) async {
-    //Get Current installed version of app
-    final PackageInfo info = await PackageInfo.fromPlatform();
-    double currentVersion =
-        double.parse(info.version.trim().replaceAll(".", ""));
-
-    //Get Latest version info from firebase config
-    final RemoteConfig remoteConfig = await RemoteConfig.instance;
-
-    try {
-      // Using default duration to force fetching from remote server.
-      await remoteConfig.fetch(expiration: const Duration(seconds: 0));
-      await remoteConfig.activateFetched();
-      remoteConfig.getString('force_update_current_version');
-      double newVersion = double.parse(remoteConfig
-          .getString('force_update_current_version')
-          .trim()
-          .replaceAll(".", ""));
-      if (newVersion > currentVersion) {
-        _showVersionDialog(context);
-      }
-    } on FetchThrottledException catch (exception) {
-      // Fetch throttled.
-      print(exception);
-    } catch (exception) {
-      print('Unable to fetch remote config. Cached or default values will be '
-          'used');
-    }
+  UpdateService._() {
+    this._asked = false;
   }
 
-  static _showVersionDialog(context) async {
+  static final UpdateService _instance = UpdateService._();
+
+  factory UpdateService() {
+    return _instance;
+  }
+
+  bool _asked;
+
+  versionCheck(context) async {
+    if (this._asked == false) {
+      this._asked = true;
+      final PackageInfo info = await PackageInfo.fromPlatform();
+      double currentVersion =
+          double.parse(info.version.trim().replaceAll(".", ""));
+
+      //Get Latest version info from firebase config
+      final RemoteConfig remoteConfig = await RemoteConfig.instance;
+
+      try {
+        // Using default duration to force fetching from remote server.
+        await remoteConfig.fetch(expiration: const Duration(seconds: 0));
+        await remoteConfig.activateFetched();
+        remoteConfig.getString('force_update_current_version');
+        double newVersion = double.parse(remoteConfig
+            .getString('force_update_current_version')
+            .trim()
+            .replaceAll(".", ""));
+        if (newVersion > currentVersion) {
+          _showVersionDialog(context);
+        }
+      } on FetchThrottledException catch (exception) {
+        // Fetch throttled.
+        print(exception);
+      } catch (exception) {
+        print('Unable to fetch remote config. Cached or default values will be '
+            'used');
+      }
+    }
+    //Get Current installed version of app
+  }
+
+  _showVersionDialog(context) async {
+    this._asked = true;
     await showDialog<String>(
       context: context,
       barrierDismissible: false,

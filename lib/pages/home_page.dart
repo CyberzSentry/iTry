@@ -23,7 +23,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     AdsService().showBanner();
-    UpdateService.versionCheck(context);
+    UpdateService().versionCheck(context);
+
     super.initState();
   }
 
