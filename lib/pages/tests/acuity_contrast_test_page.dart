@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itry/database/models/acuity_contrast_test.dart';
+import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/acuity_contrast_test_service.dart';
 import 'dart:math' as math;
@@ -282,7 +283,41 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
 
   @override
   List<Widget> descriptionBody() {
-    return <Widget>[Text('description')];
+    return <Widget>[
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "Tests for visual acuity and contrast sensitivity are aimed to determine changes in your vision ability. They have no diagnostic values.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text(
+            "You have to place yourself about 0,5 meter from the screen. If you have any glasses that you are using everyday, keep them on. When asked, without pressing on the eyelid, cover the left or right eye with your hand. Indicate with the cursor the way that symbols’ open side is facing.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: Text("The interval of the test: once every month.",
+            textAlign: TextAlign.justify),
+      ),
+      Padding(
+        padding: EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        child: IconTextFragment(),
+      ),
+    ];
   }
 
   @override
