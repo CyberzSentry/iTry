@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itry/database/models/acuity_contrast_test.dart';
 import 'package:itry/database/models/anxiety_survey.dart';
 import 'package:itry/database/models/creativity_productivity_survey.dart';
 import 'package:itry/database/models/creativity_productivity_test.dart';
@@ -7,6 +8,7 @@ import 'package:itry/database/models/finger_tapping_test.dart';
 import 'package:itry/database/models/spatial_memory_test.dart';
 import 'package:itry/database/models/stress_survey.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
+import 'package:itry/pages/tests/acuity_contrast_test_page.dart';
 import 'package:itry/pages/tests/anixety_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
@@ -14,6 +16,7 @@ import 'package:itry/pages/tests/depression_survey_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/spatial_memory_test_page.dart';
 import 'package:itry/pages/tests/stress_survey_page.dart';
+import 'package:itry/services/acuity_contrast_test_service.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/anxiety_survey_service.dart';
 import 'package:itry/services/creativity_productivity_survey_service.dart';
@@ -71,7 +74,12 @@ class _TestsPageState extends State<TestsPage> {
         AnxietySurveyService(),
         AnxietySurveyPage.title,
         AnxietySurveyPage.routeName,
-        AnxietySurvey.testInterval)
+        AnxietySurvey.testInterval),
+    Tuple4<TestServiceInterface, String, String, Duration>(
+        AcuityContrastTestService(),
+        AcuityContrastTestPage.title,
+        AcuityContrastTestPage.routeName,
+        AcuityContrastTest.testInterval),
   ];
 
   Future<List<Widget>> _buildTestsList() async {
