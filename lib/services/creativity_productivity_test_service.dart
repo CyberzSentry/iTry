@@ -66,8 +66,8 @@ class CreativityProductivityTestService
     var surveysList = await getAll();
     var surveysListFiltered = surveysList
         .where((x) =>
-            x.date.isAfter(from.add(Duration(days: -1))) &
-            x.date.isBefore(to.add(Duration(days: 1))))
+            DateTime.utc(x.date.year, x.date.month, x.date.day).compareTo(DateTime.utc(from.year, from.month, from.day)) >= 0 &&
+            DateTime.utc(x.date.year, x.date.month, x.date.day).compareTo(DateTime.utc(to.year, to.month, to.day)) <= 0 )
         .toList();
 
     return surveysListFiltered;
