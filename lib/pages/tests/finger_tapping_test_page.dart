@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:itry/database/models/finger_tapping_test.dart';
 import 'package:itry/fragments/icon_text_fragment.dart';
@@ -264,6 +265,12 @@ class _FingerTappingTestPageState extends BaseTestState<FingerTappingTestPage,
   @override
   void dispose() {
     _timer?.cancel();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     super.dispose();
   }
 
@@ -341,5 +348,14 @@ class _FingerTappingTestPageState extends BaseTestState<FingerTappingTestPage,
   @override
   String title() {
     return FingerTappingTestPage.title;
+  }
+
+  @override
+  void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.initState();
   }
 }

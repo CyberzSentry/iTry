@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/spatial_memory_test_service.dart';
@@ -248,6 +249,12 @@ class _SpatialMemoryTestPageState extends BaseTestState<SpatialMemoryTestPage,
   void dispose() {
     _displayTimer?.cancel();
     _displayOffsetTimer?.cancel();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     super.dispose();
   }
 
@@ -311,5 +318,14 @@ class _SpatialMemoryTestPageState extends BaseTestState<SpatialMemoryTestPage,
   @override
   String title() {
     return SpatialMemoryTestPage.title;
+  }
+
+  @override
+  void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.initState();
   }
 }
