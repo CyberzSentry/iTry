@@ -5,6 +5,7 @@ import 'package:itry/database/models/creativity_productivity_survey.dart';
 import 'package:itry/database/models/creativity_productivity_test.dart';
 import 'package:itry/database/models/depression_survey.dart';
 import 'package:itry/database/models/finger_tapping_test.dart';
+import 'package:itry/database/models/pavsat_test.dart';
 import 'package:itry/database/models/spatial_memory_test.dart';
 import 'package:itry/database/models/stress_survey.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
@@ -14,6 +15,7 @@ import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
 import 'package:itry/pages/tests/depression_survey_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
+import 'package:itry/pages/tests/pavsat_test_page.dart';
 import 'package:itry/pages/tests/spatial_memory_test_page.dart';
 import 'package:itry/pages/tests/stress_survey_page.dart';
 import 'package:itry/services/acuity_contrast_test_service.dart';
@@ -23,6 +25,7 @@ import 'package:itry/services/creativity_productivity_survey_service.dart';
 import 'package:itry/services/creativity_productivity_test_service.dart';
 import 'package:itry/services/depression_survey_service.dart';
 import 'package:itry/services/finger_tapping_test_service.dart';
+import 'package:itry/services/pavsat_test_service.dart';
 import 'package:itry/services/settings_service.dart';
 import 'package:itry/services/spatial_memory_test_service.dart';
 import 'package:itry/services/stress_survey_service.dart';
@@ -80,6 +83,11 @@ class _TestsPageState extends State<TestsPage> {
         AcuityContrastTestPage.title,
         AcuityContrastTestPage.routeName,
         AcuityContrastTest.testInterval),
+    Tuple4<TestServiceInterface, String, String, Duration>(
+        PavsatTestService(),
+        PavsatTestPage.title,
+        PavsatTestPage.routeName,
+        PavsatTest.testInterval),
   ];
 
   Future<List<Widget>> _buildTestsList() async {

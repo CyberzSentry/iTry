@@ -155,10 +155,7 @@ class _SpatialMemoryTestPageState extends BaseTestState<SpatialMemoryTestPage,
         ),
         GridView.count(
           shrinkWrap: true,
-          // Create a grid with 2 columns. If you change the scrollDirection to
-          // horizontal, this produces 2 rows.
           crossAxisCount: 4,
-          // Generate 100 widgets that display their index in the List.
           children: List.generate(
             16,
             (index) {

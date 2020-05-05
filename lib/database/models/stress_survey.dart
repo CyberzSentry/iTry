@@ -50,7 +50,7 @@ class StressSurvey implements TestInterface {
   static const Duration testInterval = Duration(days: 7);
 
   double get percentageScore {
-    return score / maxScore;
+    return (score / maxScore)*100;
   }
 
   StressSurvey();

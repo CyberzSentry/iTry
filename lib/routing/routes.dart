@@ -9,6 +9,7 @@ import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
 import 'package:itry/pages/tests/depression_survey_page.dart';
 import 'package:itry/pages/tests/finger_tapping_test_page.dart';
+import 'package:itry/pages/tests/pavsat_test_page.dart';
 import 'package:itry/pages/tests/spatial_memory_test_page.dart';
 import 'package:itry/pages/tests/stress_survey_page.dart';
 import 'package:itry/pages/tests_page.dart';
@@ -27,4 +28,5 @@ import 'package:itry/pages/tests_page.dart';
   StressSurveyPage.routeName : (context) => StressSurveyPage(),
   AnxietySurveyPage.routeName : (context) => AnxietySurveyPage(),
   AcuityContrastTestPage.routeName : (context) => AcuityContrastTestPage(),
+  PavsatTestPage.routeName : (context) => PavsatTestPage(),
 };

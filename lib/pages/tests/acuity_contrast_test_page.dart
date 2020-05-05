@@ -79,8 +79,7 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
 
   int _currImage = 0;
   int _score = 0;
-
-  bool _finished = false;
+  
   bool _started = false;
 
   void _up() {
