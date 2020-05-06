@@ -330,8 +330,20 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
     return Container(
       margin: EdgeInsets.fromLTRB(20, 40, 20, 40),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              GestureDetector(
+                child: Icon(
+                  Icons.info_outline,
+                  color: Colors.grey,
+                ),
+                onTap: () => showDescription(),
+              ),
+            ],
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[Text('Are you happy with your answers?')],

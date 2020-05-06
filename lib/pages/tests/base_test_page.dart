@@ -15,6 +15,8 @@ abstract class BaseTestState<
     Page extends BaseTestPage,
     TestService extends TestServiceInterface,
     Test extends TestInterface> extends State<Page> {
+
+  @required
   TestService service;
 
   Future<void> commitResult(Test result) async {
