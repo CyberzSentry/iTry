@@ -319,7 +319,7 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
           top: 5,
           bottom: 5,
         ),
-        child: Text("The interval of the test: once every month.",
+        child: Text("The interval of the test: once every two weeks.",
             textAlign: TextAlign.justify),
       ),
       Padding(

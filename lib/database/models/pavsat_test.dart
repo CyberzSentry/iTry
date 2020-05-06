@@ -20,7 +20,7 @@ class PavsatTest implements TestInterface{
   int score;
   DateTime date;
 
-  static final Duration testInterval = Duration(days: 3);
+  static final Duration testInterval = Duration(days: 14);
 
    double get percentageScore {
     return (score / maxScore)*100;
