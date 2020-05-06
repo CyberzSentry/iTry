@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-const APP_STORE_URL = '';
-const PLAY_STORE_URL = 'www.google.pl';
+// const APP_STORE_URL = '';
+// const PLAY_STORE_URL = 'www.google.pl';
 
 class UpdateService {
   UpdateService._() {
@@ -42,7 +42,10 @@ class UpdateService {
             .trim()
             .replaceAll(".", ""));
         if (newVersion > currentVersion) {
-          _showVersionDialog(context);
+          var app_store = remoteConfig.getString('app_store_url');
+          var play_store = remoteConfig.getString('play_store_url');
+          
+          _showVersionDialog(context, play_store, app_store);
         }
       } on FetchThrottledException catch (exception) {
         // Fetch throttled.
@@ -55,7 +58,7 @@ class UpdateService {
     //Get Current installed version of app
   }
 
-  _showVersionDialog(context) async {
+  _showVersionDialog(context, String play_store_url, String app_store_url) async {
     this._asked = true;
     await showDialog<String>(
       context: context,
@@ -73,7 +76,7 @@ class UpdateService {
                 actions: <Widget>[
                   FlatButton(
                     child: Text(btnLabel),
-                    onPressed: () => _launchURL(APP_STORE_URL),
+                    onPressed: () => _launchURL(app_store_url),
                   ),
                   FlatButton(
                     child: Text(btnLabelCancel),
@@ -87,7 +90,7 @@ class UpdateService {
                 actions: <Widget>[
                   FlatButton(
                     child: Text(btnLabel),
-                    onPressed: () => _launchURL(PLAY_STORE_URL),
+                    onPressed: () => _launchURL(play_store_url),
                   ),
                   FlatButton(
                     child: Text(btnLabelCancel),
