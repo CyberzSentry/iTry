@@ -130,20 +130,21 @@ class _PavsatTestPageState
             children: List.generate(
               15,
               (index) {
-                return GestureDetector(
-                  onTap: () => _gridTap(index + 3),
-                  child: Container(
-                    margin: EdgeInsets.all(1),
-                    decoration: new BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        new BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 3.0,
-                            offset: new Offset(1.0, 1.0))
-                      ],
-                    ),
-                    child: Container(
+                return Container(
+                  margin: EdgeInsets.all(1),
+                  decoration: new BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      new BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 3.0,
+                          offset: new Offset(1.0, 1.0))
+                    ],
+                  ),
+                  child: Material(
+                    child: InkWell(
+                      splashColor: Colors.green[100],
+                      onTap: () => _gridTap(index + 3),
                       child: Center(
                         child: Text(
                           (index + 3).toString(),
