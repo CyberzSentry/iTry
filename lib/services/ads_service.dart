@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_admob/firebase_admob.dart';
@@ -7,8 +8,6 @@ class AdsService {
     FirebaseAdMob.instance.initialize(appId: getAppId());
     _bannerUnitId = getBannerAdUnitId();
     _interstitialUnitId = getInterstitialAdUnitId();
-    _awaitingDisplayBanner = false;
-    _awaitingDisplayInterstitial = false;
   }
 
   static final AdsService _instance = AdsService._();
@@ -19,9 +18,9 @@ class AdsService {
 
   BannerAd _banner;
 
-  bool _awaitingDisplayBanner;
+  bool _bannerHidden;
 
-  bool _awaitingDisplayInterstitial;
+  Future<void> _loadingBanner;
 
   InterstitialAd _interstitialAd;
 
@@ -38,36 +37,45 @@ class AdsService {
   }
 
   void showBanner() async {
-    _awaitingDisplayBanner = true;
-    if (_banner == null) {
-      _awaitingDisplayBanner = true;
-      _banner = BannerAd(
-          adUnitId: _bannerUnitId,
-          size: AdSize.banner,
-          targetingInfo: _targetingInfo,
-          listener: (MobileAdEvent event) {
-            print("BannerAd $event");
-            if (event == MobileAdEvent.loaded ||
-                event == MobileAdEvent.opened ||
-                event == MobileAdEvent.failedToLoad) {
-              this._awaitingDisplayBanner = false;
-            }
-          });
-      await _banner.load();
-      await _banner.show();
+    if (_banner != null) {
+      return;
     }
+    var completer = new Completer<void>();
+    _loadingBanner = completer.future;
+    _bannerHidden = false;
+    _banner = BannerAd(
+        adUnitId: _bannerUnitId,
+        size: AdSize.banner,
+        targetingInfo: _targetingInfo,
+        listener: (MobileAdEvent event) {
+          print("BannerAd $event");
+          if (event == MobileAdEvent.loaded || event == MobileAdEvent.failedToLoad) {
+            completer.complete();
+            if (_bannerHidden) {
+              hideBanner();
+            }
+          }
+        });
+    _banner
+      ..load().then((loaded) {
+        if (loaded) {
+          _banner..show();
+        }
+      });
   }
 
   void hideBanner() async {
-    if (_banner != null) {
-      await _banner.dispose();
-      _banner = null;
+    if(_loadingBanner != null){
+      await _loadingBanner;
     }
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _bannerHidden = true;
+      _banner?.dispose();
+      _banner = null;
+    });
   }
 
   Future<void> showInterstitial(Function() onComplete) async {
-    // if (_interstitialAd == null) {
-    _awaitingDisplayInterstitial = true;
     _interstitialAd = InterstitialAd(
         adUnitId: _interstitialUnitId,
         targetingInfo: _targetingInfo,
@@ -75,11 +83,9 @@ class AdsService {
           print("InterstitialAd $event");
           if (event == MobileAdEvent.opened ||
               event == MobileAdEvent.failedToLoad) {
-            _awaitingDisplayInterstitial = false;
             onComplete();
           }
         });
-    // }
     await _interstitialAd.load();
     await _interstitialAd.show();
   }
