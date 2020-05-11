@@ -68,7 +68,7 @@ class _AnxietySurveyPageState extends BaseTestState<AnxietySurveyPage,
     result.date = date;
     result.score = score;
     await commitResult(result);
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
   }
 
   void _retake() {

@@ -77,7 +77,7 @@ class _CreativityProductivityTestPageState
     result.score = _score;
     result.date = date;
     await commitResult(result);
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
   }
 
   void _retakeTest() {

@@ -15,12 +15,16 @@ abstract class BaseTestState<
     Page extends BaseTestPage,
     TestService extends TestServiceInterface,
     Test extends TestInterface> extends State<Page> {
-
   @required
   TestService service;
 
+  bool _saving = false;
+
   Future<void> commitResult(Test result) async {
-    AdsService().showInterstitial();
+    setState(() {
+      _saving = true;
+    });
+    await AdsService().showInterstitial(() => Navigator.of(context).pop());
     if (await SettingsService().getTestTimeBlocking()) {
       if (await service.isActive(result.date)) {
         await service.insert(result);
@@ -67,7 +71,11 @@ abstract class BaseTestState<
           title: Text(title()),
         ),
         body: Container(
-          child: body(),
+          child: _saving
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : body(),
         ));
   }
 
@@ -76,6 +84,12 @@ abstract class BaseTestState<
     AdsService().hideBanner();
     _checkFirstSeen();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    AdsService().showBanner();
+    super.dispose();
   }
 
   String title();

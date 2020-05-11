@@ -226,7 +226,7 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
     result.score = _score;
     result.date = DateTime.now();
     await super.commitResult(result);
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
   }
 
   Widget _confirmScreen() {

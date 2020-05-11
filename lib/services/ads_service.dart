@@ -7,14 +7,21 @@ class AdsService {
     FirebaseAdMob.instance.initialize(appId: getAppId());
     _bannerUnitId = getBannerAdUnitId();
     _interstitialUnitId = getInterstitialAdUnitId();
+    _awaitingDisplayBanner = false;
+    _awaitingDisplayInterstitial = false;
   }
 
   static final AdsService _instance = AdsService._();
 
   String _bannerUnitId;
+
   String _interstitialUnitId;
 
   BannerAd _banner;
+
+  bool _awaitingDisplayBanner;
+
+  bool _awaitingDisplayInterstitial;
 
   InterstitialAd _interstitialAd;
 
@@ -30,44 +37,57 @@ class AdsService {
     return _instance;
   }
 
-  void showBanner() {
+  void showBanner() async {
+    _awaitingDisplayBanner = true;
     if (_banner == null) {
+      _awaitingDisplayBanner = true;
       _banner = BannerAd(
           adUnitId: _bannerUnitId,
           size: AdSize.banner,
           targetingInfo: _targetingInfo,
           listener: (MobileAdEvent event) {
             print("BannerAd $event");
+            if (event == MobileAdEvent.loaded ||
+                event == MobileAdEvent.opened ||
+                event == MobileAdEvent.failedToLoad) {
+              this._awaitingDisplayBanner = false;
+            }
           });
+      await _banner.load();
+      await _banner.show();
     }
-    _banner
-        ..load()
-        ..show();
   }
 
   void hideBanner() async {
-    await _banner?.dispose();
-    _banner = null;
+    if (_banner != null) {
+      await _banner.dispose();
+      _banner = null;
+    }
   }
 
-  void showInterstitial() {
+  Future<void> showInterstitial(Function() onComplete) async {
     // if (_interstitialAd == null) {
-      _interstitialAd = InterstitialAd(
-          adUnitId: _interstitialUnitId,
-          targetingInfo: _targetingInfo,
-          listener: (MobileAdEvent event) {
-            print("InterstitialAd $event");
-          });
+    _awaitingDisplayInterstitial = true;
+    _interstitialAd = InterstitialAd(
+        adUnitId: _interstitialUnitId,
+        targetingInfo: _targetingInfo,
+        listener: (MobileAdEvent event) {
+          print("InterstitialAd $event");
+          if (event == MobileAdEvent.opened ||
+              event == MobileAdEvent.failedToLoad) {
+            _awaitingDisplayInterstitial = false;
+            onComplete();
+          }
+        });
     // }
-    _interstitialAd
-      ..load()
-      ..show();
+    await _interstitialAd.load();
+    await _interstitialAd.show();
   }
 
-  void hideInterstitial() async {
-    await _interstitialAd?.dispose();
-    _banner = null;
-  }
+  // void hideInterstitial() async {
+  //   await _interstitialAd?.dispose();
+  //   _banner = null;
+  // }
 
   static String getAppId() {
     if (Platform.isIOS) {

@@ -61,7 +61,7 @@ class _DepressionSurveyPageState extends BaseTestState<DepressionSurveyPage,
     result.date = date;
     result.score = score;
     await commitResult(result);
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
   }
 
   Widget _questionScreen() {

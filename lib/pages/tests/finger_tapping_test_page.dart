@@ -129,7 +129,7 @@ class _FingerTappingTestPageState extends BaseTestState<FingerTappingTestPage,
       testResult.scoreDominant = _scoreDominant;
       testResult.scoreNonDominant = _scoreNonDominant;
       await super.commitResult(testResult);
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
     }
   }
 

@@ -119,7 +119,7 @@ class _SpatialMemoryTestPageState extends BaseTestState<SpatialMemoryTestPage,
     test.score = calculateScore(_seriesScore);
     await commitResult(test);
 
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
   }
 
   void _retakeTest() {

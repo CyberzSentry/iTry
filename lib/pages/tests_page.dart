@@ -105,11 +105,7 @@ class _TestsPageState extends State<TestsPage> {
             child: ListTile(
               title: Text(test.item2),
               trailing: null,
-              onTap: () =>
-                  Navigator.of(context).pushNamed(test.item3).whenComplete(() {
-                setState(() {});
-                AdsService().showBanner();
-              }),
+              onTap: () => Navigator.of(context).pushNamed(test.item3),
             ),
             decoration: BoxDecoration(
                 // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
@@ -141,12 +137,7 @@ class _TestsPageState extends State<TestsPage> {
                           FlatButton(
                             onPressed: () {
                               Navigator.of(context).pop();
-                              Navigator.of(context)
-                                  .pushNamed(test.item3)
-                                  .whenComplete(() {
-                                setState(() {});
-                                AdsService().showBanner();
-                              });
+                              Navigator.of(context).pushNamed(test.item3);
                             },
                             child: Text('Continue'),
                           ),
@@ -172,11 +163,7 @@ class _TestsPageState extends State<TestsPage> {
                   Icons.check,
                   color: Colors.blue,
                 ),
-                onTap: () => Navigator.of(context)
-                    .pushNamed(test.item3)
-                    .whenComplete(() {
-                  AdsService().showBanner();
-                }),
+                onTap: () => Navigator.of(context).pushNamed(test.item3),
               ),
               decoration: BoxDecoration(
                   // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),

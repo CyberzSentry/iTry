@@ -315,7 +315,7 @@ class _PavsatTestPageState
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 }
