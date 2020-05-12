@@ -49,10 +49,11 @@ class AdsService {
         targetingInfo: _targetingInfo,
         listener: (MobileAdEvent event) {
           print("BannerAd $event");
-          if (event == MobileAdEvent.loaded || event == MobileAdEvent.failedToLoad) {
+          if (event == MobileAdEvent.loaded ||
+              event == MobileAdEvent.failedToLoad) {
             completer.complete();
             if (_bannerHidden) {
-              hideBanner();
+              // hideBanner();
             }
           }
         });
@@ -65,14 +66,14 @@ class AdsService {
   }
 
   void hideBanner() async {
-    if(_loadingBanner != null){
+    _bannerHidden = true;
+    if (_loadingBanner != null) {
       await _loadingBanner;
     }
-    Future.delayed(const Duration(milliseconds: 500), () {
-      _bannerHidden = true;
-      _banner?.dispose();
-      _banner = null;
-    });
+    // Future.delayed(const Duration(milliseconds: 500), () {
+    _banner?.dispose();
+    _banner = null;
+    // });
   }
 
   Future<void> showInterstitial(Function() onComplete) async {
