@@ -144,7 +144,7 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
               )
             ],
           ),
-          Text(_side ? "Right eye" : "Left eye", style: TextStyle(fontSize: 20),),
+          Text(_side ? "Cover left eye" : "Cover right eye", style: TextStyle(fontSize: 20),),
           Flexible(
             // widthFactor: 1,
             // heightFactor: 1,
