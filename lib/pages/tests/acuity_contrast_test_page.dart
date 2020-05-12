@@ -24,6 +24,7 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
     'assets/images/acuity_contrast/visual75.png',
     'assets/images/acuity_contrast/visual50.png',
     'assets/images/acuity_contrast/visual25.png',
+    'assets/images/acuity_contrast/visual15.png',
     'assets/images/acuity_contrast/visual10.png'
   ];
   static const List<double> _scalesOrder = [
@@ -32,15 +33,17 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
     1,
     1,
     1,
-    0.75,
+    1,
+    0.6,
     0.5,
     0.5,
     0.5,
     0.5,
     0.5,
-    0.25,
-    0.15,
-    0.10
+    0.5,
+    0.4,
+    0.3,
+    0.2
   ];
   static const List<int> _imagesOrder = [
     0,
@@ -48,12 +51,14 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
     2,
     3,
     4,
+    5,
     0,
     0,
     1,
     2,
     3,
     4,
+    5,
     0,
     0,
     0
@@ -79,7 +84,7 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
 
   int _currImage = 0;
   int _score = 0;
-  
+
   bool _started = false;
 
   void _up() {
@@ -160,14 +165,13 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
                         onPressed: _left,
                         iconSize: _arrowSize),
                     SizedBox(
-                      width: 53,
-                      height: 53,
+                      width: 62.99 * _scalesOrder[_currImage],
+                      height: 62.99 * _scalesOrder[_currImage],
                       child: Transform.rotate(
                         angle: _rotations[_rotationsOrder[_currImage]],
                         child: _started
                             ? Image.asset(
                                 _images[_imagesOrder[_currImage]],
-                                scale: 1 / _scalesOrder[_currImage],
                               )
                             : null,
                       ),

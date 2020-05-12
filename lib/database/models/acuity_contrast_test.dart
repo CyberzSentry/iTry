@@ -13,7 +13,7 @@ final String acuityContrastTestCreateString = '''
               )
               ''';
 
-final int maxScore = 14;
+final int maxScore = 16;
 
 class AcuityContrastTest implements TestInterface {
   int id;
