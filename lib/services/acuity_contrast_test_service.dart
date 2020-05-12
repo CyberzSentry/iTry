@@ -28,7 +28,7 @@ class AcuityContrastTestService
   Future<AcuityContrastTest> getSingle(int id) async {
     var db = await DatabaseProvider().database;
     List<Map> maps = await db.query(tableAcuityContrastTest,
-        columns: [columnId, columnScore, columnDate],
+        columns: [columnId, columnScoreLeft, columnScoreRight, columnDate],
         where: '$columnId = ?',
         whereArgs: [id]);
     if (maps.length > 0) {

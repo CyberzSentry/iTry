@@ -35,7 +35,7 @@ class DatabaseProvider {
   Future<Database> getDatabaseInstance() async {
     var directoryPath = await getDatabasesPath();
     String fullPath = join(directoryPath, _databaseName);
-    return await openDatabase(fullPath, version: 12,
+    return await openDatabase(fullPath, version: 13,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
     );
@@ -55,6 +55,10 @@ class DatabaseProvider {
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if(oldVersion < 13){
+      await db.execute(acuityContrastTestDropString);
+      await db.execute(acuityContrastTestCreateString);
+    }
     if(oldVersion < 12){
       await db.execute(pavsatTestCreateString);
     }

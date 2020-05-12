@@ -87,6 +87,9 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
 
   bool _started = false;
 
+  bool _side = false; //false - left, true - right
+  int _scoreLeft = 0;
+
   void _up() {
     if (_rotationsOrder[_currImage] == 2) {
       _score++;
@@ -141,6 +144,7 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
               )
             ],
           ),
+          Text(_side ? "Right eye" : "Left eye", style: TextStyle(fontSize: 20),),
           Flexible(
             // widthFactor: 1,
             // heightFactor: 1,
@@ -226,10 +230,18 @@ class _AcuityContrastTestPageState extends BaseTestState<AcuityContrastTestPage,
   }
 
   void _confirm() async {
-    var result = AcuityContrastTest();
-    result.score = _score;
-    result.date = DateTime.now();
-    await super.commitResult(result);
+    if(_side){
+      var result = AcuityContrastTest();
+      result.scoreLeft = _scoreLeft;
+      result.scoreRight = _score;
+      result.date = DateTime.now();
+      await super.commitResult(result);
+    }else{
+      _scoreLeft = _score;
+      _side = true;
+      _retake();
+    }
+    
     // Navigator.of(context).pop();
   }
 

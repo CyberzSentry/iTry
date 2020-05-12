@@ -2,34 +2,41 @@ import 'package:itry/database/models/test_interface.dart';
 
 final String tableAcuityContrastTest = 'acuityContrastTests';
 final String columnId = '_id';
-final String columnScore = 'score';
+final String columnScoreLeft = 'scoreLeft';
+final String columnScoreRight = 'scoreRight';
 final String columnDate = 'date';
 
 final String acuityContrastTestCreateString = '''
               CREATE TABLE $tableAcuityContrastTest (
                 $columnId INTEGER PRIMARY KEY,
-                $columnScore INTEGER NOT NULL,
+                $columnScoreLeft INTEGER NOT NULL,
+                $columnScoreRight INTEGER NOT NULL,
                 $columnDate TEXT NOT NULL
               )
               ''';
+
+final String acuityContrastTestDropString =
+    '''DROP TABLE IF EXISTS $tableAcuityContrastTest''';
 
 final int maxScore = 16;
 
 class AcuityContrastTest implements TestInterface {
   int id;
-  int score;
+  int scoreLeft;
+  int scoreRight;
   DateTime date;
   static final Duration testInterval = Duration(days: 14);
 
   double get percentageScore {
-    return ((score / maxScore) * 100);
+    return (((scoreLeft + scoreRight) / 2 / maxScore) * 100);
   }
 
   AcuityContrastTest();
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
-      columnScore: score,
+      columnScoreLeft: scoreLeft,
+      columnScoreRight: scoreRight,
       columnDate: date.toIso8601String(),
     };
     if (id != null) {
@@ -40,7 +47,8 @@ class AcuityContrastTest implements TestInterface {
 
   AcuityContrastTest.fromMap(Map<String, dynamic> map) {
     id = map[columnId];
-    score = map[columnScore];
+    scoreLeft = map[columnScoreLeft];
+    scoreRight = map[columnScoreRight];
     date = DateTime.parse(map[columnDate]);
   }
 
@@ -53,7 +61,7 @@ class AcuityContrastTest implements TestInterface {
   String toString() {
     var percentageRounded = percentageScore.toStringAsFixed(2);
 
-    return "Score: $score, Percentage score: $percentageRounded%";
+    return "Score left: $scoreLeft, Score right: $scoreRight Percentage score: $percentageRounded%";
   }
 
   @override
