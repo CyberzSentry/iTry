@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:itry/database/models/depression_survey.dart';
 import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
-import 'package:itry/services/depression_survey_service.dart';
+import 'package:itry/services/tests/depression_survey_service.dart';
 
 class DepressionSurveyPage extends BaseTestPage {
   static final String routeName = '/depressionSurvey';

@@ -166,9 +166,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ]),
                       ),
-                      // child: const Text(
-                      //   '\n\nAny thoughts or questions? \n\nDo not hesitate to contact us via:\nconnectitry@gmail.com',
-                      //   textAlign: TextAlign.justify,
                     ),
                   ],
                 ),

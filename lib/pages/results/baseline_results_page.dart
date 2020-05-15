@@ -11,16 +11,16 @@ import 'package:itry/pages/tests/finger_tapping_test_page.dart';
 import 'package:itry/pages/tests/pavsat_test_page.dart';
 import 'package:itry/pages/tests/spatial_memory_test_page.dart';
 import 'package:itry/pages/tests/stress_survey_page.dart';
-import 'package:itry/services/acuity_contrast_test_service.dart';
 import 'package:itry/services/ads_service.dart';
-import 'package:itry/services/anxiety_survey_service.dart';
-import 'package:itry/services/creativity_productivity_survey_service.dart';
-import 'package:itry/services/creativity_productivity_test_service.dart';
-import 'package:itry/services/depression_survey_service.dart';
-import 'package:itry/services/finger_tapping_test_service.dart';
-import 'package:itry/services/pavsat_test_service.dart';
-import 'package:itry/services/spatial_memory_test_service.dart';
-import 'package:itry/services/stress_survey_service.dart';
+import 'package:itry/services/tests/acuity_contrast_test_service.dart';
+import 'package:itry/services/tests/anxiety_survey_service.dart';
+import 'package:itry/services/tests/creativity_productivity_survey_service.dart';
+import 'package:itry/services/tests/creativity_productivity_test_service.dart';
+import 'package:itry/services/tests/depression_survey_service.dart';
+import 'package:itry/services/tests/finger_tapping_test_service.dart';
+import 'package:itry/services/tests/pavsat_test_service.dart';
+import 'package:itry/services/tests/spatial_memory_test_service.dart';
+import 'package:itry/services/tests/stress_survey_service.dart';
 
 class BaselineResultsPage extends StatefulWidget {
   static const String routeName = '/baselineResults';

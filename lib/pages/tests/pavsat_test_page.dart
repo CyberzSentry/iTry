@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:itry/database/models/pavsat_test.dart';
 import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
-import 'package:itry/services/pavsat_test_service.dart';
 import 'dart:math';
+
+import 'package:itry/services/tests/pavsat_test_service.dart';
 
 class PavsatTestPage extends BaseTestPage {
   static final String routeName = '/pavsatTest';

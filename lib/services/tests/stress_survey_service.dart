@@ -1,69 +1,68 @@
 import 'package:itry/database/database_provider.dart';
-import 'package:itry/database/models/depression_survey.dart';
-import 'package:itry/services/test_service_interface.dart';
+import 'package:itry/database/models/stress_survey.dart';
+import 'package:itry/services/tests/test_service_interface.dart';
 
-class DepressionSurveyService
-    implements TestServiceInterface<DepressionSurvey> {
+class StressSurveyService
+    implements TestServiceInterface<StressSurvey> {
   
-  DepressionSurveyService();
+  StressSurveyService();
+  // StressSurveyService._();
 
-  // DepressionSurveyService._();
+  // static final StressSurveyService _instance =
+  //     StressSurveyService._();
 
-  // static final DepressionSurveyService _instance =
-  //     DepressionSurveyService._();
-
-  // factory DepressionSurveyService() {
+  // factory StressSurveyService() {
   //   return _instance;
   // }
 
   @override
-  Future<DepressionSurvey> insert(
-      DepressionSurvey test) async {
+  Future<StressSurvey> insert(
+      StressSurvey test) async {
     var db = await DatabaseProvider().database;
-    test.id = await db.insert(tableDepressionSurvey, test.toMap());
+    test.id = await db.insert(tableStressSurvey, test.toMap());
     return test;
   }
 
   @override
-  Future<DepressionSurvey> getSingle(int id) async {
+  Future<StressSurvey> getSingle(int id) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableDepressionSurvey,
+    List<Map> maps = await db.query(tableStressSurvey,
         columns: [columnId, columnScore, columnDate],
         where: '$columnId = ?',
         whereArgs: [id]);
     if (maps.length > 0) {
-      return DepressionSurvey.fromMap(maps.first);
+      return StressSurvey.fromMap(maps.first);
     }
     return null;
   }
 
   @override
-  Future<List<DepressionSurvey>> getAll() async {
+  Future<List<StressSurvey>> getAll() async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableDepressionSurvey);
-    List<DepressionSurvey> result =
-        <DepressionSurvey>[];
+    List<Map> maps = await db.query(tableStressSurvey);
+    List<StressSurvey> result =
+        <StressSurvey>[];
     maps.forEach(
-        (row) => result.add(DepressionSurvey.fromMap(row)));
+        (row) => result.add(StressSurvey.fromMap(row)));
     return result;
   }
 
   @override
   Future<int> delete(int id) async {
     var db = await DatabaseProvider().database;
-    return await db.delete(tableDepressionSurvey,
+    return await db.delete(tableStressSurvey,
         where: '$columnId = ?', whereArgs: [id]);
   }
 
   @override
-  Future<int> updateTest(DepressionSurvey test) async {
+  Future<int> updateTest(StressSurvey test) async {
     var db = await DatabaseProvider().database;
-    return await db.update(tableDepressionSurvey, test.toMap(),
+    return await db.update(tableStressSurvey, test.toMap(),
         where: '$columnId = ?', whereArgs: [test.id]);
   }
 
   @override
-  Future<List<DepressionSurvey>> getBetweenDates(
+  Future<List<StressSurvey>> getBetweenDates(
       DateTime from, DateTime to) async {
     var creativityProductivityList = await getAll();
     var creativityProductivityListFiltered = creativityProductivityList
@@ -71,7 +70,6 @@ class DepressionSurveyService
             DateTime.utc(x.date.year, x.date.month, x.date.day).compareTo(DateTime.utc(from.year, from.month, from.day)) >= 0 &&
             DateTime.utc(x.date.year, x.date.month, x.date.day).compareTo(DateTime.utc(to.year, to.month, to.day)) <= 0 )
         .toList();
-
     return creativityProductivityListFiltered;
   }
 
@@ -81,25 +79,25 @@ class DepressionSurveyService
     creativityProductivitySurveys.sort((a, b) => a.date.compareTo(b.date));
     return creativityProductivitySurveys.length == 0 ||
         date
-                .subtract(DepressionSurvey.testInterval)
+                .subtract(StressSurvey.testInterval)
                 .compareTo(creativityProductivitySurveys.last.date) >
             0;
   }
 
   @override
-  Future<DepressionSurvey> insertIfActive(
-      DepressionSurvey test, DateTime date) async {
+  Future<StressSurvey> insertIfActive(
+      StressSurvey test, DateTime date) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableDepressionSurvey);
-    List<DepressionSurvey> result =
-        <DepressionSurvey>[];
+    List<Map> maps = await db.query(tableStressSurvey);
+    List<StressSurvey> result =
+        <StressSurvey>[];
     maps.forEach(
-        (row) => result.add(DepressionSurvey.fromMap(row)));
+        (row) => result.add(StressSurvey.fromMap(row)));
     result.sort((a, b) => a.date.compareTo(b.date));
     if (result.length == 0 ||
-        date.subtract(DepressionSurvey.testInterval).compareTo(result.last.date) > 0) {
+        date.subtract(StressSurvey.testInterval).compareTo(result.last.date) > 0) {
       test.id =
-          await db.insert(tableDepressionSurvey, test.toMap());
+          await db.insert(tableStressSurvey, test.toMap());
     }
     return test;
   }

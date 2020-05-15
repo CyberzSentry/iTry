@@ -5,6 +5,7 @@ import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class SettingsPage extends StatefulWidget {
   static const String routeName = '/settings';
   static const String title = "Settings";
@@ -48,9 +49,7 @@ class _SettingsPageState extends State<SettingsPage> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
     database.resetDatabase();
-    setState(() {
-      
-    });
+    setState(() {});
     Navigator.of(context).pop();
   }
 
@@ -81,6 +80,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   onChanged: (value) => setState(() {
                     service.testTimeBlocking = value;
                   }),
+                ),
+                ListTile(
+                  title: Text("Export data"),
+                  onTap: () async {
+                   
+                  },
                 ),
                 ListTile(
                   title: Text('Reset application'),

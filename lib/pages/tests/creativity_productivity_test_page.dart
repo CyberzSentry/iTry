@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:itry/database/models/creativity_productivity_test.dart';
 import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
-import 'package:itry/services/creativity_productivity_test_service.dart';
+import 'package:itry/services/tests/creativity_productivity_test_service.dart';
 import 'package:random_words/random_words.dart';
 
 class CreativityProductivityTestPage extends BaseTestPage {

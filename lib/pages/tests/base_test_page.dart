@@ -4,7 +4,7 @@ import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/notifications_service.dart';
 import 'package:itry/services/settings_service.dart';
-import 'package:itry/services/test_service_interface.dart';
+import 'package:itry/services/tests/test_service_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class BaseTestPage extends StatefulWidget {

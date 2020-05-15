@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
-import 'package:itry/services/spatial_memory_test_service.dart';
 import 'package:itry/database/models/spatial_memory_test.dart';
+import 'package:itry/services/tests/spatial_memory_test_service.dart';
 
 class SpatialMemoryTestPage extends BaseTestPage {
   static final String routeName = '/spatialMemoryTest';

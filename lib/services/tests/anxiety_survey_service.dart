@@ -1,6 +1,6 @@
 import 'package:itry/database/database_provider.dart';
 import 'package:itry/database/models/anxiety_survey.dart';
-import 'package:itry/services/test_service_interface.dart';
+import 'package:itry/services/tests/test_service_interface.dart';
 
 class AnxietySurveyService
     implements TestServiceInterface<AnxietySurvey> {
