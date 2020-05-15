@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/update_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DrawerItem {
   String title;
@@ -19,7 +21,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   void initState() {
     AdsService().showBanner();
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
       drawer: DrawerFragment(),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.fromLTRB(20, 20, 20, 60),
+          margin: EdgeInsets.fromLTRB(20, 20, 20, 100),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -148,10 +149,26 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: <Widget>[
                     Flexible(
-                      child: const Text(
-                        '\n\nAny thoughts or questions? \n\nDo not hesitate to contact us via:\nconnectitry@gmail.com',
-                        textAlign: TextAlign.justify,
+                      child: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+                              style: Theme.of(context).textTheme.body1,
+                              text:
+                                  "\nAny thoughts or questions? \n\nDo not hesitate to contact us via:\n"),
+                          TextSpan(
+                            text: "connectitry@gmail.com",
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => launch(
+                                  'mailto:connectitry@gmail.com?subject=iTry+app+feedback'),
+                          ),
+                        ]),
                       ),
+                      // child: const Text(
+                      //   '\n\nAny thoughts or questions? \n\nDo not hesitate to contact us via:\nconnectitry@gmail.com',
+                      //   textAlign: TextAlign.justify,
                     ),
                   ],
                 ),
