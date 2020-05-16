@@ -82,12 +82,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   }),
                 ),
                 ListTile(
-                  title: Text("Export data"),
-                  onTap: () async {
-                   
-                  },
-                ),
-                ListTile(
                   title: Text('Reset application'),
                   onTap: _resetApplication,
                   trailing: Icon(Icons.delete_outline),

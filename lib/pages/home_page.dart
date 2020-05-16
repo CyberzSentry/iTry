@@ -152,7 +152,7 @@ class _HomePageState extends State<HomePage> {
                       child: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              style: Theme.of(context).textTheme.body1,
+                              style: Theme.of(context).textTheme.bodyText1,
                               text:
                                   "\nAny thoughts or questions? \n\nDo not hesitate to contact us via:\n"),
                           TextSpan(

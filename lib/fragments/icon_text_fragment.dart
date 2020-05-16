@@ -6,7 +6,7 @@ class IconTextFragment extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(
-        style: Theme.of(context).textTheme.body1,
+        style: Theme.of(context).textTheme.bodyText1,
         children: [
           TextSpan(
               text: 'You can access this info during the test by tapping '),

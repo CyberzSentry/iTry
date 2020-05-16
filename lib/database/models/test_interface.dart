@@ -12,6 +12,9 @@ abstract class TestInterface{
   double get percentageScore;
 
   @required
+  Map<String, dynamic> toMap();
+
+  @required
   Duration getTestInterval();
 
   @required
