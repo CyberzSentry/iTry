@@ -1,31 +1,21 @@
 import 'package:itry/database/database_provider.dart';
 import 'package:itry/database/models/acuity_contrast_test.dart';
+import 'package:itry/services/tests/base_test_service.dart';
 import 'package:itry/services/tests/test_service_interface.dart';
 
 
 
-class AcuityContrastTestService
+class AcuityContrastTestService extends BaseTestService<AcuityContrastTest>
     implements TestServiceInterface<AcuityContrastTest> {
   
   AcuityContrastTestService();
 
-  // AcuityContrastTestService._();
-
-  // static final AcuityContrastTestService _instance =
-  //     AcuityContrastTestService._();
-
-  // factory AcuityContrastTestService() {
-  //   return _instance;
-  // }
+  @override
+  String testTable = tableAcuityContrastTest;
 
   @override
-  Future<AcuityContrastTest> insert(
-      AcuityContrastTest test) async {
-    var db = await DatabaseProvider().database;
-    test.id = await db.insert(tableAcuityContrastTest, test.toMap());
-    return test;
-  }
-
+  Duration duration = AcuityContrastTest.testInterval;
+  
   @override
   Future<AcuityContrastTest> getSingle(int id) async {
     var db = await DatabaseProvider().database;
@@ -49,41 +39,6 @@ class AcuityContrastTestService
   }
 
   @override
-  Future<int> delete(int id) async {
-    var db = await DatabaseProvider().database;
-    return await db.delete(tableAcuityContrastTest,
-        where: '$columnId = ?', whereArgs: [id]);
-  }
-
-  @override
-  Future<int> updateTest(AcuityContrastTest test) async {
-    var db = await DatabaseProvider().database;
-    return await db.update(tableAcuityContrastTest, test.toMap(),
-        where: '$columnId = ?', whereArgs: [test.id]);
-  }
-
-  @override
-  Future<List<AcuityContrastTest>> getBetweenDates(
-      DateTime from, DateTime to) async {
-    var surveysList = await getAll();
-    var surveysListFiltered = surveysList
-        .where((x) =>
-            DateTime.utc(x.date.year, x.date.month, x.date.day).compareTo(DateTime.utc(from.year, from.month, from.day)) >= 0 &&
-            DateTime.utc(x.date.year, x.date.month, x.date.day).compareTo(DateTime.utc(to.year, to.month, to.day)) <= 0 )
-        .toList();
-
-    return surveysListFiltered;
-  }
-
-  @override
-  Future<bool> isActive(DateTime date) async {
-    var surveys = await getAll();
-    surveys.sort((a, b) => a.date.compareTo(b.date));
-    return surveys.length == 0 ||
-        date.subtract(AcuityContrastTest.testInterval).compareTo(surveys.last.date) > 0;
-  }
-
-  @override
   Future<AcuityContrastTest> insertIfActive(
       AcuityContrastTest test, DateTime date) async {
     var db = await DatabaseProvider().database;
@@ -97,4 +52,5 @@ class AcuityContrastTestService
     }
     return test;
   }
+
 }

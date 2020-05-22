@@ -1,28 +1,18 @@
 import 'package:itry/database/database_provider.dart';
 import 'package:itry/database/models/anxiety_survey.dart';
+import 'package:itry/services/tests/base_test_service.dart';
 import 'package:itry/services/tests/test_service_interface.dart';
 
-class AnxietySurveyService
+class AnxietySurveyService extends BaseTestService<AnxietySurvey>
     implements TestServiceInterface<AnxietySurvey> {
   
   AnxietySurveyService();
-  
-  // AnxietySurveyService._();
-
-  // static final AnxietySurveyService _instance =
-  //     AnxietySurveyService._();
-
-  // factory AnxietySurveyService() {
-  //   return _instance;
-  // }
 
   @override
-  Future<AnxietySurvey> insert(
-      AnxietySurvey test) async {
-    var db = await DatabaseProvider().database;
-    test.id = await db.insert(tableAnxietySurvey, test.toMap());
-    return test;
-  }
+  Duration duration = AnxietySurvey.testInterval;
+
+  @override
+  String testTable = tableAnxietySurvey;
 
   @override
   Future<AnxietySurvey> getSingle(int id) async {
@@ -46,44 +36,6 @@ class AnxietySurveyService
     maps.forEach(
         (row) => result.add(AnxietySurvey.fromMap(row)));
     return result;
-  }
-
-  @override
-  Future<int> delete(int id) async {
-    var db = await DatabaseProvider().database;
-    return await db.delete(tableAnxietySurvey,
-        where: '$columnId = ?', whereArgs: [id]);
-  }
-
-  @override
-  Future<int> updateTest(AnxietySurvey test) async {
-    var db = await DatabaseProvider().database;
-    return await db.update(tableAnxietySurvey, test.toMap(),
-        where: '$columnId = ?', whereArgs: [test.id]);
-  }
-
-  @override
-  Future<List<AnxietySurvey>> getBetweenDates(
-      DateTime from, DateTime to) async {
-    var creativityProductivityList = await getAll();
-    var creativityProductivityListFiltered = creativityProductivityList
-        .where((x) =>
-            DateTime.utc(x.date.year, x.date.month, x.date.day).compareTo(DateTime.utc(from.year, from.month, from.day)) >= 0 &&
-            DateTime.utc(x.date.year, x.date.month, x.date.day).compareTo(DateTime.utc(to.year, to.month, to.day)) <= 0 )
-        .toList();
-
-    return creativityProductivityListFiltered;
-  }
-
-  @override
-  Future<bool> isActive(DateTime date) async {
-    var creativityProductivitySurveys = await getAll();
-    creativityProductivitySurveys.sort((a, b) => a.date.compareTo(b.date));
-    return creativityProductivitySurveys.length == 0 ||
-        date
-                .subtract(AnxietySurvey.testInterval)
-                .compareTo(creativityProductivitySurveys.last.date) >
-            0;
   }
 
   @override

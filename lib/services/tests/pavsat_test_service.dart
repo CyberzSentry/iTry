@@ -1,27 +1,18 @@
 import 'package:itry/database/database_provider.dart';
 import 'package:itry/database/models/pavsat_test.dart';
+import 'package:itry/services/tests/base_test_service.dart';
 import 'package:itry/services/tests/test_service_interface.dart';
 
-class PavsatTestService
+class PavsatTestService extends BaseTestService<PavsatTest>
     implements TestServiceInterface<PavsatTest> {
   
   PavsatTestService();
 
-  // SpatialMemoryTestService._();
-
-  // static final SpatialMemoryTestService _instance =
-  //     SpatialMemoryTestService._();
-
-  // factory SpatialMemoryTestService() {
-  //   return _instance;
-  // }
+  @override
+  Duration duration = PavsatTest.testInterval;
 
   @override
-  Future<PavsatTest> insert(PavsatTest test) async {
-    var db = await DatabaseProvider().database;
-    test.id = await db.insert(tablePavsatTests, test.toMap());
-    return test;
-  }
+  String testTable = tablePavsatTests;
 
   @override
   Future<PavsatTest> getSingle(int id) async {
@@ -43,41 +34,6 @@ class PavsatTestService
     List<PavsatTest> result = <PavsatTest>[];
     maps.forEach((row) => result.add(PavsatTest.fromMap(row)));
     return result;
-  }
-
-  @override
-  Future<int> delete(int id) async {
-    var db = await DatabaseProvider().database;
-    return await db.delete(tablePavsatTests,
-        where: '$columnId = ?', whereArgs: [id]);
-  }
-
-  @override
-  Future<int> updateTest(PavsatTest test) async {
-    var db = await DatabaseProvider().database;
-    return await db.update(tablePavsatTests, test.toMap(),
-        where: '$columnId = ?', whereArgs: [test.id]);
-  }
-
-  @override
-  Future<List<PavsatTest>> getBetweenDates(
-      DateTime from, DateTime to) async {
-    var testList = await getAll();
-    var testListFiltered = testList
-        .where((x) =>
-            DateTime.utc(x.date.year, x.date.month, x.date.day).compareTo(DateTime.utc(from.year, from.month, from.day)) >= 0 &&
-            DateTime.utc(x.date.year, x.date.month, x.date.day).compareTo(DateTime.utc(to.year, to.month, to.day)) <= 0 )
-        .toList();
-
-    return testListFiltered;
-  }
-
-  @override
-  Future<bool> isActive(DateTime date) async {
-    var tests = await getAll();
-    tests.sort((a, b) => a.date.compareTo(b.date));
-    return tests.length == 0 ||
-        date.subtract(PavsatTest.testInterval).compareTo(tests.last.date) > 0;
   }
 
   @override

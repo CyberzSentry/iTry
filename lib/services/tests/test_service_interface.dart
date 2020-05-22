@@ -2,6 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:itry/database/models/test_interface.dart';
 
 abstract class TestServiceInterface<Test extends TestInterface> {
+
+  @required
+  String testTable;
+
+  @required
+  String id;
+
+  @required
+  Duration duration;  
+
   @required
   Future<Test> insert(Test test) {
     return null;
