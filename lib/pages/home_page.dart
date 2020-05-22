@@ -164,6 +164,19 @@ class _HomePageState extends State<HomePage> {
                               ..onTap = () => launch(
                                   'mailto:connectitry@gmail.com?subject=iTry+app+feedback'),
                           ),
+                          TextSpan(
+                              style: Theme.of(context).textTheme.bodyText1,
+                              text:
+                                  "\nor\n"),
+                           TextSpan(
+                            text: "facebook",
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => launch(
+                                  'https://www.facebook.com/itry.app.test.and.track.your.improvement'),
+                          ),
                         ]),
                       ),
                     ),
