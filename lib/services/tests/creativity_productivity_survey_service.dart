@@ -17,7 +17,7 @@ class CreativityProductivitySurveyService extends BaseTestService<CreativityProd
   @override
   Future<CreativityProductivitySurvey> getSingle(int id) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableCreativityProductivitySurvey,
+    List<Map> maps = await db.query(testTable,
         columns: [columnId, columnScore, columnDate],
         where: '$columnId = ?',
         whereArgs: [id]);
@@ -30,7 +30,7 @@ class CreativityProductivitySurveyService extends BaseTestService<CreativityProd
   @override
   Future<List<CreativityProductivitySurvey>> getAll() async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableCreativityProductivitySurvey);
+    List<Map> maps = await db.query(testTable);
     List<CreativityProductivitySurvey> result =
         <CreativityProductivitySurvey>[];
     maps.forEach(
@@ -42,7 +42,7 @@ class CreativityProductivitySurveyService extends BaseTestService<CreativityProd
   Future<CreativityProductivitySurvey> insertIfActive(
       CreativityProductivitySurvey test, DateTime date) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableCreativityProductivitySurvey);
+    List<Map> maps = await db.query(testTable);
     List<CreativityProductivitySurvey> result =
         <CreativityProductivitySurvey>[];
     maps.forEach(
@@ -51,7 +51,7 @@ class CreativityProductivitySurveyService extends BaseTestService<CreativityProd
     if (result.length == 0 ||
         date.subtract(CreativityProductivitySurvey.testInterval).compareTo(result.last.date) > 0) {
       test.id =
-          await db.insert(tableCreativityProductivitySurvey, test.toMap());
+          await db.insert(testTable, test.toMap());
     }
     return test;
   }

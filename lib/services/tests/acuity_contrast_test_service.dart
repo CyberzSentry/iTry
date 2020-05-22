@@ -32,7 +32,7 @@ class AcuityContrastTestService extends BaseTestService<AcuityContrastTest>
   @override
   Future<List<AcuityContrastTest>> getAll() async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableAcuityContrastTest);
+    List<Map> maps = await db.query(testTable);
     List<AcuityContrastTest> result = <AcuityContrastTest>[];
     maps.forEach((row) => result.add(AcuityContrastTest.fromMap(row)));
     return result;
@@ -42,13 +42,13 @@ class AcuityContrastTestService extends BaseTestService<AcuityContrastTest>
   Future<AcuityContrastTest> insertIfActive(
       AcuityContrastTest test, DateTime date) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableAcuityContrastTest);
+    List<Map> maps = await db.query(testTable);
     List<AcuityContrastTest> result = <AcuityContrastTest>[];
     maps.forEach((row) => result.add(AcuityContrastTest.fromMap(row)));
     result.sort((a, b) => a.date.compareTo(b.date));
     if (result.length == 0 ||
         date.subtract(AcuityContrastTest.testInterval).compareTo(result.last.date) > 0) {
-      test.id = await db.insert(tableAcuityContrastTest, test.toMap());
+      test.id = await db.insert(testTable, test.toMap());
     }
     return test;
   }

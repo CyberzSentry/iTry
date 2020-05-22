@@ -17,7 +17,7 @@ class AnxietySurveyService extends BaseTestService<AnxietySurvey>
   @override
   Future<AnxietySurvey> getSingle(int id) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableAnxietySurvey,
+    List<Map> maps = await db.query(testTable,
         columns: [columnId, columnScore, columnDate],
         where: '$columnId = ?',
         whereArgs: [id]);
@@ -30,7 +30,7 @@ class AnxietySurveyService extends BaseTestService<AnxietySurvey>
   @override
   Future<List<AnxietySurvey>> getAll() async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableAnxietySurvey);
+    List<Map> maps = await db.query(testTable);
     List<AnxietySurvey> result =
         <AnxietySurvey>[];
     maps.forEach(
@@ -42,7 +42,7 @@ class AnxietySurveyService extends BaseTestService<AnxietySurvey>
   Future<AnxietySurvey> insertIfActive(
       AnxietySurvey test, DateTime date) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableAnxietySurvey);
+    List<Map> maps = await db.query(testTable);
     List<AnxietySurvey> result =
         <AnxietySurvey>[];
     maps.forEach(
@@ -51,7 +51,7 @@ class AnxietySurveyService extends BaseTestService<AnxietySurvey>
     if (result.length == 0 ||
         date.subtract(AnxietySurvey.testInterval).compareTo(result.last.date) > 0) {
       test.id =
-          await db.insert(tableAnxietySurvey, test.toMap());
+          await db.insert(testTable, test.toMap());
     }
     return test;
   }

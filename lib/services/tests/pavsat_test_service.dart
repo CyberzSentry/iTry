@@ -17,7 +17,7 @@ class PavsatTestService extends BaseTestService<PavsatTest>
   @override
   Future<PavsatTest> getSingle(int id) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tablePavsatTests,
+    List<Map> maps = await db.query(testTable,
         columns: [columnId, columnScore, columnDate],
         where: '$columnId = ?',
         whereArgs: [id]);
@@ -30,7 +30,7 @@ class PavsatTestService extends BaseTestService<PavsatTest>
   @override
   Future<List<PavsatTest>> getAll() async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tablePavsatTests);
+    List<Map> maps = await db.query(testTable);
     List<PavsatTest> result = <PavsatTest>[];
     maps.forEach((row) => result.add(PavsatTest.fromMap(row)));
     return result;
@@ -40,13 +40,13 @@ class PavsatTestService extends BaseTestService<PavsatTest>
   Future<PavsatTest> insertIfActive(
       PavsatTest test, DateTime date) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tablePavsatTests);
+    List<Map> maps = await db.query(testTable);
     List<PavsatTest> result = <PavsatTest>[];
     maps.forEach((row) => result.add(PavsatTest.fromMap(row)));
     result.sort((a, b) => a.date.compareTo(b.date));
     if (result.length == 0 ||
         date.subtract(PavsatTest.testInterval).compareTo(result.last.date) > 0) {
-      test.id = await db.insert(tablePavsatTests, test.toMap());
+      test.id = await db.insert(testTable, test.toMap());
     }
     return test;
   }

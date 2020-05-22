@@ -18,7 +18,7 @@ class SpatialMemoryTestService extends BaseTestService<SpatialMemoryTest>
   @override
   Future<SpatialMemoryTest> getSingle(int id) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableSpatialMemoryTests,
+    List<Map> maps = await db.query(testTable,
         columns: [columnId, columnScore, columnDate],
         where: '$columnId = ?',
         whereArgs: [id]);
@@ -31,7 +31,7 @@ class SpatialMemoryTestService extends BaseTestService<SpatialMemoryTest>
   @override
   Future<List<SpatialMemoryTest>> getAll() async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableSpatialMemoryTests);
+    List<Map> maps = await db.query(testTable);
     List<SpatialMemoryTest> result = <SpatialMemoryTest>[];
     maps.forEach((row) => result.add(SpatialMemoryTest.fromMap(row)));
     return result;
@@ -41,13 +41,13 @@ class SpatialMemoryTestService extends BaseTestService<SpatialMemoryTest>
   Future<SpatialMemoryTest> insertIfActive(
       SpatialMemoryTest test, DateTime date) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableSpatialMemoryTests);
+    List<Map> maps = await db.query(testTable);
     List<SpatialMemoryTest> result = <SpatialMemoryTest>[];
     maps.forEach((row) => result.add(SpatialMemoryTest.fromMap(row)));
     result.sort((a, b) => a.date.compareTo(b.date));
     if (result.length == 0 ||
         date.subtract(SpatialMemoryTest.testInterval).compareTo(result.last.date) > 0) {
-      test.id = await db.insert(tableSpatialMemoryTests, test.toMap());
+      test.id = await db.insert(testTable, test.toMap());
     }
     return test;
   }

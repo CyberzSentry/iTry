@@ -17,7 +17,7 @@ class FingerTappingTestService extends BaseTestService<FingerTappingTest>
   @override
   Future<FingerTappingTest> getSingle(int id) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableFingerTappingTests,
+    List<Map> maps = await db.query(testTable,
         columns: [
           columnId,
           columnScoreNonDominant,
@@ -35,7 +35,7 @@ class FingerTappingTestService extends BaseTestService<FingerTappingTest>
   @override
   Future<List<FingerTappingTest>> getAll() async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableFingerTappingTests);
+    List<Map> maps = await db.query(testTable);
     List<FingerTappingTest> result = <FingerTappingTest>[];
     maps.forEach((row) => result.add(FingerTappingTest.fromMap(row)));
     return result;
@@ -45,13 +45,13 @@ class FingerTappingTestService extends BaseTestService<FingerTappingTest>
   Future<FingerTappingTest> insertIfActive(
       FingerTappingTest test, DateTime date) async {
     var db = await DatabaseProvider().database;
-    List<Map> maps = await db.query(tableFingerTappingTests);
+    List<Map> maps = await db.query(testTable);
     List<FingerTappingTest> result = <FingerTappingTest>[];
     maps.forEach((row) => result.add(FingerTappingTest.fromMap(row)));
     result.sort((a, b) => a.date.compareTo(b.date));
     if (result.length == 0 ||
         date.subtract(FingerTappingTest.testInterval).compareTo(result.last.date) > 0) {
-      test.id = await db.insert(tableFingerTappingTests, test.toMap());
+      test.id = await db.insert(testTable, test.toMap());
     }
     return test;
   }
