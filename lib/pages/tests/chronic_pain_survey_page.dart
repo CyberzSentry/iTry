@@ -255,7 +255,6 @@ class _ChronicPainSurveyPageState extends BaseTestState<ChronicPainSurveyPage,
     }
   }
 
-  //TODO: implement description
   @override
   List<Widget> descriptionBody() {
     return <Widget>[
@@ -265,7 +264,7 @@ class _ChronicPainSurveyPageState extends BaseTestState<ChronicPainSurveyPage,
           bottom: 5,
         ),
         child: Text(
-            "Anxiety is a regular reaction of our body to constant stress, although it can limit our ability to get into new situations and perform our everyday tasks. It is useful, while appearing from time to time, but overwhelming fear could be devastating, so if your results keep high or increasing through a long period of time, you should consider getting professional help.",
+            "Chronic pain can be managed by taking medications, supported by additional treatment (eg. yoga, meditation). Whether you have diagnosed chronic pain or not, with this survey you can monitor pain level in your body.",
             textAlign: TextAlign.justify),
       ),
       Padding(
@@ -274,7 +273,7 @@ class _ChronicPainSurveyPageState extends BaseTestState<ChronicPainSurveyPage,
           bottom: 5,
         ),
         child: Text(
-            "Every question in this survey should be followed with retrospection of this past week, where the described symptoms were appearing:",
+            "If your score in this survey is high you should consider rediscussing your treatment with a doctor or see one if the high score is improving or keeping high over 3 months or more.",
             textAlign: TextAlign.justify),
       ),
       Padding(
@@ -282,23 +281,7 @@ class _ChronicPainSurveyPageState extends BaseTestState<ChronicPainSurveyPage,
           top: 5,
           bottom: 5,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Flexible(
-              child: Text(
-                  "0 - Not at all\n1 - From time to time\n2 - Most of the time\n3 - Nearly all the time",
-                  textAlign: TextAlign.justify),
-            ),
-          ],
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(
-          top: 5,
-          bottom: 5,
-        ),
-        child: Text("answer the following questions using your best beliefs.",
+        child: Text("Answer the following questions using your best beliefs.",
             textAlign: TextAlign.justify),
       ),
       Padding(
