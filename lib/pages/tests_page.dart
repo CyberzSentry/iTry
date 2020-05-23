@@ -113,7 +113,7 @@ class _TestsPageState extends State<TestsPage> {
             child: ListTile(
               title: Text(test.item2),
               trailing: null,
-              onTap: () => Navigator.of(context).pushNamed(test.item3),
+              onTap: () => Navigator.of(context).pushNamed(test.item3).then((value) => setState((){})),
             ),
             decoration: BoxDecoration(
                 // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
@@ -145,7 +145,7 @@ class _TestsPageState extends State<TestsPage> {
                           FlatButton(
                             onPressed: () {
                               Navigator.of(context).pop();
-                              Navigator.of(context).pushNamed(test.item3);
+                              Navigator.of(context).pushNamed(test.item3).then((value) => setState((){}));
                             },
                             child: Text('Continue'),
                           ),
