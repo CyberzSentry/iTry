@@ -4,6 +4,7 @@ import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/pages/results/raport_page.dart';
 import 'package:itry/pages/tests/acuity_contrast_test_page.dart';
 import 'package:itry/pages/tests/anixety_survey_page.dart';
+import 'package:itry/pages/tests/chronic_pain_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_survey_page.dart';
 import 'package:itry/pages/tests/creativity_productivity_test_page.dart';
 import 'package:itry/pages/tests/depression_survey_page.dart';
@@ -14,6 +15,7 @@ import 'package:itry/pages/tests/stress_survey_page.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/tests/acuity_contrast_test_service.dart';
 import 'package:itry/services/tests/anxiety_survey_service.dart';
+import 'package:itry/services/tests/chronic_pain_survey_service.dart';
 import 'package:itry/services/tests/creativity_productivity_survey_service.dart';
 import 'package:itry/services/tests/creativity_productivity_test_service.dart';
 import 'package:itry/services/tests/depression_survey_service.dart';
@@ -33,7 +35,6 @@ class BaselineResultsPage extends StatefulWidget {
 }
 
 class _BaselineResultsPageState extends State<BaselineResultsPage> {
-
   List<Tuple4<TestServiceInterface, String, MaterialColor, chart.Color>>
       graphElements = [
     Tuple4<TestServiceInterface, String, MaterialColor, chart.Color>(
@@ -81,6 +82,11 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
         PavsatTestPage.title,
         Colors.deepOrange,
         chart.MaterialPalette.deepOrange.shadeDefault),
+    Tuple4<TestServiceInterface, String, MaterialColor, chart.Color>(
+        ChronicPainSurveyService(),
+        ChronicPainSurveyPage.title,
+        Colors.indigo,
+        chart.MaterialPalette.indigo.shadeDefault),
   ];
 
   var _enabledDataTypes = [
@@ -93,7 +99,8 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     true,
     true,
     true,
-  ]; // finger_tapping, cp_survey, cp_test, spatial_mem, depression_survey, stress_survey, anxiety_survey, acuity_contrast, pavsat
+    true,
+  ]; // finger_tapping, cp_survey, cp_test, spatial_mem, depression_survey, stress_survey, anxiety_survey, acuity_contrast, pavsat, chronic_pain
 
   DateTime _from = DateTime.now().subtract(Duration(days: 30));
   DateTime _to = DateTime.now();
@@ -101,18 +108,18 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
   Future<GraphData> _getGraphData() async {
     GraphData data = GraphData();
 
-    for(int i=0; i<graphElements.length; i++){
-      if(_enabledDataTypes[i] == true){
+    for (int i = 0; i < graphElements.length; i++) {
+      if (_enabledDataTypes[i] == true) {
         List<GraphDataType> testData = <GraphDataType>[];
         var listFiltered =
-          await graphElements[i].item1.getBetweenDates(_from, _to);
-        for(var item in listFiltered){
+            await graphElements[i].item1.getBetweenDates(_from, _to);
+        for (var item in listFiltered) {
           testData.add(GraphDataType(
-            item.date.difference(_from).inDays, item.percentageScore));
+              item.date.difference(_from).inDays, item.percentageScore));
         }
         testData.sort((a, b) => a.day.compareTo(b.day));
         data.data.add(testData);
-      }else{
+      } else {
         data.data.add(null);
       }
     }
@@ -220,16 +227,16 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
   chart.LineChart _generateChart(GraphData data) {
     var seriesList = <chart.Series<GraphDataType, int>>[];
 
-    for (int i = 0; i < graphElements.length; i++){
-      if(data.data[i] != null){
+    for (int i = 0; i < graphElements.length; i++) {
+      if (data.data[i] != null) {
         seriesList.add(
-        chart.Series(
-            id: graphElements[i].item2,
-            data: data.data[i],
-            colorFn: (_, __) => graphElements[i].item4,
-            domainFn: (GraphDataType point, _) => point.day,
-            measureFn: (GraphDataType point, _) => point.result),
-      );
+          chart.Series(
+              id: graphElements[i].item2,
+              data: data.data[i],
+              colorFn: (_, __) => graphElements[i].item4,
+              domainFn: (GraphDataType point, _) => point.day,
+              measureFn: (GraphDataType point, _) => point.result),
+        );
       }
     }
 
