@@ -11,12 +11,12 @@ class NotificationsService {
         onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     var initializationSettings = InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);
-    _initialized = flutterLocalNotificationsPlugin.initialize(
+    flutterLocalNotificationsPlugin.initialize(
         initializationSettings,
-        onSelectNotification: selectNotification);
+        onSelectNotification: selectNotification).then((value) {_initialized = value;});
   }
 
-  Future<bool> _initialized;
+  bool _initialized = false;
 
   static final NotificationsService _instance = NotificationsService._();
 
@@ -69,16 +69,19 @@ class NotificationsService {
   void scheduleTestNotification(Duration duration) async {
     var scheduledNotificationDateTime = DateTime.now().add(duration);
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'channel_id',
-        'channel_name',
-        'channel_description');
+        'itry_channel_id',
+        'itry_channel_name',
+        'itry_channel_description',
+        groupKey: 'itry_test_notification',
+        importance: Importance.High,
+        visibility: NotificationVisibility.Public);
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
 
     NotificationDetails platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
     if (await SettingsService().getNotifications()) {
-      if (await _initialized) {
+      if (_initialized) {
         await flutterLocalNotificationsPlugin.schedule(
             0,
             'A test is ready again',
