@@ -93,29 +93,4 @@ class NotificationsService {
       }
     }
   }
-
-  void scheduleTest() async {
-    var scheduledNotificationDateTime = DateTime.now().add(Duration(seconds: 30));
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'channel_id',
-        'channel_name',
-        'channel_description');
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-
-    NotificationDetails platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-
-    if (await SettingsService().getNotifications()) {
-      if (await _initialized) {
-        await flutterLocalNotificationsPlugin.schedule(
-            0,
-            'A test is ready again',
-            'You can check it in the \'tests\' tab.',
-            scheduledNotificationDateTime,
-            platformChannelSpecifics,
-            androidAllowWhileIdle: true,
-            payload: "tests");
-      }
-    }
-  }
 }
