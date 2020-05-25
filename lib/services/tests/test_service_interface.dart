@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:itry/database/models/test_interface.dart';
+import 'package:itry/database/models/tests/test_interface.dart';
 
 abstract class TestServiceInterface<Test extends TestInterface> {
 

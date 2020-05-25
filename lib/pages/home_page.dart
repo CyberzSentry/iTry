@@ -5,12 +5,6 @@ import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/update_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DrawerItem {
-  String title;
-  IconData icon;
-  DrawerItem(this.title, this.icon);
-}
-
 class HomePage extends StatefulWidget {
   static const String routeName = '/';
   static const String title = "Home";
@@ -34,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

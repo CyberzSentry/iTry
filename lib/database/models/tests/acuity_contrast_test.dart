@@ -1,4 +1,6 @@
-import 'package:itry/database/models/test_interface.dart';
+
+
+import 'package:itry/database/models/tests/test_interface.dart';
 
 final String tableAcuityContrastTest = 'acuityContrastTests';
 final String columnId = '_id';

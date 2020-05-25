@@ -1,13 +1,14 @@
-import 'package:itry/database/models/test_interface.dart';
 
-const String tableDepressionSurvey =
-    'depressionSurveys';
+
+import 'package:itry/database/models/tests/test_interface.dart';
+
+const String tableStressSurvey = 'stressSurveys';
 const String columnId = '_id';
 const String columnScore = 'score';
 const String columnDate = 'date';
 
-const String depressionSurveyCreateString = '''
-              CREATE TABLE $tableDepressionSurvey (
+const String stressSurveyCreateString = '''
+              CREATE TABLE $tableStressSurvey (
                 $columnId INTEGER PRIMARY KEY,
                 $columnScore INTEGER NOT NULL,
                 $columnDate TEXT NOT NULL
@@ -17,14 +18,14 @@ const String depressionSurveyCreateString = '''
 const int maxScore = 24;
 
 const questionsMultiAns = <String>[
-  'How often have you been bothered by feeling down, depressed or hopeless?',
-  'How often have you had little interest or pleasure in doing things?',
   'How often have you been bothered by trouble falling or staying asleep, or sleeping too much?',
-  'How often have you been bothered by feeling tired or having little energy?',
   'How often have you been bothered by poor appetite or overeating?',
-  'How often have you been bothered by feeling bad about yourself, or that you are a failure, or have let yourself or your family down?',
-  'How often have you been bothered by trouble concentrating on things, such as reading the newspaper or watching television?',
-  'How often have you been bothered by moving or speaking so slowly that other people could have noticed, or the opposite - being so fidgety or restless that you have been moving around a lot more than usual?'
+  'How often have you been bothered by becoming easily annoyed or irritable?',
+  'How often have you experienced any of the following symptoms: headaches, chest pain, muscle tension, nausea, or changes in sex drive?',
+  'How often have you worried excessively and feel overwhelmed with responsibilities?',
+  'How often have you struggled to focus on tasks or stay motivated?',
+  'How often have you struggled to regulate how much caffeine, alcohol, or tobacco you use?',
+  'How often have you withdraw from others or feel overwhelmed in groups of people?',
 ];
 
 const possibleAnswers = <String>[
@@ -34,16 +35,16 @@ const possibleAnswers = <String>[
   'Nearly all the time'
 ];
 
-int calculateScore(List<int> answers){
+int calculateScore(List<int> answers) {
   answers = answers.toList();
   int sum = 0;
-  for(var value in answers){
+  for (var value in answers) {
     sum += value;
   }
   return sum;
 }
 
-class DepressionSurvey implements TestInterface {
+class StressSurvey implements TestInterface {
   int id;
   int score;
   DateTime date;
@@ -51,10 +52,10 @@ class DepressionSurvey implements TestInterface {
   static const Duration testInterval = Duration(days: 7);
 
   double get percentageScore {
-    return ((score / maxScore ) *100);
+    return (score / maxScore)*100;
   }
 
-  DepressionSurvey();
+  StressSurvey();
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -67,7 +68,7 @@ class DepressionSurvey implements TestInterface {
     return map;
   }
 
-  DepressionSurvey.fromMap(Map<String, dynamic> map) {
+  StressSurvey.fromMap(Map<String, dynamic> map) {
     id = map[columnId];
     score = map[columnScore];
     date = DateTime.parse(map[columnDate]);
@@ -75,7 +76,7 @@ class DepressionSurvey implements TestInterface {
 
   @override
   Duration getTestInterval() {
-    return DepressionSurvey.testInterval;
+    return StressSurvey.testInterval;
   }
 
   @override

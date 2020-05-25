@@ -1,15 +1,16 @@
-import 'package:itry/database/models/acuity_contrast_test.dart';
-import 'package:itry/database/models/anxiety_survey.dart';
-import 'package:itry/database/models/chronic_pain_survey.dart';
-import 'package:itry/database/models/creativity_productivity_test.dart';
-import 'package:itry/database/models/depression_survey.dart';
-import 'package:itry/database/models/finger_tapping_test.dart';
-import 'package:itry/database/models/creativity_productivity_survey.dart';
-import 'package:itry/database/models/pavsat_test.dart';
-import 'package:itry/database/models/spatial_memory_test.dart';
-import 'package:itry/database/models/stress_survey.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import 'models/tests/acuity_contrast_test.dart';
+import 'models/tests/anxiety_survey.dart';
+import 'models/tests/chronic_pain_survey.dart';
+import 'models/tests/creativity_productivity_survey.dart';
+import 'models/tests/creativity_productivity_test.dart';
+import 'models/tests/depression_survey.dart';
+import 'models/tests/finger_tapping_test.dart';
+import 'models/tests/pavsat_test.dart';
+import 'models/tests/spatial_memory_test.dart';
+import 'models/tests/stress_survey.dart';
 
 
 

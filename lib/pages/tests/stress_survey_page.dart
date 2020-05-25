@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:itry/database/models/stress_survey.dart';
+import 'package:itry/database/models/tests/stress_survey.dart';
 import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/tests/stress_survey_service.dart';

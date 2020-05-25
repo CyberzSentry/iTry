@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:itry/database/models/test_interface.dart';
+import 'package:itry/database/models/tests/test_interface.dart';
 import 'package:itry/fragments/test_description_fragment.dart';
 import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/notifications_service.dart';

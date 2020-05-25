@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:itry/database/models/anxiety_survey.dart';
+import 'package:itry/database/models/tests/anxiety_survey.dart';
 import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/tests/anxiety_survey_service.dart';

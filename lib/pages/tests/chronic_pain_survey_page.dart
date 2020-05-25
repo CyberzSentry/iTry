@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:itry/database/models/chronic_pain_survey.dart';
+import 'package:itry/database/models/tests/chronic_pain_survey.dart';
 import 'package:itry/fragments/icon_text_fragment.dart';
 import 'package:itry/pages/tests/base_test_page.dart';
 import 'package:itry/services/tests/chronic_pain_survey_service.dart';

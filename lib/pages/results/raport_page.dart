@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:itry/database/models/test_interface.dart';
+import 'package:itry/database/models/tests/test_interface.dart';
 import 'package:itry/services/tests/test_service_interface.dart';
 
 class ReportPage extends StatefulWidget {

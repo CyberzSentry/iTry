@@ -1,31 +1,56 @@
-import 'package:itry/database/models/test_interface.dart';
 
-final String tableCreativityProductivityTest = 'creativityProductivityTests';
+
+import 'package:itry/database/models/tests/test_interface.dart';
+
+final String tableSpatialMemoryTests = 'spatialMemoryTests';
 final String columnId = '_id';
 final String columnScore = 'score';
 final String columnDate = 'date';
 
-final String creativityProductivityTestCreateString = '''
-              CREATE TABLE $tableCreativityProductivityTest (
+final String spatialMemoryTestCreateString = '''
+              CREATE TABLE $tableSpatialMemoryTests (
                 $columnId INTEGER PRIMARY KEY,
                 $columnScore INTEGER NOT NULL,
                 $columnDate TEXT NOT NULL
               )
               ''';
 
-final int maxScore = 60;
+final int maxScore = 2 * series.length;
 
-class CreativityProductivityTest implements TestInterface {
+
+
+int calculateScore(List<int> goodAnswers){
+  int score = 0;
+  
+  for(int i=0; i<goodAnswers.length;i++){
+    if(goodAnswers[i] == series[i]){
+      score += 2;
+    }else if (goodAnswers[i] / series[i] > partialScoreStep){
+      score += 1;
+    }
+  }
+
+  return score;
+}
+
+final List<int> series = [5, 8, 10];
+
+final int enabledMs = 1000;
+final int disabledMs = 1000;
+final double partialScoreStep = 0.5;
+
+class SpatialMemoryTest implements TestInterface{
   int id;
   int score;
   DateTime date;
+
   static final Duration testInterval = Duration(days: 7);
 
-  double get percentageScore {
-    return ((score / maxScore) * 100);
+   double get percentageScore {
+    return (score / maxScore)*100;
   }
 
-  CreativityProductivityTest();
+  SpatialMemoryTest();
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -38,7 +63,7 @@ class CreativityProductivityTest implements TestInterface {
     return map;
   }
 
-  CreativityProductivityTest.fromMap(Map<String, dynamic> map) {
+  SpatialMemoryTest.fromMap(Map<String, dynamic> map) {
     id = map[columnId];
     score = map[columnScore];
     date = DateTime.parse(map[columnDate]);
@@ -46,7 +71,7 @@ class CreativityProductivityTest implements TestInterface {
 
   @override
   Duration getTestInterval() {
-    return CreativityProductivityTest.testInterval;
+    return SpatialMemoryTest.testInterval;
   }
 
   @override

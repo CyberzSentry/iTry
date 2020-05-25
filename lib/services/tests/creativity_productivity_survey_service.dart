@@ -1,5 +1,5 @@
 import 'package:itry/database/database_provider.dart';
-import 'package:itry/database/models/creativity_productivity_survey.dart';
+import 'package:itry/database/models/tests/creativity_productivity_survey.dart';
 import 'package:itry/services/tests/base_test_service.dart';
 import 'package:itry/services/tests/test_service_interface.dart';
 

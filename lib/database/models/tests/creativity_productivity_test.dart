@@ -1,12 +1,14 @@
-import 'package:itry/database/models/test_interface.dart';
 
-final String tablePavsatTests = 'pavsatTests';
+
+import 'package:itry/database/models/tests/test_interface.dart';
+
+final String tableCreativityProductivityTest = 'creativityProductivityTests';
 final String columnId = '_id';
 final String columnScore = 'score';
 final String columnDate = 'date';
 
-final String pavsatTestCreateString = '''
-              CREATE TABLE $tablePavsatTests (
+final String creativityProductivityTestCreateString = '''
+              CREATE TABLE $tableCreativityProductivityTest (
                 $columnId INTEGER PRIMARY KEY,
                 $columnScore INTEGER NOT NULL,
                 $columnDate TEXT NOT NULL
@@ -15,18 +17,17 @@ final String pavsatTestCreateString = '''
 
 final int maxScore = 60;
 
-class PavsatTest implements TestInterface{
+class CreativityProductivityTest implements TestInterface {
   int id;
   int score;
   DateTime date;
+  static final Duration testInterval = Duration(days: 7);
 
-  static final Duration testInterval = Duration(days: 14);
-
-   double get percentageScore {
-    return (score / maxScore)*100;
+  double get percentageScore {
+    return ((score / maxScore) * 100);
   }
 
-  PavsatTest();
+  CreativityProductivityTest();
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
@@ -39,7 +40,7 @@ class PavsatTest implements TestInterface{
     return map;
   }
 
-  PavsatTest.fromMap(Map<String, dynamic> map) {
+  CreativityProductivityTest.fromMap(Map<String, dynamic> map) {
     id = map[columnId];
     score = map[columnScore];
     date = DateTime.parse(map[columnDate]);
@@ -47,7 +48,7 @@ class PavsatTest implements TestInterface{
 
   @override
   Duration getTestInterval() {
-    return PavsatTest.testInterval;
+    return CreativityProductivityTest.testInterval;
   }
 
   @override
