@@ -28,4 +28,10 @@ class DoseService{
     maps.forEach((row) => result.add(Dose.fromMap(row)));
     return result;
   }
+
+  Future<int> delete(int id) async {
+    var db = await DatabaseProvider().database;
+    return await db.delete(tableDose,
+        where: '$columnId = ?', whereArgs: [id]);
+  }
 }

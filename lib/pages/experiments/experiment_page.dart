@@ -22,8 +22,10 @@ class _ExperimentPageState extends State<ExperimentPage> {
     _experimentFuture = _experimentService.getSingle(experimentId);
   }
   ExperimentService _experimentService = ExperimentService();
+  DoseService _doseService = DoseService();
   Future<Experiment> _experimentFuture;
   Experiment _experiment;
+  List<Dose> _doses;
 
   void _deleteExperiment() {
     showDialog(
@@ -129,7 +131,7 @@ class _ExperimentPageState extends State<ExperimentPage> {
                       output.value = double.parse(value);
                       output.date = dateGlob;
                       output.experimentId = _experiment.id;
-                      await DoseService().insert(output);
+                      await _doseService.insert(output);
                       Navigator.of(context).pop();
                     }
                   },
@@ -198,6 +200,8 @@ class _ExperimentPageState extends State<ExperimentPage> {
                           DoseService().getAllFromExperiment(_experiment.id),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
+                          _doses = snapshot.data;
+
                           var output = <Widget>[];
                           output.add(
                             ListTile(
@@ -207,16 +211,50 @@ class _ExperimentPageState extends State<ExperimentPage> {
                             ),
                           );
 
-                          for (var dose in snapshot.data) {
-                            output.add(ListTile(
-                              title: Text(
-                                dose.value.toString(),
-                              ),
-                              subtitle: Text(
-                                dose.date.toString().substring(0, 16),
-                              ),
-                              trailing: Text(_experiment.unit.stringValue()),
-                            ));
+                          for (var dose in _doses) {
+                            output.add(Dismissible(
+                                background: Container(color: Colors.red),
+                                confirmDismiss: (direction) {
+                                  return showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text('Delete'),
+                                        content: Text(
+                                            'Are you sure you want to delete this value?'),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            color: Colors.red,
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(true),
+                                            child: Text('Continue'),
+                                          ),
+                                          FlatButton(
+                                            onPressed: () =>
+                                                Navigator.of(context)
+                                                    .pop(false),
+                                            child: Text('Abort'),
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                onDismissed: (direction) async {
+                                  await _doseService.delete(dose.id);
+                                  _doses.remove(dose);
+                                },
+                                key: Key(dose.id.toString()),
+                                child: ListTile(
+                                  title: Text(
+                                    dose.value.toString(),
+                                  ),
+                                  subtitle: Text(
+                                    dose.date.toString().substring(0, 16),
+                                  ),
+                                  trailing:
+                                      Text(_experiment.unit.stringValue()),
+                                )));
                           }
 
                           return ListView(

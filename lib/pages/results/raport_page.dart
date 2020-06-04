@@ -84,7 +84,7 @@ class _ReportPageState extends State<ReportPage> {
                               return AlertDialog(
                                 title: Text('Delete'),
                                 content: Text(
-                                    'Are you sure you want to delete this value? You will not be albe to '),
+                                    'Are you sure you want to delete this value? You will not be albe to get it back.'),
                                 actions: <Widget>[
                                   FlatButton(
                                     color: Colors.red,
