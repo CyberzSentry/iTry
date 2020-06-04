@@ -1,6 +1,5 @@
 import 'package:charts_flutter/flutter.dart' as chart;
 import 'package:flutter/material.dart';
-import 'package:itry/fragments/drawer_fragment.dart';
 import 'package:itry/pages/results/raport_page.dart';
 import 'package:itry/pages/tests/acuity_contrast_test_page.dart';
 import 'package:itry/pages/tests/anixety_survey_page.dart';
@@ -233,7 +232,6 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
     return OrientationBuilder(
       builder: (context, orientation) {
         return Scaffold(
-          drawer: DrawerFragment(),
           appBar: AppBar(
             title: Text(BaselineResultsPage.title),
           ),

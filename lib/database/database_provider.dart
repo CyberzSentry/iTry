@@ -1,3 +1,5 @@
+import 'package:itry/database/models/experiments/dose.dart';
+import 'package:itry/database/models/experiments/experiment.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -37,7 +39,7 @@ class DatabaseProvider {
   Future<Database> getDatabaseInstance() async {
     var directoryPath = await getDatabasesPath();
     String fullPath = join(directoryPath, _databaseName);
-    return await openDatabase(fullPath, version: 14,
+    return await openDatabase(fullPath, version: 16,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade,
     );
@@ -55,9 +57,17 @@ class DatabaseProvider {
         await db.execute(acuityContrastTestCreateString);
         await db.execute(pavsatTestCreateString);
         await db.execute(chronicPainSurveyCreateString);
+        await db.execute(experimentCreateString);
+        await db.execute(doseCreateString);
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if(oldVersion < 16){
+      await db.execute(doseCreateString);
+    }
+    if(oldVersion < 15){
+      await db.execute(experimentCreateString);
+    }
     if(oldVersion < 14){
       await db.execute(chronicPainSurveyCreateString);
     }

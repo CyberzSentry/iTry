@@ -7,7 +7,7 @@ abstract class TestServiceInterface<Test extends TestInterface> {
   String testTable;
 
   @required
-  String id;
+  String idCol;
 
   @required
   Duration duration;  

@@ -5,7 +5,7 @@ import 'package:itry/services/tests/test_service_interface.dart';
 abstract class BaseTestService<Test extends TestInterface>
     implements TestServiceInterface<Test> {
   @override
-  String id = '_id';
+  String idCol = '_id';
 
   @override
   Future<Test> insert(
@@ -19,7 +19,7 @@ abstract class BaseTestService<Test extends TestInterface>
   Future<int> delete(int id) async {
     var db = await DatabaseProvider().database;
     return await db.delete(testTable,
-        where: '$id = ?', whereArgs: [id]);
+        where: '$idCol = ?', whereArgs: [id]);
   }
 
   @override
@@ -39,7 +39,7 @@ abstract class BaseTestService<Test extends TestInterface>
   Future<int> updateTest(Test test) async {
     var db = await DatabaseProvider().database;
     return await db.update(testTable, test.toMap(),
-        where: '$id = ?', whereArgs: [test.id]);
+        where: '$idCol = ?', whereArgs: [test.id]);
   }
 
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:itry/pages/home_page.dart';
-import 'package:itry/pages/results/baseline_results_page.dart';
 import 'package:itry/pages/results_page.dart';
 import 'package:itry/pages/settings_page.dart';
 import 'package:itry/pages/tests_page.dart';
@@ -17,7 +16,7 @@ class DrawerFragment extends StatelessWidget {
     new DrawerItem(HomePage.title, HomePage.icon, HomePage.routeName),
     new DrawerItem(TestsPage.title, TestsPage.icon, TestsPage.routeName),
     new DrawerItem(
-        ResultsPage.title, ResultsPage.icon, BaselineResultsPage.routeName),
+        ResultsPage.title, ResultsPage.icon, ResultsPage.routeName),
     new DrawerItem(
         SettingsPage.title, SettingsPage.icon, SettingsPage.routeName)
   ];
@@ -37,12 +36,13 @@ class DrawerFragment extends StatelessWidget {
 
     for (var i = 0; i < this.drawerItems.length; i++) {
       var d = this.drawerItems[i];
-      drawerOptions.add(new ListTile(
+      drawerOptions.add(ListTile(
         leading: Icon(d.icon),
         title: Text(d.title),
         onTap: () => Navigator.pushReplacementNamed(context, d.path),
       ));
     }
+    drawerOptions.add(ListTile());
 
     return Drawer(
       child: ListView(
