@@ -113,7 +113,9 @@ class _TestsPageState extends State<TestsPage> {
             child: ListTile(
               title: Text(test.item2),
               trailing: null,
-              onTap: () => Navigator.of(context).pushNamed(test.item3).then((value) => setState((){})),
+              onTap: () => Navigator.of(context)
+                  .pushNamed(test.item3)
+                  .then((value) => setState(() {})),
             ),
             decoration: BoxDecoration(
                 // border: Border(bottom: BorderSide(width: 0.5, color: Colors.blueAccent)),
@@ -145,7 +147,9 @@ class _TestsPageState extends State<TestsPage> {
                           FlatButton(
                             onPressed: () {
                               Navigator.of(context).pop();
-                              Navigator.of(context).pushNamed(test.item3).then((value) => setState((){}));
+                              Navigator.of(context)
+                                  .pushNamed(test.item3)
+                                  .then((value) => setState(() {}));
                             },
                             child: Text('Continue'),
                           ),
@@ -192,22 +196,26 @@ class _TestsPageState extends State<TestsPage> {
         title: Text(TestsPage.title),
       ),
       drawer: DrawerFragment(),
-      body: FutureBuilder<List<Widget>>(
-        future: _buildTestsList(),
-        builder: (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) {
-          if (snapshot.hasData) {
-            return ListView.separated(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index) {
-                return snapshot.data[index];
-              },
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
+      body: Padding(
+        padding: EdgeInsets.only(bottom: 51),
+        child: FutureBuilder<List<Widget>>(
+          future: _buildTestsList(),
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Widget>> snapshot) {
+            if (snapshot.hasData) {
+              return ListView.separated(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return snapshot.data[index];
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
     );
   }
