@@ -21,7 +21,7 @@ class ExperimentService {
   Future<Experiment> getSingle(int id) async {
     var db = await DatabaseProvider().database;
     List<Map> maps = await db.query(tableExperiment,
-        columns: [columnId, columnName, columnDescription, columnUnit],
+        columns: [columnId, columnName, columnDescription, columnUnit, columnBaselineFrom, columnBaselineTo],
         where: '$columnId = ?',
         whereArgs: [id]);
     if (maps.length > 0) {

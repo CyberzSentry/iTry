@@ -28,6 +28,7 @@ import 'package:itry/services/tests/spatial_memory_test_service.dart';
 import 'package:itry/services/tests/stress_survey_service.dart';
 import 'package:itry/services/tests/test_service_interface.dart';
 import 'package:tuple/tuple.dart';
+import 'package:charts_common/common.dart' as chart_comm;
 
 class ExperimentPage extends StatefulWidget {
   static const String routeName = '/experiment';
@@ -45,7 +46,7 @@ class _ExperimentPageState extends State<ExperimentPage> {
     _id = experimentId;
   }
 
-  List<Tuple4<TestServiceInterface, String, MaterialColor, chart.Color>>
+  static List<Tuple4<TestServiceInterface, String, MaterialColor, chart.Color>>
       graphElements = [
     Tuple4<TestServiceInterface, String, MaterialColor, chart.Color>(
         FingerTappingTestService(),
@@ -99,6 +100,22 @@ class _ExperimentPageState extends State<ExperimentPage> {
         chart.MaterialPalette.indigo.shadeDefault),
   ];
 
+  var _enabledDataTypes = List.filled(graphElements.length, true);
+  //  [
+  //   true,
+  //   true,
+  //   true,
+  //   true,
+  //   true,
+  //   true,
+  //   true,
+  //   true,
+  //   true,
+  //   true,
+  // ]; // finger_tapping, cp_survey, cp_test, spatial_mem, depression_survey, stress_survey, anxiety_survey, acuity_contrast, pavsat, chronic_pain
+
+  var _improvementValues = List.filled(graphElements.length, 0);
+
   int _id;
   ExperimentService _experimentService = ExperimentService();
   DoseService _doseService = DoseService();
@@ -125,33 +142,42 @@ class _ExperimentPageState extends State<ExperimentPage> {
       chart.Series<TimeSeriesElement, DateTime>(
         id: 'Doses',
         colorFn: (_, __) => chart.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesElement dose, __) => dose.date,
+        domainFn: (TimeSeriesElement dose, _) => dose.date,
+        domainUpperBoundFn: (TimeSeriesElement dose, _) => dose.date,
+        domainLowerBoundFn: (TimeSeriesElement dose, _) => dose.date,
         measureFn: (_, __) => null,
         data: doses,
       )
         // Configure our custom symbol annotation renderer for this series.
-        // ..setAttribute(chart.rendererIdKey, 'customSymbolAnnotation')
+        ..setAttribute(chart.rendererIdKey, 'customSymbolAnnotation')
         // Optional radius for the annotation shape. If not specified, this will
         // default to the same radius as the points.
-        ..setAttribute(chart.boundsLineRadiusPxKey, 3.5),
+        ..setAttribute(chart.boundsLineRadiusPxKey, 2.5),
     ];
 
-    final data1 = <TimeSeriesElement>[];
-    var data = await graphElements[0].item1.getAll();
+    for (int i = 0; i < graphElements.length; i++) {
+      if (_enabledDataTypes[i]) {
+        var graphData = <TimeSeriesElement>[];
+        var data = await graphElements[i].item1.getAll();
 
-    for (var it in data) {
-      data1.add(TimeSeriesElement(date: it.date, value: it.percentageScore));
+        for (var it in data) {
+          graphData
+              .add(TimeSeriesElement(date: it.date, value: it.percentageScore));
+        }
+
+        series.add(
+          chart.Series<TimeSeriesElement, DateTime>(
+            id: graphElements[i].item2,
+            colorFn: (_, __) => graphElements[i].item4,
+            domainFn: (TimeSeriesElement data, __) => data.date,
+            measureFn: (TimeSeriesElement data, __) => data.value,
+            domainLowerBoundFn: (_, __) => null,
+            domainUpperBoundFn: (_, __) => null,
+            data: graphData,
+          ),
+        );
+      }
     }
-
-    series.add(chart.Series<TimeSeriesElement, DateTime>(
-      id: 'Data1',
-      colorFn: (_, __) => chart.MaterialPalette.blue.shadeDefault,
-      domainFn: (TimeSeriesElement data, __) => data.date,
-      measureFn: (TimeSeriesElement data, __) => data.value,
-      domainLowerBoundFn: (_, __) => null,
-      domainUpperBoundFn: (_, __) => null,
-      data: data1,
-    ));
 
     _chart = chart.TimeSeriesChart(
       series,
@@ -161,10 +187,42 @@ class _ExperimentPageState extends State<ExperimentPage> {
             // ID used to link series to this renderer.
             customRendererId: 'customSymbolAnnotation')
       ],
-      // dateTimeFactory: const chart.LocalDateTimeFactory(),
+      behaviors: [
+        new chart.SeriesLegend.customLayout(CustomLegendBuilder(),
+            outsideJustification: chart.OutsideJustification.start)
+      ],
+      dateTimeFactory: const chart.LocalDateTimeFactory(),
     );
 
     return true;
+  }
+
+  List<Widget> _switchListTiles() {
+    var output = <Widget>[];
+
+    output.add(
+      SizedBox(height: 250, child: _chart),
+    );
+
+    for (int i = 0; i < graphElements.length; i++) {
+      output.add(
+        SwitchListTile(
+          value: _enabledDataTypes[i],
+          onChanged: (val) => setState(() {
+            _enabledDataTypes[i] = val;
+          }),
+          title: Text(graphElements[i].item2),
+          activeColor: graphElements[i].item3,
+          secondary: Text(
+            _improvementValues[i].toString() + '%',
+            style: TextStyle(
+                color: _improvementValues[i] >= 0 ? Colors.green : Colors.red),
+          ),
+        ),
+      );
+    }
+
+    return output;
   }
 
   void _deleteExperiment() {
@@ -271,7 +329,26 @@ class _ExperimentPageState extends State<ExperimentPage> {
                       output.value = double.parse(value);
                       output.date = dateGlob;
                       output.experimentId = _experiment.id;
-                      await _doseService.insert(output);
+                      var out = await _doseService.insert(output);
+                      if (out.id != null) {
+                        if (_experiment.baselineFrom == null &&
+                            _experiment.baselineTo == null) {
+                          if (_doses.length == 0) {
+
+                            _experiment.baselineTo =
+                                out.date.subtract(Duration(days: 1));
+                            _experiment.baselineFrom =
+                                out.date.subtract(Duration(days: 31));
+                            var out2 =_experimentService.updateExperiment(_experiment);
+                          } else if (_doses[0].date.compareTo(out.date) > 0) {
+                            _experiment.baselineTo =
+                                out.date.subtract(Duration(days: 1));
+                            _experiment.baselineFrom =
+                                out.date.subtract(Duration(days: 31));
+                            var out2 = _experimentService.updateExperiment(_experiment);
+                          }
+                        }
+                      }
                       Navigator.of(context).pop();
                     }
                   },
@@ -380,7 +457,7 @@ class _ExperimentPageState extends State<ExperimentPage> {
                 ),
               ),
               body: Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 49),
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 51),
                 child: TabBarView(
                   children: [
                     _doses.length > 0
@@ -388,7 +465,11 @@ class _ExperimentPageState extends State<ExperimentPage> {
                             future: _raportData(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                return Expanded(child: _chart);
+                                return SingleChildScrollView(
+                                  child: Column(
+                                    children: _switchListTiles(),
+                                  ),
+                                );
                               } else {
                                 return Center(
                                   child: CircularProgressIndicator(),
@@ -429,6 +510,30 @@ class _ExperimentPageState extends State<ExperimentPage> {
                           ),
                           subtitle: Text(
                             _experiment.description,
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                        ),
+                        ListTile(
+                          title: Text(
+                            'Baseline from',
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                          subtitle: Text(
+                            _experiment.baselineFrom != null
+                                ? _experiment.baselineFrom.toString().substring(0, 10)
+                                : "",
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                        ),
+                        ListTile(
+                          title: Text(
+                            'Baseline to',
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                          subtitle: Text(
+                            _experiment.baselineTo != null
+                                ? _experiment.baselineTo.toString().substring(0, 10)
+                                : "",
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                         ),
@@ -483,4 +588,35 @@ class TimeSeriesElement {
   DateTime date;
   double value;
   TimeSeriesElement({this.date, this.value});
+}
+
+class CustomLegendBuilder extends chart.LegendContentBuilder {
+  @override
+  Widget build(BuildContext context, chart_comm.LegendState legendState,
+      chart_comm.Legend legend,
+      {bool showMeasures}) {
+    /*
+      Implement your custom layout logic here. You should take into account how long
+      your legend names are and how many legends you have. For starters you
+      could put each legend on its own line.
+    */
+
+    return Padding(
+      padding: EdgeInsets.only(top: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 5),
+            child: Icon(
+              Icons.brightness_1,
+              color: Colors.blue,
+              size: 12,
+            ),
+          ),
+          Text('Doses')
+        ],
+      ),
+    );
+  }
 }

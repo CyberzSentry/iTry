@@ -11,7 +11,7 @@ final String experimentId = exp.columnId;
 
 final String doseCreateString = '''
               CREATE TABLE $tableDose (
-                $columnId INTEGER PRIMARY KEY,
+                $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
                 $columnDate TEXT NOT NULL,
                 $columnValue REAL NOT NULL,
                 $columnExperimentId INTEGER NOT NULL,

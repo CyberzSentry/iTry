@@ -3,14 +3,17 @@ final String columnId = '_id';
 final String columnName = 'name';
 final String columnDescription = 'description';
 final String columnUnit = 'unit';
-//final String columnType = 'type';
+final String columnBaselineFrom = 'baselineFrom';
+final String columnBaselineTo = 'baselineTo';
 
 final String experimentCreateString = '''
               CREATE TABLE $tableExperiment (
-                $columnId INTEGER PRIMARY KEY,
+                $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
                 $columnName TEXT NOT NULL,
                 $columnDescription TEXT NOT NULL,
-                $columnUnit INTEGER NOT NULL
+                $columnUnit INTEGER NOT NULL,
+                $columnBaselineFrom TEXT NULL,
+                $columnBaselineTo TEXT NULL
               )
               ''';
 
@@ -19,6 +22,8 @@ class Experiment{
   ExperimentUnits unit;
   String name;
   String description;
+  DateTime baselineFrom;
+  DateTime baselineTo;
 
   Experiment(){
     name = "";
@@ -30,6 +35,8 @@ class Experiment{
       columnName: name,
       columnDescription: description,
       columnUnit: unit.index,
+      columnBaselineFrom: baselineFrom?.toIso8601String(),
+      columnBaselineTo: baselineTo?.toIso8601String()
     };
     if (id != null) {
       map[columnId] = id;
@@ -42,6 +49,14 @@ class Experiment{
     name = map[columnName];
     unit = ExperimentUnits.values[map[columnUnit]];
     description = map[columnDescription];
+    var colBsF = map[columnBaselineFrom];
+    if(colBsF != null){
+      baselineFrom = DateTime.parse(map[columnBaselineFrom]);
+    }
+    var colBsT = map[columnBaselineTo];
+    if(colBsT != null){
+      baselineTo = DateTime.parse(map[columnBaselineFrom]);
+    }
   }
 }
 

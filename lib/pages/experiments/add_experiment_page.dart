@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:itry/database/models/experiments/experiment.dart';
+import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/experiments/experiment_service.dart';
 
 class AddExperimentPage extends StatefulWidget {
   static const String routeName = '/addExperiment';
   static const String title = "New experiment";
+  static const String altTitle = "Edit experiment";
 
   final int id;
 
@@ -50,7 +52,9 @@ class _AddExperimentPageState extends State<AddExperimentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AddExperimentPage.title),
+        title: Text(widget.id == null
+            ? AddExperimentPage.title
+            : AddExperimentPage.altTitle),
       ),
       body: FutureBuilder<Experiment>(
           future: _experimentFuture,
@@ -118,6 +122,82 @@ class _AddExperimentPageState extends State<AddExperimentPage> {
                         decoration: InputDecoration(
                           hintText: "Notes/Description",
                         ),
+                      ),
+                    ),
+                    ListTile(),
+                    ListTile(
+                      title: Text('Experiment baseline interval'),
+                      trailing: InkWell(
+                        child: Icon(Icons.info_outline),
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Text(
+                                  "This interval will be used to calculate baseline score that the results of experiment are based on. If left empty it will be assigned automatically upon adding the first dose."),
+                              actions: <Widget>[
+                                FlatButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: Text('Back'))
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text(
+                        'from',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      onTap: () async {
+                        AdsService().hideBanner();
+                        var date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: _experiment.baselineTo ?? DateTime.now().add(Duration(days: 365)));
+                            AdsService().showBanner();
+                        if (date != null) {
+                          setState(() {
+                            _experiment.baselineFrom = date;
+                          });
+                        }
+                      },
+                      subtitle: Text(
+                        _experiment.baselineFrom != null
+                            ? _experiment.baselineFrom
+                                .toString()
+                                .substring(0, 10)
+                            : "",
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                    ),
+                    ListTile(
+                      title: Text(
+                        'to',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                      onTap: () async {
+                        AdsService().hideBanner();
+                        var date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: _experiment.baselineFrom ?? DateTime(2000),
+                            lastDate: DateTime.now().add(Duration(days: 365)));
+                        AdsService().showBanner();
+                        if (date != null) {
+                          setState(() {
+                            _experiment.baselineTo = date;
+                          });
+                        }
+                      },
+                      subtitle: Text(
+                        _experiment.baselineTo != null
+                            ? _experiment.baselineTo.toString().substring(0, 10)
+                            : "",
+                        style: Theme.of(context).textTheme.subtitle1,
                       ),
                     ),
                     ListTile(
