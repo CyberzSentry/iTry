@@ -101,20 +101,8 @@ class _ExperimentPageState extends State<ExperimentPage> {
   ];
 
   var _enabledDataTypes = List.filled(graphElements.length, true);
-  //  [
-  //   true,
-  //   true,
-  //   true,
-  //   true,
-  //   true,
-  //   true,
-  //   true,
-  //   true,
-  //   true,
-  //   true,
-  // ]; // finger_tapping, cp_survey, cp_test, spatial_mem, depression_survey, stress_survey, anxiety_survey, acuity_contrast, pavsat, chronic_pain
 
-  var _improvementValues = List.filled(graphElements.length, 0);
+  var _improvementValues = List.filled(graphElements.length, 0.0);
 
   int _id;
   ExperimentService _experimentService = ExperimentService();
@@ -156,15 +144,36 @@ class _ExperimentPageState extends State<ExperimentPage> {
     ];
 
     for (int i = 0; i < graphElements.length; i++) {
-      if (_enabledDataTypes[i]) {
-        var graphData = <TimeSeriesElement>[];
-        var data = await graphElements[i].item1.getAll();
+      var graphData = <TimeSeriesElement>[];
+      var data = await graphElements[i].item1.getAll();
 
-        for (var it in data) {
+      var basePercentage = 0.0;
+      var baseCount = 0;
+      var experimentPercentage = 0.0;
+      var experimentCount = 0;
+
+      for (var it in data) {
+        if (it.date.compareTo(_experiment.baselineFrom) >= 0 && it.date.compareTo(_experiment.baselineTo) <= 0) {
           graphData
-              .add(TimeSeriesElement(date: it.date, value: it.percentageScore));
+            .add(TimeSeriesElement(date: it.date, value: it.percentageScore));
+          baseCount ++;
+          basePercentage += it.percentageScore;
+        }else if(it.date.compareTo(_experiment.baselineTo) > 0){
+          graphData
+            .add(TimeSeriesElement(date: it.date, value: it.percentageScore));
+          experimentCount ++;
+          experimentPercentage += it.percentageScore;
         }
+        
+      }
 
+      if(baseCount != 0 && experimentCount != 0){
+        basePercentage = basePercentage / baseCount;
+        experimentPercentage = experimentPercentage / experimentCount;
+        _improvementValues[i] = experimentPercentage - basePercentage;
+      }
+
+      if (_enabledDataTypes[i]) {
         series.add(
           chart.Series<TimeSeriesElement, DateTime>(
             id: graphElements[i].item2,
@@ -214,7 +223,7 @@ class _ExperimentPageState extends State<ExperimentPage> {
           title: Text(graphElements[i].item2),
           activeColor: graphElements[i].item3,
           secondary: Text(
-            _improvementValues[i].toString() + '%',
+            _improvementValues[i].toStringAsFixed(1) + '%',
             style: TextStyle(
                 color: _improvementValues[i] >= 0 ? Colors.green : Colors.red),
           ),
@@ -334,18 +343,19 @@ class _ExperimentPageState extends State<ExperimentPage> {
                         if (_experiment.baselineFrom == null &&
                             _experiment.baselineTo == null) {
                           if (_doses.length == 0) {
-
                             _experiment.baselineTo =
                                 out.date.subtract(Duration(days: 1));
                             _experiment.baselineFrom =
                                 out.date.subtract(Duration(days: 31));
-                            var out2 =_experimentService.updateExperiment(_experiment);
+                            var out2 = _experimentService
+                                .updateExperiment(_experiment);
                           } else if (_doses[0].date.compareTo(out.date) > 0) {
                             _experiment.baselineTo =
                                 out.date.subtract(Duration(days: 1));
                             _experiment.baselineFrom =
                                 out.date.subtract(Duration(days: 31));
-                            var out2 = _experimentService.updateExperiment(_experiment);
+                            var out2 = _experimentService
+                                .updateExperiment(_experiment);
                           }
                         }
                       }
@@ -520,7 +530,9 @@ class _ExperimentPageState extends State<ExperimentPage> {
                           ),
                           subtitle: Text(
                             _experiment.baselineFrom != null
-                                ? _experiment.baselineFrom.toString().substring(0, 10)
+                                ? _experiment.baselineFrom
+                                    .toString()
+                                    .substring(0, 10)
                                 : "",
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
@@ -532,7 +544,9 @@ class _ExperimentPageState extends State<ExperimentPage> {
                           ),
                           subtitle: Text(
                             _experiment.baselineTo != null
-                                ? _experiment.baselineTo.toString().substring(0, 10)
+                                ? _experiment.baselineTo
+                                    .toString()
+                                    .substring(0, 10)
                                 : "",
                             style: Theme.of(context).textTheme.subtitle1,
                           ),

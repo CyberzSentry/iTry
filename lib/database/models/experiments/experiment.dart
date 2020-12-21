@@ -55,7 +55,7 @@ class Experiment{
     }
     var colBsT = map[columnBaselineTo];
     if(colBsT != null){
-      baselineTo = DateTime.parse(map[columnBaselineFrom]);
+      baselineTo = DateTime.parse(map[columnBaselineTo]);
     }
   }
 }

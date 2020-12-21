@@ -155,7 +155,7 @@ class _AddExperimentPageState extends State<AddExperimentPage> {
                         AdsService().hideBanner();
                         var date = await showDatePicker(
                             context: context,
-                            initialDate: DateTime.now(),
+                            initialDate: _experiment.baselineTo ?? DateTime.now(),
                             firstDate: DateTime(2000),
                             lastDate: _experiment.baselineTo ?? DateTime.now().add(Duration(days: 365)));
                             AdsService().showBanner();
@@ -183,7 +183,7 @@ class _AddExperimentPageState extends State<AddExperimentPage> {
                         AdsService().hideBanner();
                         var date = await showDatePicker(
                             context: context,
-                            initialDate: DateTime.now(),
+                            initialDate: _experiment.baselineFrom ?? DateTime.now(),
                             firstDate: _experiment.baselineFrom ?? DateTime(2000),
                             lastDate: DateTime.now().add(Duration(days: 365)));
                         AdsService().showBanner();
