@@ -153,21 +153,21 @@ class _ExperimentPageState extends State<ExperimentPage> {
       var experimentCount = 0;
 
       for (var it in data) {
-        if (it.date.compareTo(_experiment.baselineFrom) >= 0 && it.date.compareTo(_experiment.baselineTo) <= 0) {
+        if (it.date.compareTo(_experiment.baselineFrom) >= 0 &&
+            it.date.compareTo(_experiment.baselineTo) <= 0) {
           graphData
-            .add(TimeSeriesElement(date: it.date, value: it.percentageScore));
-          baseCount ++;
+              .add(TimeSeriesElement(date: it.date, value: it.percentageScore));
+          baseCount++;
           basePercentage += it.percentageScore;
-        }else if(it.date.compareTo(_experiment.baselineTo) > 0){
+        } else if (it.date.compareTo(_experiment.baselineTo) > 0) {
           graphData
-            .add(TimeSeriesElement(date: it.date, value: it.percentageScore));
-          experimentCount ++;
+              .add(TimeSeriesElement(date: it.date, value: it.percentageScore));
+          experimentCount++;
           experimentPercentage += it.percentageScore;
         }
-        
       }
 
-      if(baseCount != 0 && experimentCount != 0){
+      if (baseCount != 0 && experimentCount != 0) {
         basePercentage = basePercentage / baseCount;
         experimentPercentage = experimentPercentage / experimentCount;
         _improvementValues[i] = experimentPercentage - basePercentage;
@@ -188,6 +188,24 @@ class _ExperimentPageState extends State<ExperimentPage> {
       }
     }
 
+    List<chart.ChartBehavior<chart_comm.ChartBehavior<dynamic>>> behaviours = [
+      new chart.SeriesLegend.customLayout(CustomLegendBuilder(),
+          outsideJustification: chart.OutsideJustification.start),
+    ];
+
+    if (_experiment.baselineFrom != null && _experiment.baselineTo != null) {
+      behaviours.add(new chart.RangeAnnotation([
+        new chart.RangeAnnotationSegment(_experiment.baselineFrom,
+            _experiment.baselineTo, chart.RangeAnnotationAxisType.domain,
+            startLabel: 'Base Start',
+            endLabel: 'Base End',
+            labelAnchor: chart.AnnotationLabelAnchor.end,
+            color: chart.MaterialPalette.gray.shade200,
+            // Override the default vertical direction for domain labels.
+            labelDirection: chart.AnnotationLabelDirection.horizontal),
+      ]));
+    }
+
     _chart = chart.TimeSeriesChart(
       series,
       animate: true,
@@ -196,10 +214,7 @@ class _ExperimentPageState extends State<ExperimentPage> {
             // ID used to link series to this renderer.
             customRendererId: 'customSymbolAnnotation')
       ],
-      behaviors: [
-        new chart.SeriesLegend.customLayout(CustomLegendBuilder(),
-            outsideJustification: chart.OutsideJustification.start)
-      ],
+      behaviors: behaviours,
       dateTimeFactory: const chart.LocalDateTimeFactory(),
     );
 
@@ -470,24 +485,22 @@ class _ExperimentPageState extends State<ExperimentPage> {
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 51),
                 child: TabBarView(
                   children: [
-                    _doses.length > 0
-                        ? FutureBuilder(
-                            future: _raportData(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return SingleChildScrollView(
-                                  child: Column(
-                                    children: _switchListTiles(),
-                                  ),
-                                );
-                              } else {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                            },
-                          )
-                        : Center(child: Text("Add doses to start experiment.")),
+                    FutureBuilder(
+                      future: _raportData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return SingleChildScrollView(
+                            child: Column(
+                              children: _switchListTiles(),
+                            ),
+                          );
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
                     ListView(
                       children: output,
                     ),
