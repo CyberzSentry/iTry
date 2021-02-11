@@ -65,51 +65,51 @@ class _ReportPageState extends State<ReportPage> {
       body: Padding(
         padding: EdgeInsets.only(bottom: 51),
         child: FutureBuilder<List<TestInterface>>(
-            future: widget.testService.getBetweenDates(_from, _to),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                var tiles = <Widget>[];
-                snapshot.data.forEach(
-                  (value) {
-                    tiles.add(
-                      Dismissible(
-                        key: Key(value.id.toString()),
-                        child: ListTile(
-                          title: Text(value.toString()),
-                          subtitle: Text(value.date.toString()),
-                        ),
-                        onDismissed: (direction) {
-                          // widget.testService.delete(value.id);
-                          setState(() {
-                            widget.testService.delete(value.id);
-                          });
-                        },
-                        confirmDismiss: (direction) {
-                          return showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text('Delete'),
-                                  content: Text(
-                                      'Are you sure you want to delete this value? You will not be albe to '),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      color: Colors.red,
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(true),
-                                      child: Text('Continue'),
-                                    ),
-                                    FlatButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(false),
-                                      child: Text('Abort'),
-                                    )
-                                  ],
-                                );
-                              });
-                        },
-                        background: Container(
-                          color: Colors.red,
+          future: widget.testService.getBetweenDates(_from, _to),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var tiles = <Widget>[];
+              snapshot.data.forEach(
+                (value) {
+                  tiles.add(
+                    Dismissible(
+                      key: Key(value.id.toString()),
+                      child: ListTile(
+                        title: Text(value.toString()),
+                        subtitle: Text(value.date.toString()),
+                      ),
+                      onDismissed: (direction) {
+                        // widget.testService.delete(value.id);
+                        setState(() {
+                          widget.testService.delete(value.id);
+                        });
+                      },
+                      confirmDismiss: (direction) {
+                        return showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Delete'),
+                                content: Text(
+                                    'Are you sure you want to delete this value? You will not be albe to get it back.'),
+                                actions: <Widget>[
+                                  FlatButton(
+                                    color: Colors.red,
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
+                                    child: Text('Continue'),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
+                                    child: Text('Abort'),
+                                  )
+                                ],
+                              );
+                            });
+                      },
+                      background: Container(
+                        color: Colors.red,
                         ),
                       ),
                     );

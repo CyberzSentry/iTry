@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'iTry',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        buttonColor: Colors.green
       ),
       initialRoute: '/',
       routes: routes,
