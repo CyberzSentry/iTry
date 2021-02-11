@@ -5,7 +5,6 @@ import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class SettingsPage extends StatefulWidget {
   static const String routeName = '/settings';
   static const String title = "Settings";
@@ -60,38 +59,41 @@ class _SettingsPageState extends State<SettingsPage> {
         title: Text(SettingsPage.title),
       ),
       drawer: DrawerFragment(),
-      body: FutureBuilder<Settings>(
-        future: service.settings,
-        builder: (BuildContext context, AsyncSnapshot<Settings> snapshot) {
-          if (snapshot.hasData) {
-            _settings = snapshot.data;
-            return ListView(
-              children: <Widget>[
-                SwitchListTile(
-                  title: Text('Notifications'),
-                  value: _settings.notifications,
-                  onChanged: (value) => setState(() {
-                    service.notifications = value;
-                  }),
-                ),
-                SwitchListTile(
-                  title: Text('Apply test intervals'),
-                  value: _settings.testTimeBlocking,
-                  onChanged: (value) => setState(() {
-                    service.testTimeBlocking = value;
-                  }),
-                ),
-                ListTile(
-                  title: Text('Reset application'),
-                  onTap: _resetApplication,
-                  trailing: Icon(Icons.delete_outline),
-                )
-              ],
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
+      body: Padding(
+        padding: EdgeInsets.only(bottom: 51),
+        child: FutureBuilder<Settings>(
+          future: service.settings,
+          builder: (BuildContext context, AsyncSnapshot<Settings> snapshot) {
+            if (snapshot.hasData) {
+              _settings = snapshot.data;
+              return ListView(
+                children: <Widget>[
+                  SwitchListTile(
+                    title: Text('Notifications'),
+                    value: _settings.notifications,
+                    onChanged: (value) => setState(() {
+                      service.notifications = value;
+                    }),
+                  ),
+                  SwitchListTile(
+                    title: Text('Apply test intervals'),
+                    value: _settings.testTimeBlocking,
+                    onChanged: (value) => setState(() {
+                      service.testTimeBlocking = value;
+                    }),
+                  ),
+                  ListTile(
+                    title: Text('Reset application'),
+                    onTap: _resetApplication,
+                    trailing: Icon(Icons.delete_outline),
+                  )
+                ],
+              );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itry/database/models/tests/test_interface.dart';
+import 'package:itry/services/ads_service.dart';
 import 'package:itry/services/tests/test_service_interface.dart';
 
 class ReportPage extends StatefulWidget {
@@ -34,21 +35,25 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   Future _selectFromDate() async {
+    AdsService().hideBanner();
     DateTime picked = await showDatePicker(
         context: context,
         initialDate: _from,
         firstDate: DateTime(2000),
         lastDate: _to);
     if (picked != null) setState(() => _from = picked);
+    AdsService().showBanner();
   }
 
   Future _selectToDate() async {
+    AdsService().hideBanner();
     DateTime picked = await showDatePicker(
         context: context,
         initialDate: _to,
         firstDate: _from,
         lastDate: DateTime.now());
     if (picked != null) setState(() => _to = picked);
+    AdsService().showBanner();
   }
 
   @override
@@ -57,7 +62,9 @@ class _ReportPageState extends State<ReportPage> {
       appBar: AppBar(
         title: Text(widget.raportName + ' ' + ReportPage.title),
       ),
-      body: FutureBuilder<List<TestInterface>>(
+      body: Padding(
+        padding: EdgeInsets.only(bottom: 51),
+        child: FutureBuilder<List<TestInterface>>(
           future: widget.testService.getBetweenDates(_from, _to),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -103,98 +110,100 @@ class _ReportPageState extends State<ReportPage> {
                       },
                       background: Container(
                         color: Colors.red,
+                        ),
+                      ),
+                    );
+                  },
+                );
+
+                double percentageImprovement;
+                if (snapshot.data.length != 0) {
+                  percentageImprovement =
+                      snapshot.data.last.compareResults(snapshot.data.first);
+                } else {
+                  percentageImprovement = 0;
+                }
+
+                return Column(
+                  children: <Widget>[
+                    Flexible(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text('Improvement:'),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              percentageImprovement.toStringAsFixed(1) + "%",
+                              style: TextStyle(
+                                fontSize: 40,
+                                color: percentageImprovement >= 0
+                                    ? Colors.green
+                                    : Colors.red,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                  );
-                },
-              );
-
-              double percentageImprovement;
-              if (snapshot.data.length != 0) {
-                percentageImprovement =
-                    snapshot.data.last.compareResults(snapshot.data.first);
-              } else {
-                percentageImprovement = 0;
-              }
-
-              return Column(
-                children: <Widget>[
-                  Flexible(
-                    child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    ListView(
+                      shrinkWrap: true,
                       children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text('Improvement:'),
+                        ListTile(
+                          title: Text('Date from:'),
+                          trailing: Text(_from.toString().substring(0, 10)),
+                          onTap: _selectFromDate,
                         ),
-                        Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            percentageImprovement.toStringAsFixed(1) + "%",
-                            style: TextStyle(
-                              fontSize: 40,
-                              color: percentageImprovement >= 0
-                                  ? Colors.green
-                                  : Colors.red,
-                            ),
-                          ),
-                        )
+                        ListTile(
+                          title: Text('Date to:'),
+                          trailing: Text(_to.toString().substring(0, 10)),
+                          onTap: _selectToDate,
+                        ),
                       ],
                     ),
-                  ),
-                  ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      ListTile(
-                        title: Text('Date from:'),
-                        trailing: Text(_from.toString().substring(0, 10)),
-                        onTap: _selectFromDate,
+                    Flexible(
+                      child: ListView(
+                        children: tiles,
                       ),
-                      ListTile(
-                        title: Text('Date to:'),
-                        trailing: Text(_to.toString().substring(0, 10)),
-                        onTap: _selectToDate,
-                      ),
-                    ],
-                  ),
-                  Flexible(
-                    child: ListView(
-                      children: tiles,
                     ),
-                  ),
-                ],
-              );
-            } else {
-              return Column(
-                children: <Widget>[
-                  Flexible(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                  ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      ListTile(
-                        title: Text('Date from:'),
-                        trailing: Text(_from.toString().substring(0, 10)),
-                        onTap: _selectFromDate,
+                  ],
+                );
+              } else {
+                return Column(
+                  children: <Widget>[
+                    Flexible(
+                      child: Center(
+                        child: CircularProgressIndicator(),
                       ),
-                      ListTile(
-                        title: Text('Date to:'),
-                        trailing: Text(_to.toString().substring(0, 10)),
-                        onTap: _selectToDate,
-                      ),
-                    ],
-                  ),
-                  Flexible(
-                    child: Center(
-                      child: CircularProgressIndicator(),
                     ),
-                  )
-                ],
-              );
-            }
-          }),
+                    ListView(
+                      shrinkWrap: true,
+                      children: <Widget>[
+                        ListTile(
+                          title: Text('Date from:'),
+                          trailing: Text(_from.toString().substring(0, 10)),
+                          onTap: _selectFromDate,
+                        ),
+                        ListTile(
+                          title: Text('Date to:'),
+                          trailing: Text(_to.toString().substring(0, 10)),
+                          onTap: _selectToDate,
+                        ),
+                      ],
+                    ),
+                    Flexible(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                  ],
+                );
+              }
+            }),
+      ),
     );
   }
 }

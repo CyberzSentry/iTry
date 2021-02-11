@@ -210,21 +210,25 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
   }
 
   Future _selectFromDate() async {
+    AdsService().hideBanner();
     DateTime picked = await showDatePicker(
         context: context,
         initialDate: _from,
         firstDate: DateTime(2000),
         lastDate: _to);
     if (picked != null) setState(() => _from = picked);
+    AdsService().showBanner();
   }
 
   Future _selectToDate() async {
+    AdsService().hideBanner();
     DateTime picked = await showDatePicker(
         context: context,
         initialDate: _to,
         firstDate: _from,
         lastDate: DateTime.now());
     if (picked != null) setState(() => _to = picked);
+    AdsService().showBanner();
   }
 
   @override
@@ -235,29 +239,32 @@ class _BaselineResultsPageState extends State<BaselineResultsPage> {
           appBar: AppBar(
             title: Text(BaselineResultsPage.title),
           ),
-          body: Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Flexible(
-                  child: FutureBuilder<GraphData>(
-                    future: _getGraphData(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<GraphData> snapshot) {
-                      if (snapshot.hasData) {
-                        return _generateChart(snapshot.data);
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    },
+          body: Padding(
+            padding: EdgeInsets.only(bottom: 51),
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Flexible(
+                    child: FutureBuilder<GraphData>(
+                      future: _getGraphData(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<GraphData> snapshot) {
+                        if (snapshot.hasData) {
+                          return _generateChart(snapshot.data);
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
                   ),
-                ),
-                Flexible(
-                  child: ListView(
-                    children: _bulidListView(),
+                  Flexible(
+                    child: ListView(
+                      children: _bulidListView(),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
