@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itry/pages/experiments/add_experiment_page.dart';
 // import 'package:itry/pages/experiments/add_experiment_page.dart';
 import 'package:itry/pages/home_page.dart';
 import 'package:itry/pages/results/baseline_results_page.dart';
@@ -32,5 +33,5 @@ import 'package:itry/pages/tests_page.dart';
   AcuityContrastTestPage.routeName : (context) => AcuityContrastTestPage(),
   PavsatTestPage.routeName : (context) => PavsatTestPage(),
   ChronicPainSurveyPage.routeName : (context) => ChronicPainSurveyPage(),
-  // AddExperimentPage.routeName : (context) => AddExperimentPage(),
+  AddExperimentPage.routeName : (context) => AddExperimentPage(),
 };
