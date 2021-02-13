@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class AdsService {
   AdsService._() {
     FirebaseAdMob.instance.initialize(appId: getAppId());
     _bannerUnitId = getBannerAdUnitId();
     _interstitialUnitId = getInterstitialAdUnitId();
+    configCheck();
   }
 
   static final AdsService _instance = AdsService._();
@@ -24,6 +26,10 @@ class AdsService {
 
   InterstitialAd _interstitialAd;
 
+  bool _showBannerConfig = true;
+
+  bool _showInterstitialConfig = false;
+
   static const MobileAdTargetingInfo _targetingInfo = MobileAdTargetingInfo(
       keywords: <String>[
         'self improvement',
@@ -37,32 +43,34 @@ class AdsService {
   }
 
   void showBanner() async {
-    if (_banner != null) {
-      return;
-    }
-    var completer = new Completer<void>();
-    _loadingBanner = completer.future;
-    _bannerHidden = false;
-    _banner = BannerAd(
-        adUnitId: _bannerUnitId,
-        size: AdSize.banner,
-        targetingInfo: _targetingInfo,
-        listener: (MobileAdEvent event) {
-          print("BannerAd $event");
-          if (event == MobileAdEvent.loaded ||
-              event == MobileAdEvent.failedToLoad) {
-            completer.complete();
-            if (_bannerHidden) {
-              // hideBanner();
+    if (_showBannerConfig) {
+      if (_banner != null) {
+        return;
+      }
+      var completer = new Completer<void>();
+      _loadingBanner = completer.future;
+      _bannerHidden = false;
+      _banner = BannerAd(
+          adUnitId: _bannerUnitId,
+          size: AdSize.banner,
+          targetingInfo: _targetingInfo,
+          listener: (MobileAdEvent event) {
+            print("BannerAd $event");
+            if (event == MobileAdEvent.loaded ||
+                event == MobileAdEvent.failedToLoad) {
+              completer.complete();
+              if (_bannerHidden) {
+                // hideBanner();
+              }
             }
+          });
+      _banner
+        ..load().then((loaded) {
+          if (loaded) {
+            _banner..show();
           }
         });
-    _banner
-      ..load().then((loaded) {
-        if (loaded) {
-          _banner..show();
-        }
-      });
+    }
   }
 
   void hideBanner() async {
@@ -77,18 +85,22 @@ class AdsService {
   }
 
   Future<void> showInterstitial(Function() onComplete) async {
-    _interstitialAd = InterstitialAd(
-        adUnitId: _interstitialUnitId,
-        targetingInfo: _targetingInfo,
-        listener: (MobileAdEvent event) {
-          print("InterstitialAd $event");
-          if (event == MobileAdEvent.opened ||
-              event == MobileAdEvent.failedToLoad) {
-            onComplete();
-          }
-        });
-    await _interstitialAd.load();
-    await _interstitialAd.show();
+    if (_showInterstitialConfig) {
+      _interstitialAd = InterstitialAd(
+          adUnitId: _interstitialUnitId,
+          targetingInfo: _targetingInfo,
+          listener: (MobileAdEvent event) {
+            print("InterstitialAd $event");
+            if (event == MobileAdEvent.opened ||
+                event == MobileAdEvent.failedToLoad) {
+              onComplete();
+            }
+          });
+      await _interstitialAd.load();
+      await _interstitialAd.show();
+    }else{
+      onComplete();
+    }
   }
 
   // void hideInterstitial() async {
@@ -121,5 +133,26 @@ class AdsService {
       return "ca-app-pub-2917376840034915/9939657632";
     }
     return null;
+  }
+
+  configCheck() async {
+    final RemoteConfig remoteConfig = await RemoteConfig.instance;
+    try {
+      // Using default duration to force fetching from remote server.
+      await remoteConfig.fetch(expiration: const Duration(seconds: 0));
+      await remoteConfig.activateFetched();
+      _showBannerConfig = remoteConfig.getBool('ad_show_baner');
+      _showInterstitialConfig =
+          remoteConfig.getBool('ad_show_interstitial');
+
+      print("Show Banner Config: $_showBannerConfig");
+      print("Show Interstitial Config: $_showInterstitialConfig");
+    } on FetchThrottledException catch (exception) {
+      // Fetch throttled.
+      print(exception);
+    } catch (exception) {
+      print('Unable to fetch remote config. Cached or default values will be '
+          'used');
+    }
   }
 }
