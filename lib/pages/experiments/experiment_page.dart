@@ -362,14 +362,14 @@ class _ExperimentPageState extends State<ExperimentPage> {
                                 out.date.subtract(Duration(days: 1));
                             _experiment.baselineFrom =
                                 out.date.subtract(Duration(days: 31));
-                            var out2 = _experimentService
+                            _experimentService
                                 .updateExperiment(_experiment);
                           } else if (_doses[0].date.compareTo(out.date) > 0) {
                             _experiment.baselineTo =
                                 out.date.subtract(Duration(days: 1));
                             _experiment.baselineFrom =
                                 out.date.subtract(Duration(days: 31));
-                            var out2 = _experimentService
+                            _experimentService
                                 .updateExperiment(_experiment);
                           }
                         }
